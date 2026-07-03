@@ -125,9 +125,17 @@
     <link rel="shortcut icon"    href="assets/favicon/favicon.ico">
 
     <!-- ============================================================
-         TAILWIND CDN ĐÃ BỊ XÓA — thay bằng utility CSS viết tay
-         trong <style> bên dưới (production-safe, không cần JS runtime)
+         CDN: TAILWIND — darkMode:'class' để toggle bằng JS
     ============================================================ -->
+    <script>
+        /* Khai báo config TRƯỚC khi load Tailwind CDN */
+        window.tailwind = window.tailwind || {};
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { brand: { DEFAULT:'#10b981', dark:'#059669', deeper:'#064e3b' } } } }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- ============================================================
          CDN: FONTS
@@ -190,109 +198,6 @@
         *, *::before, *::after { box-sizing: border-box; }
         * { -webkit-tap-highlight-color: transparent; }
 
-        /* ============================================================
-           UTILITY CLASSES — thay thế Tailwind CDN (production-safe)
-           Bao phủ toàn bộ class Tailwind thực sự dùng trong index.html
-        ============================================================ */
-        .flex            { display: flex; }
-        .inline-flex     { display: inline-flex; }
-        .grid             { display: grid; }
-        .grid-cols-2      { grid-template-columns: repeat(2,minmax(0,1fr)); }
-        .grid-cols-3      { grid-template-columns: repeat(3,minmax(0,1fr)); }
-        .flex-col        { flex-direction: column; }
-        .flex-wrap       { flex-wrap: wrap; }
-        .flex-shrink-0   { flex-shrink: 0; }
-        .flex-grow       { flex-grow: 1; }
-        .items-center    { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-center  { justify-content: center; }
-        .sticky           { position: sticky; }
-        .top-0            { top: 0; }
-        .hidden           { display: none; }
-        .uppercase        { text-transform: uppercase; }
-        .italic           { font-style: italic; }
-        .tracking-tight   { letter-spacing: -.025em; }
-        .tracking-wide    { letter-spacing: .025em; }
-        .tracking-wider   { letter-spacing: .05em; }
-        .tracking-\[3px\] { letter-spacing: 3px; }
-        .leading-tight    { line-height: 1.25; }
-        .font-semibold    { font-weight: 600; }
-        .font-bold        { font-weight: 700; }
-        .font-black       { font-weight: 900; }
-        .rounded-full     { border-radius: 9999px; }
-        .rounded-lg       { border-radius: .5rem; }
-        .rounded-xl       { border-radius: .75rem; }
-        .rounded-2xl      { border-radius: 1rem; }
-        .border           { border-width: 1px; border-style: solid; }
-        .border-2         { border-width: 2px; border-style: solid; }
-        .border-l-4       { border-left-width: 4px; border-left-style: solid; }
-        .border-blue-500    { border-color: #3b82f6; }
-        .border-emerald-500 { border-color: #10b981; }
-        .shadow-lg        { box-shadow: 0 10px 24px rgba(0,0,0,.12); }
-        .object-contain   { object-fit: contain; }
-        .overflow-x-auto  { overflow-x: auto; }
-        .scroll-smooth    { scroll-behavior: smooth; }
-        .text-center      { text-align: center; }
-        .text-base        { font-size: 1rem; }
-        .text-lg           { font-size: 1.125rem; }
-        .text-sm           { font-size: .875rem; }
-        .text-\[8px\]  { font-size: 8px; }
-        .text-\[9px\]  { font-size: 9px; }
-        .text-\[10px\] { font-size: 10px; }
-        .text-\[11px\] { font-size: 11px; }
-        .text-\[12px\] { font-size: 12px; }
-        .text-\[13px\] { font-size: 13px; }
-        .text-amber-500   { color: #f59e0b; }
-        .text-blue-500    { color: #3b82f6; }
-        .text-purple-500  { color: #a855f7; }
-        .text-emerald-400 { color: #34d399; }
-        .text-emerald-500 { color: #10b981; }
-        .hover\:text-blue-500:hover { color: #3b82f6; }
-        .hover\:text-sky-400:hover  { color: #38bdf8; }
-        .transition-colors { transition: color .15s ease, background-color .15s ease, border-color .15s ease; }
-        .animate-spin { animation: txSpin 1s linear infinite; }
-        @keyframes txSpin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
-        .z-\[100\] { z-index: 100; }
-        .gap-1\.5 { gap: .375rem; }
-        .gap-2    { gap: .5rem; }
-        .gap-2\.5 { gap: .625rem; }
-        .gap-3    { gap: .75rem; }
-        .ml-1     { margin-left: .25rem; }
-        .ml-auto  { margin-left: auto; }
-        .mt-2\.5  { margin-top: .625rem; }
-        .mt-4     { margin-top: 1rem; }
-        .mt-auto  { margin-top: auto; }
-        .mb-3     { margin-bottom: .75rem; }
-        .mb-4     { margin-bottom: 1rem; }
-        .mb-5     { margin-bottom: 1.25rem; }
-        .mx-4     { margin-left: 1rem; margin-right: 1rem; }
-        .px-2\.5  { padding-left: .625rem; padding-right: .625rem; }
-        .px-4     { padding-left: 1rem; padding-right: 1rem; }
-        .px-5     { padding-left: 1.25rem; padding-right: 1.25rem; }
-        .py-1     { padding-top: .25rem; padding-bottom: .25rem; }
-        .py-2\.5  { padding-top: .625rem; padding-bottom: .625rem; }
-        .py-5     { padding-top: 1.25rem; padding-bottom: 1.25rem; }
-        .py-8     { padding-top: 2rem; padding-bottom: 2rem; }
-        .pb-0\.5  { padding-bottom: .125rem; }
-        .pb-1     { padding-bottom: .25rem; }
-        .pb-3     { padding-bottom: .75rem; }
-        .pb-8     { padding-bottom: 2rem; }
-        .pt-3     { padding-top: .75rem; }
-        .pt-5     { padding-top: 1.25rem; }
-        .w-5  { width: 1.25rem; }
-        .w-6  { width: 1.5rem; }
-        .w-7  { width: 1.75rem; }
-        .w-9  { width: 2.25rem; }
-        .w-11 { width: 2.75rem; }
-        .h-5  { height: 1.25rem; }
-        .h-6  { height: 1.5rem; }
-        .h-7  { height: 1.75rem; }
-        .h-9  { height: 2.25rem; }
-        .h-11 { height: 2.75rem; }
-        @media (min-width: 640px) {
-            .sm\:flex-row { flex-direction: row; }
-        }
-
         body {
             background: var(--bg);
             color: var(--text);
@@ -301,7 +206,6 @@
             max-width: 415px;
             margin: 0 auto;
             min-height: 100vh;
-            min-height: 100dvh;
             transition: background .25s, color .25s;
             position: relative;
             overflow-x: hidden;
