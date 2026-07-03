@@ -1,0 +1,9 @@
+{
+  "name": "trexanh-tnvn",
+  "version": "2.4.0",
+  "private": true,
+  "dependencies": {
+    "@vercel/og": "latest",
+    "@vercel/kv": "latest"
+  }
+}

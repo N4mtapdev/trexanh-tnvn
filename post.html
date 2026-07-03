@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đang tải bài viết... | TreXanh</title>
+    <meta name="description" content="Đọc bài viết chi tiết trên TreXanh TNVN.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#10b981">
+    <link rel="canonical" href="https://trexanh-tnvn.vercel.app/post.html" id="meta-canonical">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://trexanh-tnvn.vercel.app/post.html">
+    <meta property="og:title" content="Bài viết | TreXanh">
+    <meta property="og:description" content="Đọc bài viết trên TreXanh TNVN.">
+    <meta property="og:image" content="https://trexanh-tnvn.vercel.app/assets/images/og-image.png">
+    <meta property="og:locale" content="vi_VN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bài viết | TreXanh">
+    <meta name="twitter:image" content="https://trexanh-tnvn.vercel.app/assets/images/og-image.png">
+    <script type="application/ld+json" id="schema-article">
+    {"@context":"https://schema.org","@type":"Article","headline":"Bài viết TreXanh","author":{"@type":"Organization","name":"TreXanh Developer"},"publisher":{"@type":"Organization","name":"TreXanh Developer","logo":{"@type":"ImageObject","url":"https://trexanh-tnvn.vercel.app/assets/images/logo.png"}},"inLanguage":"vi-VN"}
+    </script>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="apple-touch-icon" href="assets/images/logo.png">
+</head>
+<body>
+
+<div id="page-content" role="main">
+    <div style="padding:16px">
+
+        <!-- SKELETON -->
+        <div id="post-skeleton">
+            <div class="tx-sk" style="height:190px;border-radius:16px;margin-bottom:16px"></div>
+            <div class="tx-sk" style="height:10px;width:40%;margin-bottom:10px"></div>
+            <div class="tx-sk" style="height:22px;width:95%;margin-bottom:6px"></div>
+            <div class="tx-sk" style="height:22px;width:80%;margin-bottom:16px"></div>
+            <div class="tx-sk" style="height:12px;width:100%;margin-bottom:8px"></div>
+            <div class="tx-sk" style="height:12px;width:90%;margin-bottom:8px"></div>
+            <div class="tx-sk" style="height:12px;width:85%;margin-bottom:8px"></div>
+            <div class="tx-sk" style="height:12px;width:92%;margin-bottom:24px"></div>
+        </div>
+
+        <!-- NỘI DUNG BÀI VIẾT -->
+        <article id="post-body" style="display:none" class="animate__animated animate__fadeIn">
+
+            <!-- Thumb -->
+            <div id="post-thumb-wrap" style="border-radius:16px;overflow:hidden;margin-bottom:16px;border:1.5px solid var(--border);display:none">
+                <img id="post-thumb" src="" alt="" style="width:100%;max-height:200px;object-fit:cover;display:block">
+            </div>
+
+            <!-- Badge row -->
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                <span id="post-cat-badge" class="post-inline-badge"></span>
+                <span id="post-featured-badge" style="display:none;padding:3px 9px;border-radius:8px;
+                      background:rgba(245,158,11,.12);color:#d97706;font-size:9px;font-weight:800;text-transform:uppercase">
+                    <i class="bi bi-star-fill" style="font-size:8px"></i> Nổi bật
+                </span>
+            </div>
+
+            <!-- Title -->
+            <h1 id="post-title" style="font-size:19px;font-weight:900;color:var(--text);margin:0 0 10px;line-height:1.38"></h1>
+
+            <!-- Meta -->
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+                <span id="post-author" style="font-size:10px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:4px"></span>
+                <span style="width:3px;height:3px;border-radius:50%;background:var(--border)"></span>
+                <span id="post-date"   style="font-size:10px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:4px"></span>
+                <span style="width:3px;height:3px;border-radius:50%;background:var(--border)"></span>
+                <span id="post-time"   style="font-size:10px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:4px"></span>
+            </div>
+
+            <!-- Content -->
+            <div id="post-content" class="post-content-body"></div>
+
+            <!-- Tags -->
+            <div id="post-tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)"></div>
+
+            <!-- Share -->
+            <div style="margin-top:18px;padding:16px;border-radius:16px;
+                        background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(16,185,129,.02));
+                        border:1.5px solid rgba(16,185,129,.15)">
+                <p style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--muted);margin-bottom:10px;letter-spacing:.5px">
+                    <i class="bi bi-share-fill" style="color:#10b981"></i> Chia sẻ bài viết
+                </p>
+                <div style="display:flex;gap:8px">
+                    <button onclick="sharePost('copy')"
+                            style="flex:1;padding:9px 12px;border-radius:12px;background:var(--bg2);
+                                   border:1.5px solid var(--border);font-size:11px;font-weight:700;
+                                   color:var(--muted);cursor:pointer;display:flex;align-items:center;
+                                   justify-content:center;gap:5px">
+                        <i class="bi bi-link-45deg" style="color:#10b981"></i> Copy link
+                    </button>
+                    <button onclick="sharePost('native')"
+                            style="flex:1;padding:9px 12px;border-radius:12px;
+                                   background:linear-gradient(135deg,#10b981,#059669);
+                                   border:none;font-size:11px;font-weight:700;color:white;
+                                   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">
+                        <i class="bi bi-send-fill"></i> Chia sẻ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Related -->
+            <div style="margin-top:22px">
+                <div class="tx-sec-head">
+                    <span class="tx-sec-title"><i class="bi bi-grid-1x2-fill" style="color:#10b981"></i> Bài viết liên quan</span>
+                    <div class="tx-sec-line"></div>
+                </div>
+                <div id="related-posts" style="display:flex;flex-direction:column;gap:10px"></div>
+            </div>
+
+            <!-- Back -->
+            <div style="margin-top:20px;text-align:center">
+                <a href="blog.html" style="display:inline-flex;align-items:center;gap:6px;padding:10px 22px;
+                          border-radius:12px;background:var(--bg2);border:1.5px solid var(--border);
+                          font-size:11px;font-weight:800;color:var(--muted);text-decoration:none">
+                    <i class="bi bi-arrow-left"></i> Về danh sách Blog
+                </a>
+            </div>
+        </article>
+
+        <!-- NOT FOUND -->
+        <div id="post-notfound" style="display:none;text-align:center;padding:60px 0">
+            <div style="width:60px;height:60px;border-radius:18px;background:var(--bg);
+                        display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+                        border:1.5px solid var(--border)">
+                <i class="bi bi-file-earmark-x" style="font-size:24px;color:var(--muted)"></i>
+            </div>
+            <p style="font-size:14px;font-weight:800;color:var(--muted);margin-bottom:4px">Không tìm thấy bài viết</p>
+            <p style="font-size:11px;color:var(--muted);margin-bottom:18px;opacity:.65">Bài viết không tồn tại hoặc đã bị xóa</p>
+            <a href="blog.html" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;
+                      background:#10b981;color:white;border:none;border-radius:12px;
+                      font-size:11px;font-weight:800;text-decoration:none">
+                <i class="bi bi-arrow-left"></i> Về trang Blog
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/base.js"></script>
+
+<style>
+    .post-inline-badge {
+        display:inline-flex; align-items:center; gap:4px;
+        font-size:9px; font-weight:800; text-transform:uppercase;
+        padding:3px 9px; border-radius:8px; letter-spacing:.3px;
+    }
+    .post-content-body { font-size:13px; line-height:1.8; color:var(--text); }
+    .post-content-body h2 {
+        font-size:16px; font-weight:900; margin:20px 0 10px; color:var(--text);
+        padding-bottom:6px; border-bottom:2px solid var(--border);
+        display:flex; align-items:center; gap:7px;
+    }
+    .post-content-body h2::before {
+        content:''; display:inline-block; width:4px; height:18px; border-radius:2px;
+        background:linear-gradient(180deg,#10b981,#059669); flex-shrink:0;
+    }
+    .post-content-body h3 { font-size:14px; font-weight:800; margin:16px 0 8px; color:var(--text); }
+    .post-content-body p { margin:0 0 12px; text-align:justify; }
+    .post-content-body ul, .post-content-body ol { margin:0 0 12px; padding-left:20px; }
+    .post-content-body li { margin-bottom:5px; }
+    .post-content-body strong { color:var(--brand-dk); font-weight:800; }
+    .post-content-body em { color:var(--muted); }
+    .post-content-body figure { margin:14px 0; }
+    .post-content-body figure img { width:100%; border-radius:12px; display:block; }
+    .post-content-body figcaption { font-size:10px; color:var(--muted); text-align:center; margin-top:6px; font-style:italic; }
+    .post-content-body blockquote {
+        margin:14px 0; padding:12px 16px;
+        background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(16,185,129,.02));
+        border-left:3px solid #10b981; border-radius:0 12px 12px 0;
+        font-style:italic; color:var(--muted);
+    }
+    .post-content-body .highlight-box {
+        background:rgba(16,185,129,.07); border:1.5px solid rgba(16,185,129,.15);
+        border-radius:14px; padding:14px; margin:14px 0;
+    }
+    .post-content-body .info-box {
+        background:rgba(59,130,246,.07); border:1.5px solid rgba(59,130,246,.15);
+        border-radius:14px; padding:14px; margin:14px 0; font-size:12px;
+    }
+    .related-card {
+        display:flex; align-items:center; gap:10px;
+        background:var(--bg2); border:1.5px solid var(--border);
+        border-radius:14px; padding:10px 12px;
+        text-decoration:none; color:var(--text); transition:all .18s;
+    }
+    .related-card:hover {
+        border-color:rgba(16,185,129,.4);
+        box-shadow:0 4px 16px var(--brand-glow);
+        transform:translateX(3px);
+    }
+</style>
+
+<script>
+/* ============================================================
+   Toàn bộ logic chạy sau khi trang load xong (window load)
+   → đảm bảo base.js đã inject nav/footer và CDN sẵn sàng
+   → KHÔNG dùng fetch (hoạt động cả local lẫn Vercel)
+============================================================ */
+window.addEventListener('load', function() {
+
+var CAT_COLORS = {
+    emerald: { bg:'rgba(16,185,129,.1)', text:'#059669' },
+    blue:    { bg:'rgba(59,130,246,.1)', text:'#2563eb' },
+    amber:   { bg:'rgba(245,158,11,.1)', text:'#d97706' },
+    purple:  { bg:'rgba(139,92,246,.1)', text:'#7c3aed' },
+};
+
+/* ============================================================
+   POSTS_DB - Toàn bộ dữ liệu inline, không cần fetch
+   → Thêm bài mới: copy 1 object, đổi slug/title/content
+============================================================ */
+var POSTS_DB = [
+    {
+        slug:     'ly-luan-chinh-tri-la-gi',
+        title:    'Lý luận chính trị là gì? Tầm quan trọng với thanh niên',
+        excerpt:  'Lý luận chính trị là hệ thống những quan điểm, tư tưởng về chính trị được đúc kết từ thực tiễn lịch sử...',
+        category: 'chinhTri', catLabel: 'Chính trị', catColor: 'emerald',
+        author: 'TreXanh Team', date: '2026-05-05', readTime: '4 phút đọc',
+        thumb: 'assets/images/slider1.jpg',
+        tags: ['chính trị','lý luận','TNVN'], featured: true,
+        content: `
+            <h2>Lý luận chính trị là gì?</h2>
+            <p><strong>Lý luận chính trị</strong> là hệ thống những quan điểm, tư tưởng khoa học về chính trị,
+            được hình thành trên cơ sở tổng kết thực tiễn lịch sử và đấu tranh giai cấp.</p>
+            <div class="highlight-box">
+                <strong>Định nghĩa cốt lõi:</strong>
+                <p style="margin:6px 0 0">Lý luận chính trị là kim chỉ nam, là vũ khí tư tưởng của giai cấp cách mạng
+                trong cuộc đấu tranh vì mục tiêu dân giàu, nước mạnh, dân chủ, công bằng, văn minh.</p>
+            </div>
+            <h2>Tầm quan trọng với thanh niên</h2>
+            <ul>
+                <li><strong>Xây dựng bản lĩnh chính trị vững vàng</strong> trước các luận điệu xuyên tạc.</li>
+                <li><strong>Định hướng hành động</strong> đúng đắn trong công tác và cuộc sống.</li>
+                <li><strong>Góp phần bảo vệ nền tảng tư tưởng</strong> của Đảng Cộng sản Việt Nam.</li>
+                <li><strong>Phát huy vai trò xung kích</strong> trong công cuộc xây dựng và bảo vệ Tổ quốc.</li>
+            </ul>
+            <blockquote>"Không có lý luận cách mạng thì không có phong trào cách mạng." — V.I. Lênin</blockquote>
+            <div class="info-box">
+                <strong>Ghi chú:</strong> Tra cứu câu hỏi về lý luận chính trị tại
+                <a href="index.html" style="color:#059669;font-weight:800">TreXanh Tra Cứu</a>.
+            </div>`
+    },
+    {
+        slug:     'ha-huy-tap-tong-bi-thu',
+        title:    'Tổng Bí thư Hà Huy Tập — Người chiến sĩ cộng sản kiên trung',
+        excerpt:  'Hà Huy Tập (1906–1941) là Tổng Bí thư thứ ba của Đảng Cộng sản Đông Dương...',
+        category: 'lichSu', catLabel: 'Lịch sử', catColor: 'blue',
+        author: 'TreXanh Team', date: '2026-05-03', readTime: '6 phút đọc',
+        thumb: 'assets/images/slider2.jpg',
+        tags: ['Hà Huy Tập','lịch sử','TBT'], featured: true,
+        content: `
+            <h2>Tiểu sử</h2>
+            <p><strong>Hà Huy Tập</strong> (1906–1941), quê ở xã Cẩm Hưng, huyện Cẩm Xuyên, tỉnh Hà Tĩnh.
+            Ông là Tổng Bí thư thứ ba của Đảng Cộng sản Đông Dương (3/1936–3/1938).</p>
+            <div class="highlight-box">
+                <strong>Thông tin cơ bản:</strong>
+                <ul style="margin:8px 0 0;padding-left:16px;font-size:12px">
+                    <li>Sinh: 1906 tại Hà Tĩnh</li>
+                    <li>Mất: 28/8/1941 (bị thực dân Pháp xử bắn)</li>
+                    <li>Chức vụ: Tổng Bí thư Đảng CSĐD (1936–1938)</li>
+                </ul>
+            </div>
+            <h2>Sự nghiệp cách mạng</h2>
+            <ul>
+                <li>Lãnh đạo phong trào <strong>Mặt trận Dân chủ Đông Dương</strong> (1936–1939)</li>
+                <li>Đấu tranh đòi quyền tự do dân chủ, cải thiện đời sống nhân dân</li>
+                <li>Viết nhiều tác phẩm lý luận có giá trị về cách mạng Việt Nam</li>
+            </ul>
+            <blockquote>"Tôi chưa làm được gì cho Đảng và cho dân tộc. Khi tôi chết,
+            mong các đồng chí tiếp tục sự nghiệp." — Hà Huy Tập</blockquote>
+            <div class="info-box">
+                <strong>Tra cứu thêm:</strong> Xem câu hỏi về TBT Hà Huy Tập tại
+                <a href="index.html" style="color:#059669;font-weight:800">TreXanh Tra Cứu</a>.
+            </div>`
+    },
+    {
+        slug:     'giao-duc-lam-cha-me-nhom-gia-dinh-co-nguy-co-bao-hanh-tre',
+        title:    'Giáo dục làm cha mẹ với nhóm gia đình có nguy cơ bạo hành trẻ',
+        excerpt:  'Trước những vụ việc nghiêm trọng xảy ra thời gian gần đây, đây là hồi chuông cảnh báo đối với toàn xã hội về trách nhiệm bảo vệ trẻ em.',
+        category: 'hoatDong', catLabel: 'Hoạt động', catColor: 'emerald',
+        author: 'Theo TPO', date: '2026-05-08', readTime: '5 phút đọc',
+        thumb: null,
+        tags: ['bảo vệ trẻ em','bạo hành','TNVN'], featured: true,
+        content: `
+            <h2>Nhận diện nguy cơ bị bạo lực, xâm hại từ sớm</h2>
+            <p>Trước những vụ việc nghiêm trọng xảy ra thời gian gần đây, đồng chí
+            <strong>Lê Hải Long</strong> - Phó Chủ tịch thường trực Hội đồng Đội Trung ương
+            cho rằng, đây là hồi chuông cảnh báo đối với toàn xã hội về trách nhiệm bảo vệ trẻ em.</p>
+            <blockquote>"Điều đau lòng là nhiều vụ việc xảy ra ngay trong chính gia đình, nơi lẽ ra phải là
+            vòng tay bảo vệ đầu tiên của trẻ. Khi người lớn mất kiểm soát cảm xúc, thiếu hiểu biết hoặc
+            xem bạo lực là cách dạy dỗ, trẻ em chính là người chịu tổn thương nặng nề nhất."
+            <cite>— Đồng chí Lê Hải Long</cite></blockquote>
+            <div class="highlight-box">
+                <strong>Dấu hiệu nhận biết trẻ bị bạo hành:</strong>
+                <ul style="margin:8px 0 0">
+                    <li>Thường xuyên có vết thương tích không rõ nguyên nhân</li>
+                    <li>Tỏ ra hoảng sợ, lo lắng quá mức</li>
+                    <li>Ít giao tiếp, thu mình, xa lánh bạn bè</li>
+                    <li>Nghỉ học nhiều ngày liên tiếp bất thường</li>
+                    <li>Có biểu hiện bị kiểm soát, cô lập</li>
+                </ul>
+            </div>
+            <div class="info-box">
+                <strong>Đường dây hỗ trợ:</strong>
+                <p style="margin:6px 0 0;font-size:13px">
+                    <strong style="font-size:16px;color:#3b82f6">111</strong> —
+                    Tổng đài bảo vệ trẻ em, miễn phí 24/7
+                </p>
+            </div>
+            <h2>Giáo dục làm cha mẹ với nhóm gia đình có nguy cơ bạo hành trẻ</h2>
+            <p>Công tác bảo vệ trẻ em không thể chỉ dừng ở xử lý hậu quả sau mỗi vụ việc đau lòng,
+            mà cần chú trọng hơn đến <strong>giáo dục làm cha mẹ</strong> và phòng ngừa nguy cơ từ sớm.</p>
+            <div class="highlight-box">
+                <strong>Nhóm gia đình có nguy cơ cao cần được quan tâm:</strong>
+                <ul style="margin:8px 0 0">
+                    <li>Gia đình có hoàn cảnh khó khăn về kinh tế</li>
+                    <li>Gia đình tái hôn, cha dượng/mẹ kế</li>
+                    <li>Cha mẹ trẻ, thiếu kinh nghiệm nuôi dạy con</li>
+                    <li>Gia đình có mâu thuẫn kéo dài</li>
+                    <li>Người chăm sóc trẻ có dấu hiệu bất ổn tâm lý</li>
+                </ul>
+            </div>
+            <p>Người lớn cần được trang bị kiến thức về quyền trẻ em, phương pháp nuôi dạy con tích cực,
+            kỹ năng lắng nghe, đối thoại với trẻ, kiểm soát nóng giận và tìm kiếm sự hỗ trợ khi cần.</p>
+            <blockquote>"Không thể để trẻ em phải cất tiếng kêu cứu ngay trong chính mái ấm của mình."
+            <cite>— Đồng chí Lê Hải Long</cite></blockquote>
+            <div class="info-box">
+                <strong>Thống kê Tổng đài 111 (tháng 4/2026):</strong>
+                <ul style="margin:8px 0 0;font-size:12px">
+                    <li>Tổng số cuộc gọi: <strong>46.111 cuộc</strong> (tăng 9.519 so với tháng 3)</li>
+                    <li>Hỗ trợ, can thiệp: <strong>181 trường hợp</strong></li>
+                    <li>Trẻ bị tổn hại do bạo lực: <strong>101 em (56%)</strong></li>
+                    <li>Tập trung tại: Hà Nội, TP HCM, Hưng Yên</li>
+                </ul>
+            </div>`
+    }
+    /* ── THÊM BÀI MỚI VÀO ĐÂY ── */
+];
+
+/* Khởi tạo base shell */
+TreXanh.init({ page: 'post' });
+
+/* Lấy slug từ URL */
+var slug = new URLSearchParams(location.search).get('slug') || '';
+
+/* Tìm bài theo slug — hoàn toàn offline, không fetch */
+var post = POSTS_DB.find(function(p) { return p.slug === slug; });
+
+if (!post) {
+    document.getElementById('post-skeleton').style.display = 'none';
+    document.getElementById('post-notfound').style.display = 'block';
+} else {
+    renderPost(post);
+}
+
+
+function renderPost(p) {
+    var col = CAT_COLORS[p.catColor] || CAT_COLORS.emerald;
+
+    /* Cập nhật SEO meta động */
+    TreXanh.setMeta({
+        title:       p.title,
+        description: p.excerpt,
+        image:       p.thumb ? 'https://trexanh-tnvn.vercel.app/' + p.thumb : undefined,
+        url:         'https://trexanh-tnvn.vercel.app/post.html?slug=' + p.slug
+    });
+
+    /* Breadcrumb title */
+    var bc = document.getElementById('tx-bc-title');
+    if (bc) bc.textContent = p.title.substring(0, 28) + (p.title.length > 28 ? '…' : '');
+
+    /* Schema Article */
+    var schema = document.getElementById('schema-article');
+    if (schema) {
+        schema.textContent = JSON.stringify({
+            '@context':'https://schema.org', '@type':'Article',
+            'headline': p.title, 'description': p.excerpt,
+            'author':{'@type':'Person','name':p.author},
+            'datePublished': p.date,
+            'publisher':{'@type':'Organization','name':'TreXanh Developer','logo':{'@type':'ImageObject','url':'https://trexanh-tnvn.vercel.app/assets/images/logo.png'}},
+            'inLanguage':'vi-VN',
+            'image': p.thumb ? 'https://trexanh-tnvn.vercel.app/' + p.thumb : undefined
+        });
+    }
+
+    /* Thumb */
+    if (p.thumb) {
+        document.getElementById('post-thumb-wrap').style.display = 'block';
+        document.getElementById('post-thumb').src = p.thumb;
+        document.getElementById('post-thumb').alt = p.title;
+    }
+
+    /* Category badge */
+    var cb = document.getElementById('post-cat-badge');
+    cb.textContent         = p.catLabel;
+    cb.style.background    = col.bg;
+    cb.style.color         = col.text;
+
+    /* Featured */
+    if (p.featured) document.getElementById('post-featured-badge').style.display = 'inline-flex';
+
+    /* Title */
+    document.getElementById('post-title').textContent = p.title;
+
+    /* Meta */
+    document.getElementById('post-author').innerHTML =
+        '<i class="bi bi-person-circle" style="color:#10b981"></i> ' + p.author;
+    document.getElementById('post-date').innerHTML =
+        '<i class="bi bi-calendar3" style="color:#3b82f6"></i> ' + TreXanh.relativeTime(p.date);
+    document.getElementById('post-time').innerHTML =
+        '<i class="bi bi-clock" style="color:#8b5cf6"></i> ' + p.readTime;
+
+    /* Content */
+    document.getElementById('post-content').innerHTML = p.content || '';
+
+    /* Tags */
+    document.getElementById('post-tags').innerHTML = (p.tags || []).map(function(t) {
+        return '<span style="font-size:10px;font-weight:700;padding:4px 10px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border);color:var(--muted)"><i class="bi bi-hash" style="font-size:9px"></i>' + t + '</span>';
+    }).join('');
+
+    /* Related posts — lấy từ POSTS_DB, bỏ bài hiện tại */
+    var related = POSTS_DB.filter(function(x) { return x.slug !== p.slug; }).slice(0, 3);
+    document.getElementById('related-posts').innerHTML = related.map(function(r) {
+        var rc = CAT_COLORS[r.catColor] || CAT_COLORS.emerald;
+        return '<a href="post.html?slug=' + r.slug + '" class="related-card">' +
+            '<div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:' + rc.bg + '">' +
+                '<i class="bi bi-file-earmark-text-fill" style="font-size:16px;color:' + rc.text + '"></i>' +
+            '</div>' +
+            '<div style="flex:1;min-width:0">' +
+                '<p style="font-size:11px;font-weight:800;color:var(--text);margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + r.title + '</p>' +
+                '<p style="font-size:9px;font-weight:700;color:var(--muted);margin:0;display:flex;align-items:center;gap:5px"><span style="color:' + rc.text + '">' + r.catLabel + '</span><span>·</span>' + r.readTime + '</p>' +
+            '</div>' +
+            '<i class="bi bi-chevron-right" style="color:var(--muted);font-size:12px;flex-shrink:0"></i>' +
+        '</a>';
+    }).join('');
+
+    /* Ẩn skeleton, hiện bài */
+    document.getElementById('post-skeleton').style.display = 'none';
+    document.getElementById('post-body').style.display     = 'block';
+}
+
+
+function sharePost(type) {
+    var url   = location.href;
+    var title = document.title;
+    if (type === 'copy') {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(url).then(function() {
+                TreXanh.toast('success', '✅ Đã copy link bài viết!');
+            }).catch(function() {
+                TreXanh.toast('error', 'Không thể copy');
+            });
+        }
+    }
+    if (type === 'native') {
+        if (navigator.share) {
+            navigator.share({ title: title, url: url }).catch(function() {});
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(url);
+            TreXanh.toast('info', '📋 Đã copy link để chia sẻ');
+        }
+    }
+}
+
+}); // end window.addEventListener('load')
+</script>
+</body>
+</html>

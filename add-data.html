@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Data · TreXanh</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        (function() {
+            const s = localStorage.getItem('theme');
+            const d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (s === 'dark' || (!s && d)) document.documentElement.classList.add('dark');
+        })();
+    </script>
+    <style>
+        :root {
+            --brand:      #10b981;
+            --brand-dk:   #059669;
+            --brand-soft: rgba(16,185,129,.08);
+            --bg:         #f0fdf4;
+            --bg2:        #ffffff;
+            --text:       #0f172a;
+            --muted:      #64748b;
+            --border:     #d1fae5;
+            --fs:         14px;
+        }
+        .dark {
+            --bg:     #060d18;
+            --bg2:    #0c1a2e;
+            --text:   #ecfdf5;
+            --muted:  #6b7280;
+            --border: rgba(16,185,129,.13);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: var(--fs);
+            background: var(--bg); color: var(--text);
+            min-height: 100dvh; transition: background .2s, color .2s;
+        }
+
+        /* ── Header — giống index.html ── */
+        header {
+            background: var(--bg2);
+            border-bottom: 1.5px solid var(--border);
+            padding: 0 16px;
+            height: 58px;
+            display: flex; align-items: center; gap: 10px;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 12px rgba(16,185,129,.06);
+        }
+        .hdr-logo {
+            width: 36px; height: 36px; border-radius: 12px;
+            background: linear-gradient(135deg,#10b981,#059669);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(16,185,129,.3);
+        }
+        .hdr-btn {
+            width: 34px; height: 34px; border-radius: 11px;
+            background: var(--bg); border: 1.5px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 13px; color: var(--muted);
+            transition: all .18s; text-decoration: none;
+        }
+        .hdr-btn:hover { border-color: var(--brand); color: var(--brand); }
+
+        /* ── Layout ── */
+        .wrap { max-width: 480px; margin: 0 auto; padding: 18px 16px 80px; }
+
+        /* ── Tab bar — giống filter-tab style của index ── */
+        .tab-bar {
+            display: flex; gap: 6px; margin-bottom: 18px;
+            background: var(--bg2); border: 1.5px solid var(--border);
+            border-radius: 16px; padding: 4px;
+        }
+        .tab-btn {
+            flex: 1; padding: 9px 6px; border-radius: 12px; border: none;
+            cursor: pointer; font-size: 11px; font-weight: 800;
+            color: var(--muted); background: transparent;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all .18s;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg,#10b981,#059669);
+            color: white;
+            box-shadow: 0 2px 10px rgba(16,185,129,.35);
+        }
+        .tab-count {
+            font-size: 9px; font-weight: 900; padding: 1px 6px;
+            border-radius: 6px; background: rgba(255,255,255,.22);
+        }
+
+        /* ── Card — giống answer-card của index ── */
+        .card {
+            background: var(--bg2);
+            border: 1.5px solid var(--border);
+            border-radius: 20px; padding: 16px; margin-bottom: 14px;
+            transition: box-shadow .2s;
+        }
+
+        /* ── Section title ── */
+        .sec-title {
+            font-size: 9px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--muted);
+            display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
+        }
+
+        /* ── Form controls ── */
+        label {
+            font-size: 9px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: .6px; color: var(--muted);
+            display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
+        }
+        textarea, select, input[type=text], input[type=password] {
+            width: 100%; background: var(--bg);
+            border: 1.5px solid var(--border); border-radius: 13px;
+            padding: 10px 13px; font-size: 13px; color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            resize: vertical; outline: none; transition: border-color .15s, box-shadow .15s;
+        }
+        textarea:focus, select:focus, input:focus {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(16,185,129,.12);
+        }
+        select { resize: none; cursor: pointer; }
+        .field-group { margin-bottom: 12px; }
+        .char-count { text-align: right; font-size: 9px; font-weight: 700; color: var(--muted); margin-top: 4px; }
+        .char-count.warn { color: #f59e0b; }
+        .char-count.over { color: #ef4444; }
+
+        /* ── Buttons ── */
+        .btn-primary {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg,#10b981,#059669);
+            color: white; border: none; border-radius: 14px;
+            font-size: 13px; font-weight: 900; cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: opacity .15s, transform .12s;
+            box-shadow: 0 4px 14px rgba(16,185,129,.3);
+        }
+        .btn-primary:active { transform: scale(.97); opacity: .9; }
+        .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-push {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg,#6366f1,#4f46e5);
+            color: white; border: none; border-radius: 14px;
+            font-size: 13px; font-weight: 900; cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: opacity .15s, transform .12s; margin-top: 10px;
+            box-shadow: 0 4px 14px rgba(99,102,241,.3);
+        }
+        .btn-push:active { transform: scale(.97); }
+        .btn-push:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-secondary {
+            padding: 9px 14px; border-radius: 12px;
+            background: var(--bg); border: 1.5px solid var(--border);
+            font-size: 11px; font-weight: 800; color: var(--muted);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+            transition: all .15s;
+        }
+        .btn-secondary:hover { border-color: var(--brand); color: var(--brand); }
+
+        .btn-danger {
+            padding: 9px 14px; border-radius: 12px;
+            background: rgba(239,68,68,.07); border: 1.5px solid rgba(239,68,68,.18);
+            font-size: 11px; font-weight: 800; color: #ef4444;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+        }
+
+        /* ── Preview card — giống answer-card ── */
+        .preview-card {
+            background: var(--bg); border: 1.5px solid var(--border);
+            border-radius: 16px; padding: 14px; position: relative; overflow: hidden;
+        }
+        .preview-card::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 3px; background: linear-gradient(180deg,#10b981,#059669);
+        }
+        .preview-q {
+            font-size: 13px; font-weight: 700; color: var(--text);
+            line-height: 1.6; margin-bottom: 8px; padding-left: 10px;
+        }
+        .preview-a-box {
+            background: rgba(16,185,129,.06);
+            border: 1px solid rgba(16,185,129,.18);
+            border-radius: 12px; padding: 10px 12px; margin-left: 10px;
+        }
+        .preview-a {
+            font-size: 13px; font-weight: 800; color: #059669;
+            font-style: italic; line-height: 1.6;
+        }
+        .dark .preview-a { color: #34d399; }
+
+        /* ── Queue item ── */
+        .queue-item {
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 16px; padding: 12px 40px 12px 14px;
+            margin-bottom: 8px; position: relative;
+            animation: fadeSlide .2s ease;
+        }
+        @keyframes fadeSlide { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
+        .queue-item-q { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .queue-item-a { font-size: 11px; font-weight: 700; color: #059669; font-style: italic; }
+        .dark .queue-item-a { color: #34d399; }
+        .queue-meta { font-size: 9px; color: var(--muted); margin-top: 5px; font-weight: 600; }
+        .queue-del {
+            position: absolute; top: 10px; right: 10px;
+            width: 24px; height: 24px; border-radius: 8px;
+            background: rgba(239,68,68,.08); border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: #ef4444; font-size: 11px; transition: background .15s;
+        }
+        .queue-del:hover { background: rgba(239,68,68,.18); }
+        .cat-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 9px; font-weight: 800; padding: 3px 8px;
+            border-radius: 7px; text-transform: uppercase; letter-spacing: .3px;
+        }
+        .cb-emerald { background: rgba(16,185,129,.1); color: #059669; }
+        .cb-blue    { background: rgba(59,130,246,.1); color: #2563eb; }
+        .cb-purple  { background: rgba(139,92,246,.1); color: #7c3aed; }
+        .cb-amber   { background: rgba(245,158,11,.1); color: #d97706; }
+        .dark .cb-emerald { color: #34d399; }
+        .dark .cb-blue    { color: #60a5fa; }
+        .dark .cb-purple  { color: #a78bfa; }
+        .dark .cb-amber   { color: #fbbf24; }
+
+        /* ── Token input ── */
+        .token-wrap { position: relative; }
+        .token-wrap input { padding-right: 40px; font-family: monospace; font-size: 12px; }
+        .token-eye {
+            position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: var(--muted); font-size: 14px;
+        }
+        .token-status {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 10px; font-weight: 700; margin-top: 5px;
+        }
+        .ts-ok   { color: #10b981; }
+        .ts-err  { color: #ef4444; }
+        .ts-idle { color: var(--muted); }
+
+        /* ── Push log ── */
+        .push-log {
+            background: #060d18; border-radius: 14px;
+            border: 1.5px solid rgba(16,185,129,.1);
+            padding: 14px; font-family: 'Courier New', monospace;
+            font-size: 11px; line-height: 1.9; color: #94a3b8;
+            max-height: 200px; overflow-y: auto; margin-top: 10px; display: none;
+        }
+        .log-ok   { color: #34d399; }
+        .log-err  { color: #f87171; }
+        .log-info { color: #7dd3fc; }
+        .log-warn { color: #fbbf24; }
+
+        /* ── Editor toolbar ── */
+        .editor-toolbar {
+            display: flex; gap: 5px; padding: 7px 10px;
+            background: var(--bg); border: 1.5px solid var(--border);
+            border-radius: 12px 12px 0 0; border-bottom: none;
+            flex-wrap: wrap;
+        }
+        .tb-btn {
+            padding: 4px 9px; border-radius: 7px; border: 1px solid var(--border);
+            background: var(--bg2); font-size: 11px; font-weight: 700;
+            color: var(--muted); cursor: pointer; transition: all .15s;
+            display: flex; align-items: center; gap: 4px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .tb-btn:hover { border-color: var(--brand); color: var(--brand); }
+        .tb-btn.active { background: var(--brand); color: white; border-color: var(--brand); }
+        .tb-sep { width: 1px; background: var(--border); margin: 3px 2px; }
+
+        /* ── Smart textarea (auto-resize) ── */
+        .smart-ta {
+            width: 100%; background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 0 0 12px 12px;
+            padding: 10px 13px; font-size: 13px; color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            resize: none; outline: none; transition: border-color .15s;
+            min-height: 72px; overflow-y: hidden; line-height: 1.6;
+        }
+        .smart-ta:focus {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(16,185,129,.12);
+        }
+
+        /* ── Editor sub-mode tabs ── */
+        .editor-mode-bar {
+            display: flex; gap: 6px; margin-bottom: 14px;
+        }
+        .mode-btn {
+            flex: 1; padding: 9px; border-radius: 12px; border: 1.5px solid var(--border);
+            background: var(--bg2); font-size: 11px; font-weight: 800; color: var(--muted);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: all .18s; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .mode-btn.active {
+            background: linear-gradient(135deg,#10b981,#059669);
+            color: white; border-color: transparent;
+            box-shadow: 0 3px 10px rgba(16,185,129,.3);
+        }
+
+        /* ── JSON editor list item ── */
+        .je-item {
+            background: var(--bg); border: 1.5px solid var(--border);
+            border-radius: 14px; padding: 12px 14px; margin-bottom: 8px;
+            transition: border-color .15s; position: relative;
+        }
+        .je-item:hover { border-color: rgba(16,185,129,.3); }
+        .je-item.editing {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(16,185,129,.1);
+        }
+        .je-q { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
+        .je-a { font-size: 11px; color: #059669; font-weight: 700; font-style: italic; line-height: 1.5; }
+        .dark .je-a { color: #34d399; }
+        .je-meta { font-size: 9px; color: var(--muted); margin-top:5px; font-weight: 600; }
+        .je-actions {
+            display: flex; gap: 6px; margin-top: 10px;
+        }
+        .je-btn {
+            padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer;
+            font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 4px;
+            font-family: 'Plus Jakarta Sans', sans-serif; transition: all .15s;
+        }
+        .je-btn-edit   { background: rgba(16,185,129,.1);  color: #059669; }
+        .je-btn-del    { background: rgba(239,68,68,.08);   color: #ef4444; }
+        .je-btn-save   { background: linear-gradient(135deg,#10b981,#059669); color:white; }
+        .je-btn-cancel { background: var(--bg2); color:var(--muted); border:1px solid var(--border); }
+
+        /* ── Inline edit area ── */
+        .je-edit-wrap { display: none; margin-top: 10px; }
+        .je-edit-wrap.open { display: block; }
+        .je-edit-label {
+            font-size: 9px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: .5px; color: var(--muted); margin-bottom: 4px;
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        /* ── Search/filter bar for editor ── */
+        .editor-search {
+            display: flex; gap: 8px; margin-bottom: 12px;
+        }
+        .editor-search input {
+            flex: 1; background: var(--bg); border: 1.5px solid var(--border);
+            border-radius: 12px; padding: 8px 12px; font-size: 12px;
+            color: var(--text); outline: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: border-color .15s;
+        }
+        .editor-search input:focus { border-color: var(--brand); }
+
+        /* ── Dirty indicator (unsaved changes) ── */
+        .dirty-badge {
+            display: none; font-size: 9px; font-weight: 800; padding: 2px 7px;
+            border-radius: 6px; background: rgba(245,158,11,.15); color: #d97706;
+            margin-left: 6px;
+        }
+        .dirty-badge.show { display: inline-flex; align-items: center; gap: 3px; }
+
+        /* ── Progress ── */
+        .prog-bar {
+            height: 3px; border-radius: 2px; background: var(--border);
+            overflow: hidden; margin-top: 8px; display: none;
+        }
+        .prog-fill {
+            height: 100%; background: linear-gradient(90deg,#10b981,#059669);
+            width: 0%; transition: width .3s ease; border-radius: 2px;
+        }
+
+        /* ── Toast ── */
+        #txToast {
+            position: fixed; bottom: 24px; left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            background: #0f172a; color: white; padding: 10px 18px;
+            border-radius: 14px; font-size: 12px; font-weight: 800;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            opacity: 0; pointer-events: none; transition: all .22s; z-index: 9999;
+            white-space: nowrap; display: flex; align-items: center; gap: 7px;
+            box-shadow: 0 8px 28px rgba(0,0,0,.35);
+        }
+        #txToast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center; padding: 28px 0;
+            font-size: 11px; color: var(--muted); font-weight: 600; line-height: 1.8;
+        }
+
+        /* ── Push summary box ── */
+        .push-summary {
+            background: var(--bg); border: 1.5px solid var(--border);
+            border-radius: 13px; padding: 12px; margin-bottom: 12px;
+            font-size: 11px; color: var(--muted); font-weight: 600; line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="hdr-logo">
+        <i class="bi bi-cloud-upload-fill" style="color:white;font-size:15px"></i>
+    </div>
+    <div style="flex:1;min-width:0">
+        <p style="font-size:13px;font-weight:900;color:var(--text)">Add Data</p>
+        <p style="font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.3px;text-transform:uppercase">TreXanh · GitHub Push</p>
+    </div>
+    <button class="hdr-btn" id="btnDark" title="Đổi giao diện">
+        <i class="bi bi-moon-stars-fill"></i>
+    </button>
+    <a href="index.html" class="hdr-btn" title="Về trang chủ">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+</header>
+
+<div id="txToast"></div>
+
+<div class="wrap">
+
+    <!-- Tabs -->
+    <div class="tab-bar" role="tablist">
+        <button class="tab-btn active" id="tabInput" role="tab" title="Nhập câu hỏi mới">
+            <i class="bi bi-pencil-fill"></i>
+        </button>
+        <button class="tab-btn" id="tabQueue" role="tab" title="Hàng chờ">
+            <i class="bi bi-list-check"></i>
+            <span class="tab-count" id="queueCount">0</span>
+        </button>
+        <button class="tab-btn" id="tabEditor" role="tab" title="Editor — sửa dữ liệu">
+            <i class="bi bi-pencil-square"></i>
+        </button>
+        <button class="tab-btn" id="tabCats" role="tab" title="Quản lý danh mục">
+            <i class="bi bi-folder-plus"></i>
+        </button>
+        <button class="tab-btn" id="tabPush" role="tab" title="Push lên GitHub">
+            <i class="bi bi-cloud-upload-fill"></i>
+        </button>
+        <button class="tab-btn" id="tabConfig" role="tab" title="Cấu hình">
+            <i class="bi bi-gear-fill"></i>
+        </button>
+    </div>
+
+    <!-- ══ TAB 1: NHẬP LIỆU ══ -->
+    <div id="panelInput">
+        <div class="card">
+            <p class="sec-title"><i class="bi bi-pencil-square" style="color:var(--brand)"></i> Câu hỏi mới</p>
+
+            <div class="field-group">
+                <label><i class="bi bi-collection-fill"></i> Danh mục</label>
+                <select id="selCategory"></select>
+            </div>
+
+            <!-- Field tuần — chỉ hiện khi category đang chọn có hasWeeks:true -->
+            <div class="field-group" id="weekFieldGroup" style="display:none">
+                <label><i class="bi bi-calendar-week-fill" style="color:#7c3aed"></i> Tuần</label>
+                <div style="display:flex;gap:8px">
+                    <input type="text" id="inputWeekNum" placeholder="Số tuần (vd: 1)"
+                        style="flex:0 0 110px" inputmode="numeric">
+                    <input type="text" id="inputWeekTitle" placeholder="Tiêu đề tuần (vd: Tìm hiểu lịch sử Đoàn)"
+                        style="flex:1">
+                </div>
+                <p style="font-size:9px;color:var(--muted);margin-top:5px;font-weight:600">
+                    <i class="bi bi-info-circle"></i> Nếu tuần này đã tồn tại trong hàng chờ, tiêu đề sẽ tự điền theo câu trước đó
+                </p>
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-question-circle-fill" style="color:#f59e0b"></i> Câu hỏi</label>
+                <div class="editor-toolbar" id="tbQ">
+                    <button class="tb-btn" data-target="txtQuestion" data-insert='""' title='Thêm ngoặc kép'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="txtQuestion" data-insert='…' title="Ellipsis">…</button>
+                    <button class="tb-btn" data-target="txtQuestion" data-insert='–' title="Gạch ngang">–</button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn" data-target="txtQuestion" data-clear="1" title="Xóa hết"><i class="bi bi-x-lg"></i></button>
+                    <button class="tb-btn" data-target="txtQuestion" data-copy="1" title="Copy nội dung"><i class="bi bi-clipboard"></i></button>
+                    <button class="tb-btn" data-target="txtQuestion" data-case="upper" title="IN HOA">AA</button>
+                    <button class="tb-btn" data-target="txtQuestion" data-case="title" title="Viết Hoa Đầu Câu">Aa</button>
+                </div>
+                <textarea class="smart-ta" id="txtQuestion" placeholder="Nhập câu hỏi... (Shift+Enter xuống dòng, Enter để thêm nhanh)"></textarea>
+                <div class="char-count" id="ccQ">0 ký tự</div>
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-lightbulb-fill" style="color:#10b981"></i> Đáp án</label>
+                <div class="editor-toolbar" id="tbA">
+                    <button class="tb-btn" data-target="txtAnswer" data-insert='""' title='Thêm ngoặc kép'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="txtAnswer" data-insert='…' title="Ellipsis">…</button>
+                    <button class="tb-btn" data-target="txtAnswer" data-insert=' – ' title="Gạch ngang"> – </button>
+                    <button class="tb-btn" data-target="txtAnswer" data-insert='Tất cả các đáp án trên.' title="Điền sẵn">Tất cả đáp án</button>
+                    <button class="tb-btn" data-target="txtAnswer" data-insert='Không có đáp án nào đúng.' title="Điền sẵn">Không đáp án</button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn" data-target="txtAnswer" data-clear="1" title="Xóa hết"><i class="bi bi-x-lg"></i></button>
+                    <button class="tb-btn" data-target="txtAnswer" data-copy="1" title="Copy"><i class="bi bi-clipboard"></i></button>
+                </div>
+                <textarea class="smart-ta" id="txtAnswer" placeholder="Nhập đáp án..."></textarea>
+                <div class="char-count" id="ccA">0 ký tự</div>
+            </div>
+
+            <button class="btn-primary" id="btnAdd">
+                <i class="bi bi-plus-circle-fill"></i> Thêm vào hàng chờ
+            </button>
+        </div>
+
+        <p class="sec-title"><i class="bi bi-eye-fill" style="color:#7c3aed"></i> Xem trước</p>
+        <div id="previewArea">
+            <div class="empty-state">
+                <i class="bi bi-card-text" style="font-size:26px;display:block;margin-bottom:8px;opacity:.25"></i>
+                Nhập để xem trước
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TAB MỚI: QUẢN LÝ DANH MỤC / TẠO JSON MỚI ══ -->
+    <div id="panelCats" style="display:none">
+
+        <div class="card">
+            <p class="sec-title"><i class="bi bi-folder-fill" style="color:var(--brand)"></i> Danh mục hiện có</p>
+            <div id="catList"></div>
+        </div>
+
+        <div class="card">
+            <p class="sec-title"><i class="bi bi-folder-plus" style="color:#7c3aed"></i> Tạo danh mục mới</p>
+
+            <div class="field-group">
+                <label><i class="bi bi-tag-fill"></i> Tên hiển thị</label>
+                <input type="text" id="newCatName" placeholder="VD: Tìm hiểu Đại hội Đoàn XIII">
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-hash"></i> Mã danh mục (key, viết liền không dấu)</label>
+                <input type="text" id="newCatKey" placeholder="VD: DHDXIII" style="text-transform:uppercase">
+                <p style="font-size:9px;color:var(--muted);margin-top:4px;font-weight:600">Dùng làm prefix ID và tên biến — chỉ chữ in hoa, số</p>
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-file-earmark-code-fill"></i> Tên file JSON</label>
+                <input type="text" id="newCatFile" placeholder="VD: DHD-XIII.json">
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-palette-fill"></i> Màu badge</label>
+                <select id="newCatColor">
+                    <option value="emerald">Xanh lá (emerald)</option>
+                    <option value="blue">Xanh dương (blue)</option>
+                    <option value="purple">Tím (purple)</option>
+                    <option value="amber">Vàng cam (amber)</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-bootstrap-fill"></i> Icon (Bootstrap Icons)</label>
+                <input type="text" id="newCatIcon" placeholder="VD: bi-flag-fill" value="bi-flag-fill">
+                <p style="font-size:9px;color:var(--muted);margin-top:4px;font-weight:600">
+                    Xem icon tại <a href="https://icons.getbootstrap.com" target="_blank" rel="noopener" style="color:#3b82f6">icons.getbootstrap.com</a>
+                </p>
+            </div>
+
+            <div class="field-group" style="display:flex;align-items:center;gap:8px;background:var(--bg);padding:10px 12px;border-radius:12px;border:1.5px solid var(--border)">
+                <input type="checkbox" id="newCatHasWeeks" style="width:18px;height:18px;accent-color:var(--brand)">
+                <label style="margin:0;text-transform:none;font-size:11px;font-weight:700;letter-spacing:0;color:var(--text)" for="newCatHasWeeks">
+                    <i class="bi bi-calendar-week-fill" style="color:#7c3aed"></i> Danh mục này chia theo tuần
+                </label>
+            </div>
+
+            <button class="btn-primary" id="btnCreateCat" style="margin-top:6px">
+                <i class="bi bi-plus-circle-fill"></i> Tạo danh mục + JSON mới
+            </button>
+        </div>
+
+        <div class="card">
+            <p class="sec-title"><i class="bi bi-info-circle-fill" style="color:#3b82f6"></i> Quy trình tạo mới</p>
+            <p style="font-size:11px;color:var(--muted);line-height:1.7">
+                <b style="color:var(--text)">1.</b> Điền thông tin → <b style="color:var(--text)">Tạo danh mục</b><br>
+                <b style="color:var(--text)">2.</b> Hệ thống tạo file JSON rỗng <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">[]</code> và push lên GitHub<br>
+                <b style="color:var(--text)">3.</b> Danh mục xuất hiện ngay trong dropdown ở tab <b style="color:var(--text)">Nhập</b><br>
+                <b style="color:var(--text)">4.</b> <span style="color:#f59e0b"><i class="bi bi-exclamation-triangle-fill"></i> Quan trọng:</span> copy đoạn code bên dưới dán vào <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">filesToLoad</code> trong <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">assets/js/load.js</code> để trang chính nhận diện danh mục mới
+            </p>
+        </div>
+
+        <p class="sec-title"><i class="bi bi-code-slash" style="color:#6366f1"></i> Code cho load.js</p>
+        <div class="push-log" id="catCodeOutput" style="display:none"></div>
+        <button class="btn-secondary" id="btnCopyCatCode" style="width:100%;justify-content:center;margin-top:8px;display:none">
+            <i class="bi bi-clipboard-fill"></i> Copy code filesToLoad
+        </button>
+    </div>
+
+    <!-- ══ TAB EDITOR ══ -->
+    <div id="panelEditor" style="display:none">
+
+        <!-- Mode switcher -->
+        <div class="editor-mode-bar">
+            <button class="mode-btn active" id="modeLive">
+                <i class="bi bi-list-ul"></i> Hàng chờ
+            </button>
+            <button class="mode-btn" id="modeGH">
+                <i class="bi bi-github"></i> JSON từ GitHub
+            </button>
+        </div>
+
+        <!-- ── MODE A: Edit hàng chờ ── -->
+        <div id="editorLive">
+            <div class="editor-search">
+                <input id="edSearchQ" placeholder="🔍 Tìm trong hàng chờ...">
+                <button class="btn-secondary" id="edLiveReload" style="flex-shrink:0">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+            </div>
+            <div id="edLiveList"></div>
+        </div>
+
+        <!-- ── MODE B: Fetch + Edit JSON từ GitHub ── -->
+        <div id="editorGH" style="display:none">
+
+            <!-- Fetch bar -->
+            <div class="card" style="margin-bottom:14px">
+                <p class="sec-title"><i class="bi bi-cloud-download-fill" style="color:var(--brand)"></i> Tải file từ GitHub</p>
+                <div style="display:flex;gap:8px;margin-bottom:10px">
+                    <select id="edGHCat" style="flex:1"></select>
+                    <button class="btn-secondary" id="btnFetchGH" style="flex-shrink:0">
+                        <i class="bi bi-download"></i> Tải
+                    </button>
+                </div>
+                <div id="ghFetchStatus" style="font-size:10px;color:var(--muted);font-weight:600"></div>
+            </div>
+
+            <!-- Filter + action bar -->
+            <div id="ghToolbar" style="display:none">
+                <div class="editor-search">
+                    <input id="edSearchGH" placeholder="🔍 Tìm trong file đã tải...">
+                    <select id="edGHWeekFilter" style="display:none;width:140px;
+                        background:var(--bg);border:1.5px solid var(--border);border-radius:12px;
+                        padding:8px 10px;font-size:11px;font-weight:700;color:var(--text);
+                        font-family:inherit;outline:none">
+                        <option value="ALL">Tất cả tuần</option>
+                    </select>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <p style="font-size:10px;font-weight:700;color:var(--muted)">
+                        <span id="ghItemCount">0</span> câu
+                        <span class="dirty-badge" id="dirtyBadge">
+                            <i class="bi bi-circle-fill" style="font-size:6px"></i> Chưa lưu
+                        </span>
+                    </p>
+                    <div style="display:flex;gap:6px">
+                        <button class="btn-secondary" id="btnAddInGH" style="font-size:10px;padding:6px 10px">
+                            <i class="bi bi-plus-lg"></i> Thêm
+                        </button>
+                        <button class="btn-secondary" id="btnSaveGH" style="font-size:10px;padding:6px 10px;display:none">
+                            <i class="bi bi-cloud-upload-fill"></i> Lưu lên GitHub
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add new item inline trong editor GH -->
+            <div id="ghAddForm" class="card" style="display:none;margin-bottom:12px">
+                <p class="sec-title"><i class="bi bi-plus-circle-fill" style="color:var(--brand)"></i> Thêm câu mới vào file</p>
+                <div id="ghAddWeekRow" style="display:none;margin-bottom:8px">
+                    <div style="display:flex;gap:8px">
+                        <input type="text" id="ghAddWeekNum" placeholder="Tuần số" style="flex:0 0 90px;font-size:12px;border-radius:10px;padding:7px 10px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);font-family:inherit;outline:none">
+                        <input type="text" id="ghAddWeekTitle" placeholder="Tiêu đề tuần" style="flex:1;font-size:12px;border-radius:10px;padding:7px 10px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);font-family:inherit;outline:none">
+                    </div>
+                </div>
+                <div class="editor-toolbar" style="border-radius:12px 12px 0 0">
+                    <button class="tb-btn" data-target="ghAddQ" data-insert='""'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="ghAddQ" data-insert='…'>…</button>
+                    <button class="tb-btn" data-target="ghAddQ" data-insert='–'>–</button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn" data-target="ghAddQ" data-clear="1"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <textarea class="smart-ta" id="ghAddQ" placeholder="Câu hỏi mới..." style="border-radius:0;margin-bottom:6px"></textarea>
+                <div class="editor-toolbar" style="border-radius:12px 12px 0 0;margin-top:2px">
+                    <button class="tb-btn" data-target="ghAddA" data-insert='""'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="ghAddA" data-insert='Tất cả các đáp án trên.'>Tất cả ĐA</button>
+                    <button class="tb-btn" data-target="ghAddA" data-insert='Không có đáp án nào đúng.'>Không ĐA</button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn" data-target="ghAddA" data-clear="1"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <textarea class="smart-ta" id="ghAddA" placeholder="Đáp án..." style="border-radius:0"></textarea>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                    <button class="je-btn je-btn-save" id="btnConfirmGHAdd" style="flex:1;justify-content:center;padding:9px">
+                        <i class="bi bi-check-lg"></i> Thêm vào file
+                    </button>
+                    <button class="je-btn je-btn-cancel" id="btnCancelGHAdd" style="flex:1;justify-content:center;padding:9px">
+                        Huỷ
+                    </button>
+                </div>
+            </div>
+
+            <div id="ghItemList"></div>
+        </div>
+    </div>
+
+    <!-- ══ TAB 2: HÀNG CHỜ ══ -->
+    <div id="panelQueue" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <p class="sec-title" style="margin:0">
+                <i class="bi bi-list-check" style="color:var(--brand)"></i>
+                Hàng chờ · <span id="queueCountLabel">0</span> câu
+            </p>
+            <button class="btn-danger" id="btnClearAll">
+                <i class="bi bi-trash3-fill"></i> Xóa hết
+            </button>
+        </div>
+        <div id="queueList"></div>
+    </div>
+
+    <!-- ══ TAB 3: PUSH ══ -->
+    <div id="panelPush" style="display:none">
+        <div class="card" id="pushConfigStatus"></div>
+
+        <div class="card">
+            <p class="sec-title"><i class="bi bi-sliders2-vertical" style="color:var(--brand)"></i> Tùy chọn</p>
+
+            <div class="field-group">
+                <label><i class="bi bi-funnel-fill"></i> Danh mục push</label>
+                <select id="selPushCat">
+                    <option value="ALL">Tất cả danh mục</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-chat-left-text-fill"></i> Commit message</label>
+                <input type="text" id="inputCommitMsg" value="feat: thêm câu hỏi mới qua add-data tool">
+            </div>
+
+            <div class="push-summary" id="pushSummary">
+                <i class="bi bi-info-circle"></i> Chọn danh mục để xem thống kê
+            </div>
+
+            <button class="btn-push" id="btnPush" disabled>
+                <i class="bi bi-cloud-upload-fill"></i> Push lên GitHub
+            </button>
+            <div class="prog-bar" id="progBar"><div class="prog-fill" id="progFill"></div></div>
+        </div>
+
+        <p class="sec-title"><i class="bi bi-terminal-fill" style="color:#6366f1"></i> Log</p>
+        <div class="push-log" id="pushLog"></div>
+    </div>
+
+    <!-- ══ TAB 4: CONFIG ══ -->
+    <div id="panelConfig" style="display:none">
+        <div class="card">
+            <p class="sec-title"><i class="bi bi-github" style="color:var(--brand)"></i> GitHub</p>
+
+            <div class="field-group">
+                <label><i class="bi bi-person-fill"></i> Owner / Repo</label>
+                <input type="text" id="cfgRepo" value="N4mtapdev/trexanh-tnvn">
+            </div>
+
+            <div class="field-group">
+                <label><i class="bi bi-code-branch"></i> Branch</label>
+                <input type="text" id="cfgBranch" value="main">
+            </div>
+
+            <div class="field-group">
+                <label>
+                    <i class="bi bi-key-fill"></i> GitHub Token
+                    <span style="font-size:8px;font-weight:600;text-transform:none;letter-spacing:0">(lưu localStorage)</span>
+                </label>
+                <div class="token-wrap">
+                    <input type="password" id="cfgToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                    <span class="token-eye" id="btnEye"><i class="bi bi-eye"></i></span>
+                </div>
+                <div class="token-status ts-idle" id="tokenStatus">
+                    <i class="bi bi-circle"></i> Chưa có token
+                </div>
+            </div>
+
+            <div style="display:flex;gap:8px">
+                <button class="btn-primary" id="btnSaveConfig" style="flex:1">
+                    <i class="bi bi-floppy-fill"></i> Lưu
+                </button>
+                <button class="btn-secondary" id="btnTestToken">
+                    <i class="bi bi-wifi"></i> Test
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="sec-title"><i class="bi bi-shield-lock-fill" style="color:#f59e0b"></i> Bảo mật</p>
+            <div style="display:flex;flex-direction:column;gap:7px">
+                <p style="font-size:11px;color:var(--muted);line-height:1.6">
+                    <i class="bi bi-check-circle-fill" style="color:#10b981"></i>
+                    Token chỉ gửi thẳng đến <b style="color:var(--text)">api.github.com</b>
+                </p>
+                <p style="font-size:11px;color:var(--muted);line-height:1.6">
+                    <i class="bi bi-check-circle-fill" style="color:#10b981"></i>
+                    Lưu trong <b style="color:var(--text)">localStorage</b> — không đi đâu khác
+                </p>
+                <p style="font-size:11px;color:var(--muted);line-height:1.6">
+                    <i class="bi bi-exclamation-triangle-fill" style="color:#f59e0b"></i>
+                    Chỉ cấp quyền <b style="color:var(--text)">Contents: Read & Write</b>
+                </p>
+                <a href="https://github.com/settings/tokens/new?scopes=repo&description=TreXanh+AddData"
+                   target="_blank" rel="noopener"
+                   style="font-size:11px;color:#3b82f6;font-weight:700;display:flex;align-items:center;gap:5px">
+                    <i class="bi bi-box-arrow-up-right"></i> Tạo token tại GitHub Settings
+                </a>
+            </div>
+        </div>
+
+        <button class="btn-danger" id="btnClearConfig"
+            style="width:100%;justify-content:center">
+            <i class="bi bi-trash3-fill"></i> Xóa toàn bộ config & token
+        </button>
+    </div>
+
+</div>
+
+<script>
+/* ============================================================
+   QUẢN LÝ DANH MỤC (Categories) — động, lưu localStorage
+   Mỗi category: { key, name, icon, color, prefix, url, hasWeeks }
+   Đồng bộ thủ công với filesToLoad trong assets/js/load.js
+   (tab "Tạo JSON" sẽ sinh đoạn code để copy dán vào load.js)
+============================================================ */
+const DEFAULT_CATEGORIES = [
+    { key:'KTHTCBHLLCT', name:'Lý Luận Chính Trị', icon:'bi-journal-bookmark-fill', color:'emerald', prefix:'LLCT', url:'assets/json/KTHTCBHLLCT.json', hasWeeks:false },
+    { key:'HHT',         name:'TBT Hà Huy Tập',     icon:'bi-person-vcard-fill',     color:'blue',    prefix:'HHT',  url:'assets/json/HHT.json',          hasWeeks:false },
+];
+
+function loadCategories() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('txCategories') || 'null');
+        if (saved && Array.isArray(saved) && saved.length) return saved;
+    } catch {}
+    return DEFAULT_CATEGORIES;
+}
+function saveCategories(cats) {
+    localStorage.setItem('txCategories', JSON.stringify(cats));
+}
+let CATEGORIES = loadCategories();
+
+function getCategory(key) { return CATEGORIES.find(c => c.key === key); }
+function REPO_FILES_MAP() {
+    const m = {};
+    CATEGORIES.forEach(c => m[c.key] = c.url);
+    return m;
+}
+function CAT_LABELS_MAP() {
+    const m = {};
+    CATEGORIES.forEach(c => m[c.key] = c.name);
+    return m;
+}
+
+/* ── State ── */
+let queue = JSON.parse(localStorage.getItem('txAddQueue') || '[]');
+function saveQueue() { localStorage.setItem('txAddQueue', JSON.stringify(queue)); }
+
+function loadConfig() {
+    return {
+        repo:   localStorage.getItem('txCfgRepo')   || 'N4mtapdev/trexanh-tnvn',
+        branch: localStorage.getItem('txCfgBranch') || 'main',
+        token:  localStorage.getItem('txCfgToken')  || '',
+    };
+}
+function saveConfig(c) {
+    localStorage.setItem('txCfgRepo', c.repo);
+    localStorage.setItem('txCfgBranch', c.branch);
+    localStorage.setItem('txCfgToken', c.token);
+}
+
+/* ── Toast ── */
+let _tt;
+function toast(icon, msg, dur = 2000) {
+    const el = document.getElementById('txToast');
+    el.innerHTML = `<i class="bi ${icon}"></i> ${msg}`;
+    el.classList.add('show');
+    clearTimeout(_tt);
+    _tt = setTimeout(() => el.classList.remove('show'), dur);
+}
+
+/* ── Dark mode ── */
+const btnDark = document.getElementById('btnDark');
+if (document.documentElement.classList.contains('dark'))
+    btnDark.innerHTML = '<i class="bi bi-sun-fill"></i>';
+
+btnDark.addEventListener('click', () => {
+    const dk = !document.documentElement.classList.contains('dark');
+    document.documentElement.classList.toggle('dark', dk);
+    document.body.classList.toggle('dark', dk);
+    localStorage.setItem('theme', dk ? 'dark' : 'light');
+    btnDark.innerHTML = dk ? '<i class="bi bi-sun-fill"></i>' : '<i class="bi bi-moon-stars-fill"></i>';
+});
+
+/* ── Tabs ── */
+const TABS = [
+    { btn:'tabInput',  panel:'panelInput',  onShow: refreshCategorySelects },
+    { btn:'tabQueue',  panel:'panelQueue',  onShow: renderQueue },
+    { btn:'tabEditor', panel:'panelEditor', onShow: initEditor },
+    { btn:'tabCats',   panel:'panelCats',   onShow: renderCatList },
+    { btn:'tabPush',   panel:'panelPush',   onShow: refreshPushPanel },
+    { btn:'tabConfig', panel:'panelConfig', onShow: loadConfigUI },
+];
+TABS.forEach(({ btn, panel, onShow }) => {
+    document.getElementById(btn).addEventListener('click', () => {
+        TABS.forEach(t => {
+            document.getElementById(t.btn).classList.remove('active');
+            document.getElementById(t.panel).style.display = 'none';
+        });
+        document.getElementById(btn).classList.add('active');
+        document.getElementById(panel).style.display = 'block';
+        if (onShow) onShow();
+    });
+});
+
+/* ── Char count + preview ── */
+function charCount(id, ccId, max) {
+    const n = document.getElementById(id).value.length;
+    const el = document.getElementById(ccId);
+    el.textContent = `${n} ký tự`;
+    el.className = 'char-count' + (n > max ? ' over' : n > max * .8 ? ' warn' : '');
+}
+document.getElementById('txtQuestion').addEventListener('input', () => { charCount('txtQuestion','ccQ',300); updatePreview(); });
+document.getElementById('txtAnswer').addEventListener('input',  () => { charCount('txtAnswer','ccA',200);   updatePreview(); });
+
+function updatePreview() {
+    const q = document.getElementById('txtQuestion').value.trim();
+    const a = document.getElementById('txtAnswer').value.trim();
+    const area = document.getElementById('previewArea');
+    if (!q && !a) {
+        area.innerHTML = `<div class="empty-state">
+            <i class="bi bi-card-text" style="font-size:26px;display:block;margin-bottom:8px;opacity:.25"></i>
+            Nhập để xem trước</div>`;
+        return;
+    }
+    const wkNum = document.getElementById('inputWeekNum')?.value.trim();
+    const wkTitle = document.getElementById('inputWeekTitle')?.value.trim();
+    const weekBadge = wkNum
+        ? `<span class="cat-badge cb-purple" style="margin-bottom:8px;display:inline-flex">
+               <i class="bi bi-calendar-week-fill" style="font-size:8px"></i> Tuần ${wkNum}${wkTitle ? ' · ' + wkTitle : ''}
+           </span><br>`
+        : '';
+    area.innerHTML = `<div class="preview-card">
+        ${weekBadge}
+        <p class="preview-q">${q || '<span style="opacity:.35;font-style:italic">Câu hỏi...</span>'}</p>
+        <div class="preview-a-box">
+            <div style="display:flex;align-items:flex-start;gap:7px">
+                <i class="bi bi-lightbulb-fill" style="color:#10b981;flex-shrink:0;margin-top:2px"></i>
+                <p class="preview-a">${a || '<span style="opacity:.35">Đáp án...</span>'}</p>
+            </div>
+        </div>
+    </div>`;
+}
+
+/* ── Add to queue ── */
+document.getElementById('btnAdd').addEventListener('click', () => {
+    const btn = document.getElementById('btnAdd');
+    if (btn.disabled) return;
+
+    const q   = document.getElementById('txtQuestion').value.trim();
+    const a   = document.getElementById('txtAnswer').value.trim();
+    const cat = document.getElementById('selCategory').value;
+    if (!q) { toast('bi-exclamation-circle-fill','Nhập câu hỏi!'); return; }
+    if (!a) { toast('bi-exclamation-circle-fill','Nhập đáp án!');  return; }
+
+    const catInfo = getCategory(cat);
+    let week = null, weekTitle = null;
+
+    if (catInfo && catInfo.hasWeeks) {
+        const wkRaw = document.getElementById('inputWeekNum').value.trim();
+        const wkTitle = document.getElementById('inputWeekTitle').value.trim();
+        if (!wkRaw) { toast('bi-exclamation-circle-fill','Danh mục này cần chọn số tuần!'); return; }
+        if (!/^\d+$/.test(wkRaw)) { toast('bi-exclamation-circle-fill','Số tuần phải là số nguyên!'); return; }
+        if (!wkTitle) { toast('bi-exclamation-circle-fill','Nhập tiêu đề tuần!'); return; }
+        week = parseInt(wkRaw);
+        weekTitle = wkTitle;
+    }
+
+    /* Phát hiện trùng câu hỏi (so sánh không phân biệt hoa/thường, khoảng trắng) */
+    const normalize = s => s.toLowerCase().replace(/\s+/g,' ').trim();
+    const isDup = queue.some(item => item.cat === cat && normalize(item.q) === normalize(q));
+    if (isDup) {
+        toast('bi-exclamation-triangle-fill', 'Câu hỏi này đã có trong hàng chờ!', 2500);
+        return;
+    }
+
+    btn.disabled = true;
+    const entry = { uid: Date.now(), cat, q, a, ts: new Date().toLocaleString('vi') };
+    if (week != null) { entry.week = week; entry.weekTitle = weekTitle; }
+    queue.push(entry);
+    saveQueue(); updateBadge();
+    document.getElementById('txtQuestion').value = '';
+    document.getElementById('txtAnswer').value   = '';
+    charCount('txtQuestion','ccQ',300);
+    charCount('txtAnswer','ccA',200);
+    updatePreview();
+    toast('bi-check-circle-fill', `Đã thêm! Hàng chờ: ${queue.length} câu`);
+    setTimeout(() => { btn.disabled = false; }, 400);
+});
+
+function updateBadge() {
+    document.getElementById('queueCount').textContent      = queue.length;
+    document.getElementById('queueCountLabel').textContent = queue.length;
+}
+updateBadge();
+
+/* ── Render queue ── */
+function renderQueue() {
+    updateBadge();
+    const list = document.getElementById('queueList');
+    if (!queue.length) {
+        list.innerHTML = `<div class="empty-state">
+            <i class="bi bi-inbox" style="font-size:28px;display:block;margin-bottom:8px;opacity:.25"></i>
+            Chưa có câu nào.<br>Nhập ở tab <b>Nhập</b>.</div>`;
+        return;
+    }
+    list.innerHTML = '';
+    queue.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'queue-item';
+        const cat = getCategory(item.cat);
+        const catColor = cat ? cat.color : 'emerald';
+        div.innerHTML = `
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <span class="cat-badge cb-${catColor}">${cat ? cat.name : item.cat}</span>
+                ${item.week ? `<span class="cat-badge cb-purple"><i class="bi bi-calendar-week-fill" style="font-size:8px"></i> Tuần ${item.week}</span>` : ''}
+            </div>
+            <p class="queue-item-q" style="margin-top:6px">${item.q}</p>
+            <p class="queue-item-a"><i class="bi bi-lightbulb-fill" style="font-size:9px"></i> ${item.a}</p>
+            <p class="queue-meta"><i class="bi bi-clock" style="font-size:9px"></i> ${item.ts}</p>
+            <button class="queue-del" data-i="${i}"><i class="bi bi-x-lg"></i></button>`;
+        list.appendChild(div);
+    });
+    list.querySelectorAll('.queue-del').forEach(btn => {
+        btn.addEventListener('click', () => {
+            queue.splice(parseInt(btn.dataset.i), 1);
+            saveQueue(); renderQueue();
+            toast('bi-trash3-fill','Đã xóa');
+        });
+    });
+}
+
+document.getElementById('btnClearAll').addEventListener('click', () => {
+    if (!queue.length || !confirm(`Xóa hết ${queue.length} câu?`)) return;
+    queue = []; saveQueue(); renderQueue();
+    toast('bi-trash3-fill','Đã xóa hết');
+});
+
+/* ── Config UI ── */
+function loadConfigUI() {
+    const cfg = loadConfig();
+    document.getElementById('cfgRepo').value   = cfg.repo;
+    document.getElementById('cfgBranch').value = cfg.branch;
+    document.getElementById('cfgToken').value  = cfg.token;
+    updateTokenStatus(cfg.token);
+}
+
+function updateTokenStatus(token) {
+    const el = document.getElementById('tokenStatus');
+    if (!token) { el.className='token-status ts-idle'; el.innerHTML='<i class="bi bi-circle"></i> Chưa có token'; }
+    else         { el.className='token-status ts-ok';   el.innerHTML=`<i class="bi bi-check-circle-fill"></i> Token đã lưu (${token.substring(0,8)}…)`; }
+}
+
+document.getElementById('btnEye').addEventListener('click', () => {
+    const inp = document.getElementById('cfgToken');
+    const isHidden = inp.type === 'password';
+    inp.type = isHidden ? 'text' : 'password';
+    document.getElementById('btnEye').innerHTML = isHidden ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+});
+
+document.getElementById('btnSaveConfig').addEventListener('click', () => {
+    const cfg = { repo:document.getElementById('cfgRepo').value.trim(), branch:document.getElementById('cfgBranch').value.trim()||'main', token:document.getElementById('cfgToken').value.trim() };
+    if (!cfg.repo)  { toast('bi-exclamation-circle-fill','Nhập repo!');  return; }
+    if (!/^[\w.-]+\/[\w.-]+$/.test(cfg.repo)) {
+        toast('bi-exclamation-circle-fill','Repo phải đúng dạng owner/repo!', 2500);
+        return;
+    }
+    if (!cfg.token) { toast('bi-exclamation-circle-fill','Nhập token!'); return; }
+    saveConfig(cfg); updateTokenStatus(cfg.token);
+    toast('bi-floppy-fill','Đã lưu cấu hình!');
+});
+
+document.getElementById('btnTestToken').addEventListener('click', async () => {
+    const cfg = loadConfig();
+    if (!cfg.token) { toast('bi-exclamation-circle-fill','Chưa có token'); return; }
+    toast('bi-hourglass-split','Đang kiểm tra…', 3000);
+    try {
+        const r = await fetch(`https://api.github.com/repos/${cfg.repo}`, {
+            headers: { Authorization:`token ${cfg.token}`, Accept:'application/vnd.github.v3+json' }
+        });
+        const d = await r.json();
+        if (r.ok) toast('bi-check-circle-fill', `✓ OK · ${d.full_name}`);
+        else      toast('bi-x-circle-fill', `Lỗi ${r.status}: ${d.message}`, 3000);
+    } catch { toast('bi-x-circle-fill','Không kết nối được GitHub', 3000); }
+});
+
+document.getElementById('btnClearConfig').addEventListener('click', () => {
+    if (!confirm('Xóa toàn bộ config và token?')) return;
+    ['txCfgRepo','txCfgBranch','txCfgToken'].forEach(k => localStorage.removeItem(k));
+    loadConfigUI();
+    toast('bi-trash3-fill','Đã xóa config');
+});
+
+/* ── Push panel ── */
+function refreshPushPanel() {
+    const cfg = loadConfig();
+    const statusEl = document.getElementById('pushConfigStatus');
+    const btnPush  = document.getElementById('btnPush');
+
+    if (!cfg.token) {
+        statusEl.innerHTML = `<div style="display:flex;align-items:center;gap:10px">
+            <i class="bi bi-exclamation-triangle-fill" style="color:#f59e0b;font-size:22px;flex-shrink:0"></i>
+            <div>
+                <p style="font-size:12px;font-weight:800;color:var(--text);margin:0">Chưa cấu hình token</p>
+                <p style="font-size:10px;color:var(--muted);margin-top:3px">Vào tab ⚙ để nhập GitHub token</p>
+            </div></div>`;
+        btnPush.disabled = true;
+    } else {
+        statusEl.innerHTML = `<div style="display:flex;align-items:center;gap:10px">
+            <i class="bi bi-check-circle-fill" style="color:#10b981;font-size:22px;flex-shrink:0"></i>
+            <div>
+                <p style="font-size:12px;font-weight:800;color:var(--text);margin:0">Sẵn sàng push</p>
+                <p style="font-size:10px;color:var(--muted);margin-top:3px">
+                    <i class="bi bi-github"></i> ${cfg.repo} · branch: ${cfg.branch}
+                </p>
+            </div></div>`;
+        btnPush.disabled = queue.length === 0;
+    }
+    updatePushSummary();
+}
+
+function updatePushSummary() {
+    const cat      = document.getElementById('selPushCat').value;
+    const filtered = cat === 'ALL' ? queue : queue.filter(i => i.cat === cat);
+    const byFile   = {};
+    filtered.forEach(i => { byFile[i.cat] = (byFile[i.cat]||0)+1; });
+    const el  = document.getElementById('pushSummary');
+    const cfg = loadConfig();
+
+    if (!filtered.length) {
+        el.innerHTML = '<i class="bi bi-info-circle"></i> Không có câu nào để push';
+        document.getElementById('btnPush').disabled = true;
+        return;
+    }
+    if (cfg.token) document.getElementById('btnPush').disabled = false;
+
+    el.innerHTML = `<p style="font-weight:800;color:var(--text);margin-bottom:5px">
+        <i class="bi bi-bar-chart-fill" style="color:var(--brand)"></i> Sẽ push ${filtered.length} câu:</p>` +
+        Object.entries(byFile).map(([c,n]) =>
+            `<span style="display:block;padding-left:2px">
+                <i class="bi bi-file-earmark-code-fill" style="color:var(--brand)"></i>
+                <b style="color:var(--text)">${getCategory(c)?.url || c}</b> +${n} câu
+            </span>`).join('');
+}
+
+document.getElementById('selPushCat').addEventListener('change', updatePushSummary);
+
+/* ── GitHub API ── */
+async function ghGet(path, token) {
+    const r = await fetch(`https://api.github.com${path}`, {
+        headers: { Authorization:`token ${token}`, Accept:'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) { const e = await r.json(); throw new Error(`${r.status}: ${e.message}`); }
+    return r.json();
+}
+
+async function ghPut(path, body, token) {
+    const r = await fetch(`https://api.github.com${path}`, {
+        method:'PUT',
+        headers: { Authorization:`token ${token}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' },
+        body: JSON.stringify(body),
+    });
+    if (!r.ok) {
+        const e = await r.json();
+        if (r.status === 409) throw new Error('409: File đã bị thay đổi bởi người khác — thử push lại');
+        if (r.status === 403) {
+            const remaining = r.headers.get('X-RateLimit-Remaining');
+            if (remaining === '0') throw new Error('403: Hết quota GitHub API — đợi 1 giờ hoặc dùng token khác');
+            throw new Error(`403: ${e.message} (token có thể thiếu quyền Contents: Write)`);
+        }
+        if (r.status === 401) throw new Error('401: Token không hợp lệ hoặc đã hết hạn');
+        throw new Error(`${r.status}: ${e.message}`);
+    }
+    return r.json();
+}
+
+async function fetchJsonFile(repo, branch, path, token) {
+    const d = await ghGet(`/repos/${repo}/contents/${path}?ref=${branch}`, token);
+    return { content: JSON.parse(atob(d.content.replace(/\n/g,''))), sha: d.sha };
+}
+
+async function pushJsonFile(repo, branch, path, data, sha, msg, token) {
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    return ghPut(`/repos/${repo}/contents/${path}`, { message:msg, content:encoded, sha, branch }, token);
+}
+
+/* ── Log helper ── */
+function log(msg, type='info') {
+    const el = document.getElementById('pushLog');
+    el.style.display = 'block';
+    const cls = {ok:'log-ok',err:'log-err',info:'log-info',warn:'log-warn'}[type]||'log-info';
+    el.innerHTML += `<span class="${cls}">[${new Date().toLocaleTimeString('vi')}] ${msg}</span>\n`;
+    el.scrollTop  = el.scrollHeight;
+}
+
+function setProgress(pct) {
+    document.getElementById('progBar').style.display  = 'block';
+    document.getElementById('progFill').style.width   = pct + '%';
+}
+
+/* ── Push ── */
+document.getElementById('btnPush').addEventListener('click', async () => {
+    const cfg       = loadConfig();
+    const cat       = document.getElementById('selPushCat').value;
+    const commitMsg = document.getElementById('inputCommitMsg').value.trim() || 'feat: thêm câu hỏi mới';
+    const toProcess = cat === 'ALL' ? queue : queue.filter(i => i.cat === cat);
+
+    if (!cfg.token)      { toast('bi-exclamation-circle-fill','Chưa có token!'); return; }
+    if (!toProcess.length){ toast('bi-exclamation-circle-fill','Không có câu nào!'); return; }
+
+    const btnPush = document.getElementById('btnPush');
+    btnPush.disabled = true;
+    btnPush.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang push…';
+    document.getElementById('pushLog').innerHTML = '';
+    setProgress(5);
+
+    const byFile  = {};
+    toProcess.forEach(i => { if (!byFile[i.cat]) byFile[i.cat]=[]; byFile[i.cat].push(i); });
+    const cats    = Object.keys(byFile);
+    let   success = 0;
+    let   pushed  = [];
+
+    log(`Bắt đầu push ${toProcess.length} câu → ${cats.length} file`, 'info');
+
+    for (let ci = 0; ci < cats.length; ci++) {
+        const c    = cats[ci];
+        const items= byFile[c];
+        const cat  = getCategory(c);
+        const fp   = cat ? cat.url : null;
+
+        if (!fp) {
+            log(`   ✗ Không tìm thấy cấu hình category: ${c}`, 'err');
+            continue;
+        }
+
+        log(`📂 ${fp} (${items.length} câu)`, 'info');
+        setProgress(10 + (ci / cats.length) * 50);
+
+        try {
+            log('   ↓ Đang fetch file hiện tại…', 'info');
+            let { content: existing, sha } = await fetchJsonFile(cfg.repo, cfg.branch, fp, cfg.token);
+            log(`   ✓ Đọc ${existing.length} câu hiện có`, 'ok');
+
+            const lastId  = existing.length ? Math.max(...existing.map(i => i.id||0)) : 0;
+            const buildEntry = (item, idx) => {
+                const e = { id:lastId+idx+1, question:item.q, answer:item.a };
+                /* Chỉ thêm week/weekTitle nếu category có chia tuần và item có gán tuần */
+                if (cat.hasWeeks && item.week) {
+                    e.week = item.week;
+                    e.weekTitle = item.weekTitle || `Tuần ${item.week}`;
+                }
+                return e;
+            };
+            const entries = items.map(buildEntry);
+            log(`   + Thêm ${entries.length} câu (ID ${entries[0].id}–${entries[entries.length-1].id})`, 'info');
+
+            setProgress(10 + (ci / cats.length) * 50 + 20);
+            log('   ↑ Đang commit…', 'info');
+
+            try {
+                await pushJsonFile(cfg.repo, cfg.branch, fp, [...existing,...entries], sha, commitMsg, cfg.token);
+            } catch (pushErr) {
+                if (pushErr.message.startsWith('409')) {
+                    log('   ⟳ File thay đổi giữa chừng, đang thử lại…', 'warn');
+                    const retry = await fetchJsonFile(cfg.repo, cfg.branch, fp, cfg.token);
+                    const retryLastId = retry.content.length ? Math.max(...retry.content.map(i=>i.id||0)) : 0;
+                    const retryEntries = items.map((item, idx) => {
+                        const e = { id:retryLastId+idx+1, question:item.q, answer:item.a };
+                        if (cat.hasWeeks && item.week) { e.week = item.week; e.weekTitle = item.weekTitle || `Tuần ${item.week}`; }
+                        return e;
+                    });
+                    await pushJsonFile(cfg.repo, cfg.branch, fp, [...retry.content,...retryEntries], retry.sha, commitMsg, cfg.token);
+                    existing = retry.content; entries.length = 0; entries.push(...retryEntries);
+                    log('   ✓ Thử lại thành công', 'ok');
+                } else {
+                    throw pushErr;
+                }
+            }
+
+            log(`   ✓ ${fp} → ${existing.length+entries.length} câu tổng`, 'ok');
+            pushed.push(...items.map(i => i.uid));
+            success++;
+        } catch(e) {
+            log(`   ✗ Lỗi: ${e.message}`, 'err');
+        }
+        setProgress(10 + ((ci+1)/cats.length) * 80);
+    }
+
+    setProgress(100);
+    log('────────────────────────', 'info');
+
+    if (success === cats.length) {
+        log(`✅ Hoàn tất! ${toProcess.length} câu / ${success} file`, 'ok');
+        log('🚀 Vercel tự deploy trong ~30 giây', 'ok');
+        log('💡 Nhớ tăng DATA_VER trong assets/js/load.js để xóa cache trình duyệt', 'warn');
+        queue = queue.filter(i => !pushed.includes(i.uid));
+        saveQueue(); updateBadge();
+        toast('bi-check-circle-fill', `Push thành công ${toProcess.length} câu!`, 3000);
+    } else {
+        log(`⚠ ${success}/${cats.length} file thành công`, 'warn');
+        toast('bi-exclamation-triangle-fill','Một số file thất bại, xem log', 3000);
+    }
+
+    btnPush.disabled = queue.length === 0;
+    btnPush.innerHTML = '<i class="bi bi-cloud-upload-fill"></i> Push lên GitHub';
+    setTimeout(() => setProgress(0), 2000);
+    refreshPushPanel();
+});
+
+/* ============================================================
+   QUẢN LÝ DANH MỤC — render list, tạo mới, push JSON rỗng
+============================================================ */
+function renderCatList() {
+    const wrap = document.getElementById('catList');
+    wrap.innerHTML = '';
+    CATEGORIES.forEach((c, i) => {
+        const row = document.createElement('div');
+        row.style.cssText = `display:flex;align-items:center;gap:10px;padding:10px 8px;
+            border-radius:13px;${i < CATEGORIES.length-1 ? 'border-bottom:1px solid var(--border)' : ''}`;
+        row.innerHTML = `
+            <div style="width:36px;height:36px;border-radius:11px;flex-shrink:0;
+                background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center">
+                <i class="bi ${c.icon}" style="font-size:15px;color:var(--brand)"></i>
+            </div>
+            <div style="flex:1;min-width:0">
+                <p style="font-size:12px;font-weight:800;color:var(--text);margin:0">${c.name}</p>
+                <p style="font-size:9px;color:var(--muted);margin:2px 0 0;font-family:monospace">${c.url}</p>
+            </div>
+            ${c.hasWeeks ? '<span class="cat-badge cb-purple" style="flex-shrink:0"><i class="bi bi-calendar-week-fill" style="font-size:8px"></i> Tuần</span>' : ''}
+            ${i >= 2 ? `<button class="queue-del" data-i="${i}" style="position:static" title="Xóa khỏi danh sách (không xóa file trên GitHub)"><i class="bi bi-x-lg"></i></button>` : ''}
+        `;
+        wrap.appendChild(row);
+    });
+    wrap.querySelectorAll('.queue-del').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const i = parseInt(btn.dataset.i);
+            if (!confirm(`Xóa "${CATEGORIES[i].name}" khỏi danh sách quản lý?\n(File JSON trên GitHub KHÔNG bị xóa)`)) return;
+            CATEGORIES.splice(i, 1);
+            saveCategories(CATEGORIES);
+            renderCatList();
+            refreshCategorySelects();
+            toast('bi-trash3-fill','Đã xóa khỏi danh sách');
+        });
+    });
+}
+
+function refreshCategorySelects() {
+    const selCat  = document.getElementById('selCategory');
+    const selPush = document.getElementById('selPushCat');
+
+    const prevCat  = selCat.value;
+    const prevPush = selPush.value;
+
+    selCat.innerHTML = CATEGORIES.map(c =>
+        `<option value="${c.key}">${c.name} (${c.url.split('/').pop()})</option>`).join('');
+    selPush.innerHTML = '<option value="ALL">Tất cả danh mục</option>' +
+        CATEGORIES.map(c => `<option value="${c.key}">${c.name}</option>`).join('');
+
+    if (CATEGORIES.some(c => c.key === prevCat))  selCat.value  = prevCat;
+    if (prevPush === 'ALL' || CATEGORIES.some(c => c.key === prevPush)) selPush.value = prevPush;
+
+    toggleWeekField();
+}
+
+/* Hiện/ẩn field tuần dựa theo category đang chọn có hasWeeks hay không */
+function toggleWeekField() {
+    const sel = document.getElementById('selCategory');
+    const cat = getCategory(sel.value);
+    const grp = document.getElementById('weekFieldGroup');
+    grp.style.display = (cat && cat.hasWeeks) ? 'block' : 'none';
+}
+document.getElementById('selCategory').addEventListener('change', toggleWeekField);
+document.getElementById('inputWeekNum')?.addEventListener('input', updatePreview);
+document.getElementById('inputWeekTitle')?.addEventListener('input', updatePreview);
+
+/* Tự gợi ý weekTitle nếu tuần đó đã từng nhập trong hàng chờ */
+document.getElementById('inputWeekNum')?.addEventListener('blur', () => {
+    const cat = document.getElementById('selCategory').value;
+    const wk  = document.getElementById('inputWeekNum').value.trim();
+    if (!wk) return;
+    const existing = queue.find(i => i.cat === cat && String(i.week) === wk);
+    if (existing && existing.weekTitle && !document.getElementById('inputWeekTitle').value.trim()) {
+        document.getElementById('inputWeekTitle').value = existing.weekTitle;
+    }
+});
+
+/* ── Tạo danh mục mới ── */
+document.getElementById('btnCreateCat').addEventListener('click', async () => {
+    const name  = document.getElementById('newCatName').value.trim();
+    const key   = document.getElementById('newCatKey').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+    let   file  = document.getElementById('newCatFile').value.trim();
+    const color = document.getElementById('newCatColor').value;
+    const icon  = document.getElementById('newCatIcon').value.trim() || 'bi-flag-fill';
+    const hasWeeks = document.getElementById('newCatHasWeeks').checked;
+
+    if (!name)  { toast('bi-exclamation-circle-fill','Nhập tên hiển thị!'); return; }
+    if (!key)   { toast('bi-exclamation-circle-fill','Nhập mã danh mục hợp lệ!'); return; }
+    if (CATEGORIES.some(c => c.key === key)) { toast('bi-exclamation-circle-fill','Mã danh mục đã tồn tại!'); return; }
+    if (!file)  file = key + '.json';
+    if (!file.endsWith('.json')) file += '.json';
+
+    const cfg = loadConfig();
+    if (!cfg.token) {
+        toast('bi-exclamation-circle-fill','Cần cấu hình GitHub token trước (tab ⚙)!', 3000);
+        return;
+    }
+
+    const url = `assets/json/${file}`;
+    const newCat = { key, name, icon, color, prefix:key, url, hasWeeks };
+
+    const btn = document.getElementById('btnCreateCat');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang tạo…';
+
+    try {
+        /* Kiểm tra file đã tồn tại trên repo chưa */
+        let fileExists = false;
+        try {
+            await fetchJsonFile(cfg.repo, cfg.branch, url, cfg.token);
+            fileExists = true;
+        } catch { /* 404 = chưa tồn tại, OK để tạo mới */ }
+
+        if (fileExists) {
+            toast('bi-exclamation-triangle-fill', `File ${url} đã tồn tại trên GitHub — chỉ thêm vào danh sách quản lý`, 3000);
+        } else {
+            /* Tạo file JSON rỗng [] trên GitHub */
+            const encoded = btoa(unescape(encodeURIComponent('[]')));
+            await ghPut(`/repos/${cfg.repo}/contents/${url}`, {
+                message: `feat: tạo danh mục mới "${name}"`,
+                content: encoded,
+                branch: cfg.branch,
+            }, cfg.token);
+            toast('bi-check-circle-fill', `Đã tạo file ${url} trên GitHub!`, 2500);
+        }
+
+        CATEGORIES.push(newCat);
+        saveCategories(CATEGORIES);
+        renderCatList();
+        refreshCategorySelects();
+        showCatCode();
+
+        /* Reset form */
+        document.getElementById('newCatName').value = '';
+        document.getElementById('newCatKey').value  = '';
+        document.getElementById('newCatFile').value = '';
+        document.getElementById('newCatHasWeeks').checked = false;
+
+    } catch(e) {
+        toast('bi-x-circle-fill', `Lỗi: ${e.message}`, 3500);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-plus-circle-fill"></i> Tạo danh mục + JSON mới';
+    }
+});
+
+/* Sinh đoạn code filesToLoad để copy dán vào load.js */
+function showCatCode() {
+    const out = document.getElementById('catCodeOutput');
+    const btn = document.getElementById('btnCopyCatCode');
+    const code = 'const filesToLoad = [\n' +
+        CATEGORIES.map(c =>
+            `    { name:'${c.name}', icon:'${c.icon}', url:'./${c.url}', color:'${c.color}', prefix:'${c.prefix}' }`
+        ).join(',\n') +
+        '\n];';
+    out.textContent = code;
+    out.style.display = 'block';
+    btn.style.display = 'flex';
+    btn.onclick = async () => {
+        try { await navigator.clipboard.writeText(code); toast('bi-clipboard-check-fill','Đã copy! Dán vào assets/js/load.js'); }
+        catch { toast('bi-x-circle-fill','Copy thất bại'); }
+    };
+}
+
+/* ============================================================
+   TOOLBAR — insert text, clear, copy, case transform
+============================================================ */
+function applyToolbar(btn) {
+    const taId = btn.dataset.target;
+    const ta = document.getElementById(taId);
+    if (!ta) return;
+
+    if (btn.dataset.clear) { ta.value = ''; ta.dispatchEvent(new Event('input')); ta.focus(); return; }
+
+    if (btn.dataset.copy) {
+        navigator.clipboard?.writeText(ta.value).then(() => toast('bi-clipboard-check','Đã copy!'))
+        .catch(() => toast('bi-x-circle','Copy thất bại'));
+        return;
+    }
+
+    if (btn.dataset.case) {
+        if (btn.dataset.case === 'upper') ta.value = ta.value.toUpperCase();
+        if (btn.dataset.case === 'title') ta.value = ta.value.replace(/\b\p{L}/gu, c => c.toUpperCase());
+        ta.dispatchEvent(new Event('input')); return;
+    }
+
+    if (btn.dataset.insert != null) {
+        const ins = btn.dataset.insert;
+        const s   = ta.selectionStart, e = ta.selectionEnd;
+        const sel = ta.value.slice(s, e);
+
+        /* Nếu có text được chọn + insert là ngoặc kép → bọc text đó lại */
+        if (sel && ins === '""') {
+            ta.setRangeText(`"${sel}"`, s, e, 'end');
+        } else {
+            ta.setRangeText(ins, s, e, 'end');
+        }
+        ta.dispatchEvent(new Event('input'));
+        ta.focus();
+    }
+}
+
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.tb-btn');
+    if (btn) applyToolbar(btn);
+});
+
+/* ============================================================
+   AUTO-RESIZE textarea (smart-ta)
+============================================================ */
+function autoResize(ta) {
+    ta.style.height = 'auto';
+    ta.style.height = Math.max(72, ta.scrollHeight) + 'px';
+}
+
+document.addEventListener('input', e => {
+    if (e.target.classList.contains('smart-ta')) autoResize(e.target);
+});
+
+function initAllAutoResize() {
+    document.querySelectorAll('.smart-ta').forEach(ta => autoResize(ta));
+}
+
+/* ============================================================
+   EDITOR STATE
+============================================================ */
+let editorMode  = 'live';   /* 'live' | 'gh' */
+let ghData      = null;     /* array câu hỏi đang edit từ GitHub */
+let ghFilePath  = null;
+let ghFileSHA   = null;
+let ghCatKey    = null;
+let ghDirty     = false;    /* có thay đổi chưa lưu */
+let ghFilter    = '';
+let ghWeekFilter= 'ALL';
+
+function markDirty(val = true) {
+    ghDirty = val;
+    const badge = document.getElementById('dirtyBadge');
+    if (badge) badge.classList.toggle('show', val);
+    const btn = document.getElementById('btnSaveGH');
+    if (btn) btn.style.display = val ? 'flex' : 'none';
+}
+
+/* ============================================================
+   INIT EDITOR TAB
+============================================================ */
+function initEditor() {
+    /* Mode switcher */
+    document.getElementById('modeLive').addEventListener('click', () => switchEditorMode('live'));
+    document.getElementById('modeGH').addEventListener('click', () => switchEditorMode('gh'));
+    /* Populate GH cat select */
+    const sel = document.getElementById('edGHCat');
+    sel.innerHTML = CATEGORIES.map(c => `<option value="${c.key}">${c.name}</option>`).join('');
+    /* Render live queue */
+    renderEditorLive();
+    /* Setup fetch button */
+    document.getElementById('btnFetchGH').addEventListener('click', fetchGHFile);
+    /* Search inputs */
+    document.getElementById('edSearchQ').addEventListener('input', e => {
+        renderEditorLive(e.target.value);
+    });
+    document.getElementById('edSearchGH').addEventListener('input', e => {
+        ghFilter = e.target.value.toLowerCase();
+        renderGHList();
+    });
+    document.getElementById('edLiveReload').addEventListener('click', () => renderEditorLive());
+    document.getElementById('edGHWeekFilter').addEventListener('change', e => {
+        ghWeekFilter = e.target.value;
+        renderGHList();
+    });
+    /* Add in GH mode */
+    document.getElementById('btnAddInGH').addEventListener('click', () => {
+        const f = document.getElementById('ghAddForm');
+        f.style.display = f.style.display === 'none' ? 'block' : 'none';
+        initAllAutoResize();
+    });
+    document.getElementById('btnCancelGHAdd').addEventListener('click', () => {
+        document.getElementById('ghAddForm').style.display = 'none';
+    });
+    document.getElementById('btnConfirmGHAdd').addEventListener('click', confirmGHAdd);
+    document.getElementById('btnSaveGH').addEventListener('click', saveGHFile);
+    initAllAutoResize();
+}
+
+function switchEditorMode(mode) {
+    editorMode = mode;
+    document.getElementById('modeLive').classList.toggle('active', mode === 'live');
+    document.getElementById('modeGH').classList.toggle('active', mode === 'gh');
+    document.getElementById('editorLive').style.display = mode === 'live' ? 'block' : 'none';
+    document.getElementById('editorGH').style.display   = mode === 'gh'   ? 'block' : 'none';
+    if (mode === 'live') renderEditorLive();
+}
+
+/* ============================================================
+   EDITOR MODE A: Edit hàng chờ
+============================================================ */
+function renderEditorLive(search = '') {
+    const list = document.getElementById('edLiveList');
+    const items = search
+        ? queue.filter(i => i.q.toLowerCase().includes(search.toLowerCase()) || i.a.toLowerCase().includes(search.toLowerCase()))
+        : queue;
+
+    if (!items.length) {
+        list.innerHTML = `<div class="empty-state"><i class="bi bi-inbox" style="font-size:26px;display:block;margin-bottom:8px;opacity:.25"></i>${search ? 'Không tìm thấy' : 'Hàng chờ trống'}</div>`;
+        return;
+    }
+
+    list.innerHTML = '';
+    items.forEach(item => {
+        const cat = getCategory(item.cat);
+        const div = document.createElement('div');
+        div.className = 'je-item';
+        div.dataset.uid = item.uid;
+
+        div.innerHTML = `
+            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px">
+                <span class="cat-badge cb-${cat?.color||'emerald'}">${cat?.name||item.cat}</span>
+                ${item.week ? `<span class="cat-badge cb-purple"><i class="bi bi-calendar-week-fill" style="font-size:8px"></i> Tuần ${item.week}</span>` : ''}
+            </div>
+            <p class="je-q">${item.q}</p>
+            <p class="je-a"><i class="bi bi-lightbulb-fill" style="font-size:9px;color:#10b981"></i> ${item.a}</p>
+            <p class="je-meta"><i class="bi bi-clock" style="font-size:9px"></i> ${item.ts}</p>
+            <div class="je-actions">
+                <button class="je-btn je-btn-edit btn-live-edit"><i class="bi bi-pencil-fill"></i> Sửa</button>
+                <button class="je-btn je-btn-del  btn-live-del"><i class="bi bi-trash3-fill"></i> Xóa</button>
+            </div>
+            <!-- inline edit form -->
+            <div class="je-edit-wrap" id="liveEdit_${item.uid}">
+                <div class="je-edit-label"><i class="bi bi-question-circle-fill" style="color:#f59e0b"></i> Câu hỏi</div>
+                <div class="editor-toolbar" style="border-radius:10px 10px 0 0">
+                    <button class="tb-btn" data-target="liveQ_${item.uid}" data-insert='""'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="liveQ_${item.uid}" data-insert="…">…</button>
+                    <button class="tb-btn" data-target="liveQ_${item.uid}" data-clear="1"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <textarea class="smart-ta" id="liveQ_${item.uid}" style="border-radius:0;margin-bottom:8px">${item.q}</textarea>
+                <div class="je-edit-label"><i class="bi bi-lightbulb-fill" style="color:#10b981"></i> Đáp án</div>
+                <div class="editor-toolbar" style="border-radius:10px 10px 0 0">
+                    <button class="tb-btn" data-target="liveA_${item.uid}" data-insert='""'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="liveA_${item.uid}" data-insert="Tất cả các đáp án trên.">Tất cả ĐA</button>
+                    <button class="tb-btn" data-target="liveA_${item.uid}" data-clear="1"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <textarea class="smart-ta" id="liveA_${item.uid}" style="border-radius:0">${item.a}</textarea>
+                <div style="display:flex;gap:6px;margin-top:8px">
+                    <button class="je-btn je-btn-save btn-live-save" data-uid="${item.uid}" style="flex:1;justify-content:center;padding:8px">
+                        <i class="bi bi-check-lg"></i> Lưu
+                    </button>
+                    <button class="je-btn je-btn-cancel btn-live-cancel" style="flex:1;justify-content:center;padding:8px">
+                        Huỷ
+                    </button>
+                </div>
+            </div>`;
+
+        /* Bind events */
+        div.querySelector('.btn-live-edit').addEventListener('click', () => {
+            const wrap = div.querySelector('.je-edit-wrap');
+            const isOpen = wrap.classList.contains('open');
+            /* Đóng tất cả edit đang mở */
+            document.querySelectorAll('.je-edit-wrap.open').forEach(w => w.classList.remove('open'));
+            document.querySelectorAll('.je-item.editing').forEach(d => d.classList.remove('editing'));
+            if (!isOpen) {
+                wrap.classList.add('open');
+                div.classList.add('editing');
+                initAllAutoResize();
+                div.querySelector('.smart-ta').focus();
+            }
+        });
+
+        div.querySelector('.btn-live-cancel').addEventListener('click', () => {
+            div.querySelector('.je-edit-wrap').classList.remove('open');
+            div.classList.remove('editing');
+        });
+
+        div.querySelector('.btn-live-save').addEventListener('click', () => {
+            const uid  = parseInt(div.querySelector('.btn-live-save').dataset.uid);
+            const newQ = document.getElementById(`liveQ_${uid}`).value.trim();
+            const newA = document.getElementById(`liveA_${uid}`).value.trim();
+            if (!newQ || !newA) { toast('bi-exclamation-circle-fill','Câu hỏi và đáp án không được trống!'); return; }
+            const idx = queue.findIndex(i => i.uid === uid);
+            if (idx !== -1) { queue[idx].q = newQ; queue[idx].a = newA; saveQueue(); }
+            toast('bi-check-circle-fill','Đã cập nhật!');
+            renderEditorLive(document.getElementById('edSearchQ').value);
+        });
+
+        div.querySelector('.btn-live-del').addEventListener('click', () => {
+            if (!confirm('Xóa câu hỏi này khỏi hàng chờ?')) return;
+            queue = queue.filter(i => i.uid !== item.uid);
+            saveQueue(); updateBadge();
+            renderEditorLive(document.getElementById('edSearchQ').value);
+            toast('bi-trash3-fill','Đã xóa');
+        });
+
+        list.appendChild(div);
+    });
+    initAllAutoResize();
+}
+
+/* ============================================================
+   EDITOR MODE B: Fetch + Edit JSON từ GitHub
+============================================================ */
+async function fetchGHFile() {
+    const cfg = loadConfig();
+    if (!cfg.token) { toast('bi-exclamation-circle-fill','Cần token GitHub (tab ⚙)!'); return; }
+
+    const catKey = document.getElementById('edGHCat').value;
+    const cat    = getCategory(catKey);
+    if (!cat) { toast('bi-exclamation-circle-fill','Không tìm thấy category!'); return; }
+
+    const status = document.getElementById('ghFetchStatus');
+    status.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang tải…';
+
+    try {
+        const { content, sha } = await fetchJsonFile(cfg.repo, cfg.branch, cat.url, cfg.token);
+        ghData     = JSON.parse(JSON.stringify(content)); /* deep copy */
+        ghFilePath = cat.url;
+        ghFileSHA  = sha;
+        ghCatKey   = catKey;
+        ghFilter   = '';
+        ghWeekFilter = 'ALL';
+        markDirty(false);
+        status.innerHTML = `<i class="bi bi-check-circle-fill" style="color:#10b981"></i> Đã tải ${content.length} câu · ${cat.name}`;
+        document.getElementById('ghToolbar').style.display = 'block';
+        document.getElementById('ghItemCount').textContent = content.length;
+
+        /* Hiện week filter nếu có tuần */
+        const hasWeeks = content.some(i => i.week != null);
+        const weekSel  = document.getElementById('edGHWeekFilter');
+        weekSel.style.display = hasWeeks ? 'block' : 'none';
+        if (hasWeeks) {
+            const weeks = [...new Set(content.map(i => i.week).filter(Boolean))].sort((a,b) => a-b);
+            weekSel.innerHTML = '<option value="ALL">Tất cả tuần</option>' +
+                weeks.map(w => `<option value="${w}">Tuần ${w}</option>`).join('');
+        }
+
+        /* Show add week row only if hasWeeks */
+        document.getElementById('ghAddWeekRow').style.display = hasWeeks ? 'flex' : 'none';
+
+        renderGHList();
+    } catch(e) {
+        status.innerHTML = `<i class="bi bi-x-circle-fill" style="color:#ef4444"></i> Lỗi: ${e.message}`;
+    }
+}
+
+function getFilteredGH() {
+    if (!ghData) return [];
+    return ghData.filter(item => {
+        const matchText = !ghFilter ||
+            (item.question||'').toLowerCase().includes(ghFilter) ||
+            (item.answer  ||'').toLowerCase().includes(ghFilter);
+        const matchWeek = ghWeekFilter === 'ALL' || String(item.week) === String(ghWeekFilter);
+        return matchText && matchWeek;
+    });
+}
+
+function renderGHList() {
+    const list   = document.getElementById('ghItemList');
+    const items  = getFilteredGH();
+    document.getElementById('ghItemCount').textContent = `${items.length}/${ghData?.length||0}`;
+
+    if (!items.length) {
+        list.innerHTML = `<div class="empty-state"><i class="bi bi-search" style="font-size:26px;display:block;margin-bottom:8px;opacity:.25"></i>Không có câu hỏi nào</div>`;
+        return;
+    }
+
+    list.innerHTML = '';
+    items.forEach(item => {
+        const idx = ghData.indexOf(item); /* reference equality — same object */
+        const div = document.createElement('div');
+        div.className = 'je-item';
+
+        div.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+                <div style="display:flex;gap:5px;flex-wrap:wrap">
+                    <span class="cat-badge cb-${getCategory(ghCatKey)?.color||'emerald'}"
+                          style="font-family:monospace;font-size:9px">#${item.id}</span>
+                    ${item.week != null ? `<span class="cat-badge cb-purple"><i class="bi bi-calendar-week-fill" style="font-size:8px"></i> Tuần ${item.week}</span>` : ''}
+                </div>
+            </div>
+            <p class="je-q">${item.question||item.q||''}</p>
+            <p class="je-a"><i class="bi bi-lightbulb-fill" style="font-size:9px;color:#10b981"></i> ${item.answer||item.a||''}</p>
+            <div class="je-actions">
+                <button class="je-btn je-btn-edit btn-gh-edit"><i class="bi bi-pencil-fill"></i> Sửa</button>
+                <button class="je-btn je-btn-del  btn-gh-del"><i class="bi bi-trash3-fill"></i> Xóa</button>
+            </div>
+            <!-- inline edit form -->
+            <div class="je-edit-wrap" id="ghEdit_${idx}">
+                ${item.week != null ? `
+                <div style="display:flex;gap:8px;margin-bottom:8px">
+                    <input type="text" class="gh-edit-week-num" value="${item.week||''}"
+                        placeholder="Tuần" style="flex:0 0 80px;font-size:12px;border-radius:10px;padding:7px 10px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);font-family:inherit;outline:none">
+                    <input type="text" class="gh-edit-week-title" value="${item.weekTitle||''}"
+                        placeholder="Tiêu đề tuần" style="flex:1;font-size:12px;border-radius:10px;padding:7px 10px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);font-family:inherit;outline:none">
+                </div>` : ''}
+                <div class="je-edit-label"><i class="bi bi-question-circle-fill" style="color:#f59e0b"></i> Câu hỏi</div>
+                <div class="editor-toolbar" style="border-radius:10px 10px 0 0">
+                    <button class="tb-btn" data-target="ghQ_${idx}" data-insert='""'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="ghQ_${idx}" data-insert="…">…</button>
+                    <button class="tb-btn" data-target="ghQ_${idx}" data-insert="–">–</button>
+                    <button class="tb-btn" data-target="ghQ_${idx}" data-clear="1"><i class="bi bi-x-lg"></i></button>
+                    <button class="tb-btn" data-target="ghQ_${idx}" data-copy="1"><i class="bi bi-clipboard"></i></button>
+                </div>
+                <textarea class="smart-ta" id="ghQ_${idx}" style="border-radius:0;margin-bottom:8px">${item.question||item.q||''}</textarea>
+                <div class="je-edit-label"><i class="bi bi-lightbulb-fill" style="color:#10b981"></i> Đáp án</div>
+                <div class="editor-toolbar" style="border-radius:10px 10px 0 0">
+                    <button class="tb-btn" data-target="ghA_${idx}" data-insert='""'><i class="bi bi-quote"></i></button>
+                    <button class="tb-btn" data-target="ghA_${idx}" data-insert="Tất cả các đáp án trên.">Tất cả ĐA</button>
+                    <button class="tb-btn" data-target="ghA_${idx}" data-insert="Không có đáp án nào đúng.">Không ĐA</button>
+                    <button class="tb-btn" data-target="ghA_${idx}" data-clear="1"><i class="bi bi-x-lg"></i></button>
+                    <button class="tb-btn" data-target="ghA_${idx}" data-copy="1"><i class="bi bi-clipboard"></i></button>
+                </div>
+                <textarea class="smart-ta" id="ghA_${idx}" style="border-radius:0"></textarea>
+                <div style="display:flex;gap:6px;margin-top:8px">
+                    <button class="je-btn je-btn-save btn-gh-save" data-idx="${idx}" style="flex:1;justify-content:center;padding:8px">
+                        <i class="bi bi-check-lg"></i> Lưu thay đổi
+                    </button>
+                    <button class="je-btn je-btn-cancel btn-gh-cancel" style="flex:1;justify-content:center;padding:8px">Huỷ</button>
+                </div>
+            </div>`;
+
+        /* Events */
+        div.querySelector('.btn-gh-edit').addEventListener('click', () => {
+            const wrap = div.querySelector('.je-edit-wrap');
+            const isOpen = wrap.classList.contains('open');
+            document.querySelectorAll('.je-edit-wrap.open').forEach(w => w.classList.remove('open'));
+            document.querySelectorAll('.je-item.editing').forEach(d => d.classList.remove('editing'));
+            if (!isOpen) {
+                wrap.classList.add('open');
+                div.classList.add('editing');
+                initAllAutoResize();
+                div.querySelector('.smart-ta')?.focus();
+            }
+        });
+
+        div.querySelector('.btn-gh-cancel').addEventListener('click', () => {
+            div.querySelector('.je-edit-wrap').classList.remove('open');
+            div.classList.remove('editing');
+        });
+
+        div.querySelector('.btn-gh-save').addEventListener('click', () => {
+            const i    = parseInt(div.querySelector('.btn-gh-save').dataset.idx);
+            const newQ = document.getElementById(`ghQ_${i}`)?.value.trim();
+            const newA = document.getElementById(`ghA_${i}`)?.value.trim();
+            if (!newQ || !newA) { toast('bi-exclamation-circle-fill','Không được để trống!'); return; }
+            ghData[i].question = newQ;
+            if (ghData[i].q != null) ghData[i].q = newQ;
+            ghData[i].answer = newA;
+            if (ghData[i].a != null) ghData[i].a = newA;
+            /* Update week if editable */
+            const wNum = div.querySelector('.gh-edit-week-num')?.value.trim();
+            const wTitle = div.querySelector('.gh-edit-week-title')?.value.trim();
+            if (wNum) { ghData[i].week = parseInt(wNum); ghData[i].weekTitle = wTitle || `Tuần ${wNum}`; }
+            markDirty(true);
+            toast('bi-check-circle-fill','Đã cập nhật (chưa push)');
+            div.querySelector('.je-edit-wrap').classList.remove('open');
+            div.classList.remove('editing');
+            renderGHList();
+        });
+
+        div.querySelector('.btn-gh-del').addEventListener('click', () => {
+            if (!confirm(`Xóa câu #${item.id}?\n"${(item.question||'').substring(0,60)}…"`)) return;
+            ghData.splice(idx, 1);
+            markDirty(true);
+            toast('bi-trash3-fill','Đã xóa (chưa push)');
+            renderGHList();
+        });
+
+        list.appendChild(div);
+    });
+    initAllAutoResize();
+}
+
+/* Thêm câu mới vào ghData inline */
+function confirmGHAdd() {
+    if (!ghData) return;
+    const newQ = document.getElementById('ghAddQ').value.trim();
+    const newA = document.getElementById('ghAddA').value.trim();
+    if (!newQ) { toast('bi-exclamation-circle-fill','Nhập câu hỏi!'); return; }
+    if (!newA) { toast('bi-exclamation-circle-fill','Nhập đáp án!');  return; }
+
+    const lastId  = ghData.length ? Math.max(...ghData.map(i => i.id||0)) : 0;
+    const entry = { id: lastId+1, question: newQ, answer: newA };
+
+    const wNum   = document.getElementById('ghAddWeekNum')?.value.trim();
+    const wTitle = document.getElementById('ghAddWeekTitle')?.value.trim();
+    if (wNum && /^\d+$/.test(wNum)) {
+        entry.week = parseInt(wNum);
+        entry.weekTitle = wTitle || `Tuần ${wNum}`;
+    }
+
+    ghData.push(entry);
+    markDirty(true);
+    document.getElementById('ghAddQ').value = '';
+    document.getElementById('ghAddA').value = '';
+    document.getElementById('ghAddForm').style.display = 'none';
+    toast('bi-plus-circle-fill', `Đã thêm câu #${entry.id} (chưa push)`);
+    renderGHList();
+}
+
+/* Push toàn bộ ghData lên GitHub */
+async function saveGHFile() {
+    if (!ghData || !ghFilePath || !ghFileSHA) {
+        toast('bi-exclamation-circle-fill','Chưa tải file từ GitHub!'); return;
+    }
+    const cfg = loadConfig();
+    if (!cfg.token) { toast('bi-exclamation-circle-fill','Cần token GitHub!'); return; }
+
+    const btn = document.getElementById('btnSaveGH');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang push…';
+
+    try {
+        const commitMsg = `fix: cập nhật dữ liệu ${ghFilePath} qua editor`;
+        await pushJsonFile(cfg.repo, cfg.branch, ghFilePath, ghData, ghFileSHA, commitMsg, cfg.token);
+        /* Refresh sha sau khi push */
+        const refreshed = await fetchJsonFile(cfg.repo, cfg.branch, ghFilePath, cfg.token);
+        ghFileSHA = refreshed.sha;
+        markDirty(false);
+        toast('bi-check-circle-fill', `✅ Đã push ${ghData.length} câu lên GitHub!`, 3000);
+    } catch(e) {
+        if (e.message.startsWith('409')) {
+            toast('bi-exclamation-triangle-fill', 'File đã thay đổi trên GitHub — tải lại và sửa lại', 3000);
+        } else {
+            toast('bi-x-circle-fill', `Lỗi: ${e.message}`, 3000);
+        }
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-cloud-upload-fill"></i> Lưu lên GitHub';
+    }
+}
+
+/* ── Init ── */
+loadConfigUI();
+updateBadge();
+refreshCategorySelects();
+</script>
+</body>
+</html>

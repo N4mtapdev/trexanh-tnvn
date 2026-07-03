@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | TreXanh TNVN</title>
+    <meta name="description" content="Blog chia sẻ kiến thức, tin tức về lý luận chính trị, lịch sử, hoạt động thanh niên TNVN.">
+    <meta name="keywords" content="blog TNVN, tin tức thanh niên, kiến thức chính trị, lịch sử Việt Nam">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#10b981">
+    <link rel="canonical" href="https://trexanh-tnvn.vercel.app/blog.html">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="apple-touch-icon" href="assets/images/logo.png">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Blog TreXanh">
+    <meta property="og:image" content="https://trexanh-tnvn.vercel.app/assets/images/og-image.png">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Blog","name":"TreXanh Blog","url":"https://trexanh-tnvn.vercel.app/blog.html"}
+    </script>
+</head>
+<body>
+
+<div id="page-content" role="main">
+    <div style="padding:16px">
+        <!-- Hero -->
+        <div style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.04));border:1.5px solid var(--border-light);border-radius:20px;padding:20px 16px;margin-bottom:20px">
+            <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;background:rgba(16,185,129,.12);color:#059669;font-size:9px;font-weight:800;margin-bottom:10px">
+                <i class="bi bi-newspaper"></i> Blog TNVN
+            </div>
+            <h1 style="font-size:18px;font-weight:900;margin:0 0 6px">Kiến thức &amp; Tin tức <span style="color:#10b981">Thanh Niên</span></h1>
+            <p style="font-size:11px;color:var(--muted-light);margin:0">Cập nhật kiến thức lý luận chính trị, lịch sử, và các hoạt động thanh niên TNVN.</p>
+            <!-- Search -->
+            <div id="blog-search-wrap" style="display:flex;align-items:center;gap:8px;margin-top:14px;background:var(--card-light);border:1.5px solid var(--border-light);border-radius:12px;padding:9px 13px">
+                <i class="bi bi-search" style="color:#10b981"></i>
+                <input id="blog-search" type="search" placeholder="Tìm bài viết..." autocomplete="off" style="background:transparent;border:none;outline:none;color:var(--text-light);font-size:12px;width:100%">
+                <button id="blog-search-clear" style="display:none;background:none;border:none"><i class="bi bi-x-circle-fill"></i></button>
+            </div>
+        </div>
+
+        <!-- Filter tabs -->
+        <div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:16px" role="tablist">
+            <button onclick="filterPosts('all')" data-cat="all" class="blog-cat-btn active"><i class="bi bi-grid-fill"></i> Tất cả</button>
+            <button onclick="filterPosts('chinhTri')" data-cat="chinhTri" class="blog-cat-btn"><i class="bi bi-flag-fill"></i> Chính trị</button>
+            <button onclick="filterPosts('lichSu')" data-cat="lichSu" class="blog-cat-btn"><i class="bi bi-clock-history"></i> Lịch sử</button>
+            <button onclick="filterPosts('hoatDong')" data-cat="hoatDong" class="blog-cat-btn"><i class="bi bi-people-fill"></i> Hoạt động</button>
+            <button onclick="filterPosts('tuLieu')" data-cat="tuLieu" class="blog-cat-btn"><i class="bi bi-journal-bookmark-fill"></i> Tư liệu</button>
+        </div>
+
+        <div class="tx-sec-head">
+            <span class="tx-sec-title"><i class="bi bi-fire" style="color:#f59e0b"></i> Bài viết</span>
+            <div class="tx-sec-line"></div>
+            <span id="post-count" style="font-size:10px;font-weight:800;color:var(--muted-light)"></span>
+        </div>
+
+        <div id="post-grid" role="list"></div>
+        <div id="blog-empty" style="display:none;text-align:center;padding:48px 0">
+            <p style="font-weight:800">Không tìm thấy bài viết</p>
+            <button onclick="clearBlogSearch()" style="margin-top:12px;padding:9px 20px;background:#10b981;color:white;border:none;border-radius:12px">Xem tất cả</button>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/base.js"></script>
+<script>
+TreXanh.init({ page: 'blog' });
+
+const CAT_COLORS = {
+    emerald: { bg:'rgba(16,185,129,.1)', text:'#059669' },
+    blue:    { bg:'rgba(59,130,246,.1)', text:'#2563eb' },
+    amber:   { bg:'rgba(245,158,11,.1)', text:'#d97706' },
+    purple:  { bg:'rgba(139,92,246,.1)', text:'#7c3aed' },
+};
+
+let POSTS = [];
+let currentCat = 'all';
+let searchQuery = '';
+
+async function loadPosts() {
+    try {
+        const res = await fetch('posts.json');
+        POSTS = await res.json();
+    } catch(e) {
+        POSTS = []; // fallback
+    }
+    renderPosts();
+    document.getElementById('post-count').innerText = POSTS.length + ' bài';
+}
+
+function getFiltered() {
+    return POSTS.filter(p => {
+        const matchCat = currentCat === 'all' || p.category === currentCat;
+        const matchSearch = !searchQuery || p.title.toLowerCase().includes(searchQuery) || (p.tags || []).some(t => t.toLowerCase().includes(searchQuery));
+        return matchCat && matchSearch;
+    });
+}
+
+function renderPosts() {
+    const filtered = getFiltered();
+    const grid = document.getElementById('post-grid');
+    const empty = document.getElementById('blog-empty');
+    if (!filtered.length) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+    grid.innerHTML = filtered.map((p, idx) => {
+        const col = CAT_COLORS[p.catColor] || CAT_COLORS.emerald;
+        const relTime = TreXanh.relativeTime(p.date);
+        const thumbHtml = p.thumb ? `<img src="${p.thumb}" alt="${p.title}" loading="lazy" style="width:100%;height:150px;object-fit:cover">` : `<div style="height:130px;background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(16,185,129,.04));display:flex;align-items:center;justify-content:center"><i class="bi bi-newspaper" style="font-size:32px;color:rgba(16,185,129,.35)"></i></div>`;
+        const featuredBadge = p.featured ? `<span style="position:absolute;top:10px;left:10px;background:rgba(245,158,11,.9);color:white;padding:3px 9px;border-radius:8px;font-size:9px;font-weight:800"><i class="bi bi-star-fill"></i> Nổi bật</span>` : '';
+        return `<article class="post-card animate__animated animate__fadeInUp" style="animation-delay:${Math.min(idx*0.05,0.3)}s" onclick="location.href='posts/${p.slug}.html'">
+            <div style="position:relative">${thumbHtml}${featuredBadge}<span style="position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.92);color:${col.text};padding:3px 9px;border-radius:8px;font-size:9px;font-weight:800">${p.catLabel}</span></div>
+            <div style="padding:14px">
+                <div style="display:flex;gap:8px;margin-bottom:6px;font-size:9px;color:var(--muted-light)"><i class="bi bi-clock"></i> ${relTime} · <i class="bi bi-book"></i> ${p.readTime}</div>
+                <h2 style="font-size:14px;font-weight:800;margin:0 0 6px">${p.title}</h2>
+                <p style="font-size:11px;color:var(--muted-light);margin:0 0 10px">${p.excerpt}</p>
+                <div style="display:flex;gap:6px;flex-wrap:wrap">${(p.tags || []).slice(0,2).map(t => `<span style="font-size:9px;padding:2px 8px;border-radius:6px;background:var(--card-light);border:1px solid var(--border-light)">#${t}</span>`).join('')}</div>
+            </div>
+        </article>`;
+    }).join('');
+}
+
+window.filterPosts = (cat) => {
+    currentCat = cat;
+    document.querySelectorAll('.blog-cat-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === cat));
+    renderPosts();
+};
+const input = document.getElementById('blog-search');
+const clearBtn = document.getElementById('blog-search-clear');
+input.addEventListener('input', () => {
+    searchQuery = input.value.trim().toLowerCase();
+    clearBtn.style.display = searchQuery ? 'block' : 'none';
+    renderPosts();
+});
+window.clearBlogSearch = () => { input.value = ''; searchQuery = ''; clearBtn.style.display = 'none'; renderPosts(); };
+
+loadPosts();
+</script>
+</body>
+</html>
