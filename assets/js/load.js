@@ -17,11 +17,13 @@
    CẤU HÌNH
 ============================================================ */
 const filesToLoad = [
-    { name:'Lý Luận Chính Trị', icon:'bi-journal-bookmark-fill', url:'./assets/json/KTHTCBHLLCT.json', color:'emerald', prefix:'LLCT' },
-    { name:'TBT Hà Huy Tập',    icon:'bi-person-vcard-fill',      url:'./assets/json/HHT.json',          color:'blue',    prefix:'HHT'  },
+    { name:'Lý Luận Chính Trị', icon:'bi-journal-bookmark-fill', url:'/api/data?cat=LLCT', color:'emerald', prefix:'LLCT' },
+    { name:'TBT Hà Huy Tập',    icon:'bi-person-vcard-fill',      url:'/api/data?cat=HHT',  color:'blue',    prefix:'HHT'  },
     /* Category có sub-tab theo tuần — chỉ cần thêm field "week"/"weekTitle" trong JSON,
-       hệ thống tự nhận diện và render sub-tab, không cần khai báo gì thêm ở đây */
-    { name:'Tìm hiểu Đoàn',     icon:'bi-flag-fill',              url:'./assets/json/SAMPLE-WEEKLY.json', color:'purple', prefix:'TUAN' },
+       hệ thống tự nhận diện và render sub-tab, không cần khai báo gì thêm ở đây.
+       Data giờ phục vụ qua /api/data?cat=... (Vercel Edge Function) thay vì file JSON
+       tĩnh public trong assets/json/ — thêm category mới thì thêm vào DATASETS trong
+       api/data.js rồi khai báo url tương ứng ở đây. */
 ];
 
 
@@ -445,7 +447,8 @@ async function init() {
 
     const results = await Promise.all(filesToLoad.map(async (file) => {
         try {
-            const res  = await fetch(`${file.url}?v=${DATA_VER}`);
+            const sep  = file.url.includes('?') ? '&' : '?';
+            const res  = await fetch(`${file.url}${sep}v=${DATA_VER}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             const items = data.map(item => ({

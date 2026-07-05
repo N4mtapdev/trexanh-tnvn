@@ -7,14 +7,14 @@
  *   - Ảnh: Cache First với expiry
  */
 
-const CACHE_SHELL   = 'tx-shell-v2.4.1';
-const CACHE_DATA    = 'tx-data-v2.4.1';
-const CACHE_IMAGES  = 'tx-img-v2.4.1';
+const CACHE_SHELL   = 'tx-shell-v2.4.2';
+const CACHE_DATA    = 'tx-data-v2.4.2';
+const CACHE_IMAGES  = 'tx-img-v2.4.2';
 
 const SHELL_URLS = [
     '/',
     '/index.html',
-    '/assets/js/load.js',
+    '/assets/js/load.min.js',
     '/assets/js/base.js',
     '/assets/favicon/favicon-32x32.png',
     '/assets/favicon/favicon.ico',
@@ -27,9 +27,8 @@ const SHELL_URLS = [
 ];
 
 const DATA_URLS = [
-    '/assets/json/KTHTCBHLLCT.json',
-    '/assets/json/HHT.json',
-    '/assets/json/SAMPLE-WEEKLY.json',
+    '/api/data?cat=HHT',
+    '/api/data?cat=LLCT',
 ];
 
 /* ── Install: pre-cache shell ── */
@@ -62,14 +61,14 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
     const url = new URL(e.request.url);
 
-    /* API calls — network only, không cache */
-    if (url.pathname.startsWith('/api/')) return;
-
-    /* JSON data — Network First, fallback cache */
-    if (url.pathname.startsWith('/assets/json/') || url.pathname.endsWith('.json')) {
+    /* Data API — Network First, fallback cache (giữ offline support cho câu hỏi/đáp án) */
+    if (url.pathname === '/api/data') {
         e.respondWith(networkFirstJSON(e.request));
         return;
     }
+
+    /* Các API khác (og, online...) — network only, không cache */
+    if (url.pathname.startsWith('/api/')) return;
 
     /* Ảnh — Cache First */
     if (/\.(webp|png|jpg|jpeg|gif|svg|ico)$/i.test(url.pathname)) {
@@ -94,17 +93,28 @@ async function cacheFirstWithRevalidate(req) {
     return cached || await fetchPromise || new Response('Offline', { status: 503 });
 }
 
-/* ── Network First (JSON data) ── */
+/* ── Network First (JSON data) ──
+   Lưu ý: /api/data phân biệt category bằng query (?cat=HHT vs ?cat=LLCT),
+   nên KHÔNG dùng ignoreSearch (sẽ làm 2 category lẫn cache vào nhau).
+   Chỉ bỏ riêng param "v" (cache-buster) khi tạo cache key, giữ nguyên "cat". */
+function dataCacheKey(req) {
+    const u = new URL(req.url);
+    u.searchParams.delete('v');
+    return new Request(u.toString(), { method: 'GET' });
+}
+
 async function networkFirstJSON(req) {
+    const key = dataCacheKey(req);
     try {
         const res = await fetch(req);
         if (res.ok) {
             const cache = await caches.open(CACHE_DATA);
-            cache.put(req, res.clone());
+            cache.put(key, res.clone());
         }
         return res;
     } catch {
-        const cached = await caches.match(req, { ignoreSearch: true });
+        const cache  = await caches.open(CACHE_DATA);
+        const cached = await cache.match(key);
         if (cached) return cached;
         /* Trả JSON rỗng thay vì lỗi, để UI hiện empty state đúng */
         return new Response('[]', {

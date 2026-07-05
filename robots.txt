@@ -1,3 +1,11 @@
- User-agent: *
+User-agent: *
 Allow: /
+Disallow: /add-data.html
+Disallow: /api/
+Disallow: /convert.js
+Disallow: /test.html
+Disallow: /up.html
+Disallow: /index.html.bak
+Disallow: /raw/
+
 Sitemap: https://trexanh-tnvn.vercel.app/sitemap.xml
