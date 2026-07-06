@@ -3,7 +3,8 @@
   "version": "2.4.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-data.js && node scripts/build-js.js"
+    "build": "node scripts/build-data.js && node scripts/build-js.js",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "@vercel/og": "latest",
