@@ -5,8 +5,9 @@
  * Vì sao cần bước này:
  *   - assets/json/*.json là NGUỒN dữ liệu gốc, add-data.html vẫn đọc/ghi
  *     trực tiếp file này qua GitHub API (không đổi workflow của add-data.html).
- *   - Nhưng trên site live, assets/json/ bị .vercelignore chặn — không ai
- *     fetch trực tiếp file JSON được nữa.
+ *   - Trên site live, request thẳng vào /assets/json/* bị vercel.json rewrite
+ *     sang /api/blocked (403) — file vẫn nằm trong deploy (để build đọc được)
+ *     nhưng không lấy được qua URL trực tiếp nữa.
  *   - Trang chính (load.js) giờ lấy dữ liệu qua /api/data?cat=... — dữ liệu
  *     được "đóng gói" (bake) thẳng vào api/data.js ở bước build này.
  *
