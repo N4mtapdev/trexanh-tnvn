@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@vercel/og": "latest",
-    "@vercel/kv": "latest"
+    "@vercel/kv": "latest",
+    "@vercel/edge": "latest"
   },
   "devDependencies": {
     "esbuild": "^0.27.0"

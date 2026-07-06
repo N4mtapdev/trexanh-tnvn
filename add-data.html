@@ -770,7 +770,6 @@
             <div class="field-group">
                 <label>
                     <i class="bi bi-key-fill"></i> GitHub Token
-                    <span style="font-size:8px;font-weight:600;text-transform:none;letter-spacing:0">(lưu localStorage)</span>
                 </label>
                 <div class="token-wrap">
                     <input type="password" id="cfgToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
@@ -779,6 +778,14 @@
                 <div class="token-status ts-idle" id="tokenStatus">
                     <i class="bi bi-circle"></i> Chưa có token
                 </div>
+                <label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0">
+                    <input type="checkbox" id="cfgRemember" style="width:auto">
+                    Ghi nhớ token trên máy này (localStorage)
+                </label>
+                <p style="font-size:10px;color:var(--muted);line-height:1.5;margin:4px 0 0">
+                    Mặc định token chỉ lưu tạm cho phiên làm việc này (<b>sessionStorage</b> — tự xoá khi đóng tab).
+                    Chỉ tích ô trên nếu đây là máy cá nhân, không dùng chung.
+                </p>
             </div>
 
             <div style="display:flex;gap:8px">
@@ -800,7 +807,7 @@
                 </p>
                 <p style="font-size:11px;color:var(--muted);line-height:1.6">
                     <i class="bi bi-check-circle-fill" style="color:#10b981"></i>
-                    Lưu trong <b style="color:var(--text)">localStorage</b> — không đi đâu khác
+                    Mặc định lưu tạm trong <b style="color:var(--text)">sessionStorage</b> (mất khi đóng tab) — không đi đâu khác
                 </p>
                 <p style="font-size:11px;color:var(--muted);line-height:1.6">
                     <i class="bi bi-exclamation-triangle-fill" style="color:#f59e0b"></i>
@@ -866,13 +873,26 @@ function loadConfig() {
     return {
         repo:   localStorage.getItem('txCfgRepo')   || 'N4mtapdev/trexanh-tnvn',
         branch: localStorage.getItem('txCfgBranch') || 'main',
-        token:  localStorage.getItem('txCfgToken')  || '',
+        /* Token: ưu tiên localStorage nếu người dùng đã chọn "ghi nhớ",
+           không thì lấy từ sessionStorage (tự xoá khi đóng tab) */
+        token:  localStorage.getItem('txCfgToken') || sessionStorage.getItem('txCfgToken') || '',
+        remember: Boolean(localStorage.getItem('txCfgToken')),
     };
 }
 function saveConfig(c) {
     localStorage.setItem('txCfgRepo', c.repo);
     localStorage.setItem('txCfgBranch', c.branch);
-    localStorage.setItem('txCfgToken', c.token);
+
+    /* Xoá token ở storage cũ trước để tránh còn sót bản ghi lệch nhau
+       khi người dùng đổi lựa chọn "ghi nhớ" giữa các lần lưu */
+    localStorage.removeItem('txCfgToken');
+    sessionStorage.removeItem('txCfgToken');
+
+    if (c.remember) {
+        localStorage.setItem('txCfgToken', c.token);
+    } else {
+        sessionStorage.setItem('txCfgToken', c.token);
+    }
 }
 
 /* ── Toast ── */
@@ -1055,9 +1075,10 @@ document.getElementById('btnClearAll').addEventListener('click', () => {
 /* ── Config UI ── */
 function loadConfigUI() {
     const cfg = loadConfig();
-    document.getElementById('cfgRepo').value   = cfg.repo;
-    document.getElementById('cfgBranch').value = cfg.branch;
-    document.getElementById('cfgToken').value  = cfg.token;
+    document.getElementById('cfgRepo').value     = cfg.repo;
+    document.getElementById('cfgBranch').value   = cfg.branch;
+    document.getElementById('cfgToken').value    = cfg.token;
+    document.getElementById('cfgRemember').checked = cfg.remember;
     updateTokenStatus(cfg.token);
 }
 
@@ -1075,7 +1096,12 @@ document.getElementById('btnEye').addEventListener('click', () => {
 });
 
 document.getElementById('btnSaveConfig').addEventListener('click', () => {
-    const cfg = { repo:document.getElementById('cfgRepo').value.trim(), branch:document.getElementById('cfgBranch').value.trim()||'main', token:document.getElementById('cfgToken').value.trim() };
+    const cfg = {
+        repo:     document.getElementById('cfgRepo').value.trim(),
+        branch:   document.getElementById('cfgBranch').value.trim() || 'main',
+        token:    document.getElementById('cfgToken').value.trim(),
+        remember: document.getElementById('cfgRemember').checked,
+    };
     if (!cfg.repo)  { toast('bi-exclamation-circle-fill','Nhập repo!');  return; }
     if (!/^[\w.-]+\/[\w.-]+$/.test(cfg.repo)) {
         toast('bi-exclamation-circle-fill','Repo phải đúng dạng owner/repo!', 2500);
@@ -1103,6 +1129,7 @@ document.getElementById('btnTestToken').addEventListener('click', async () => {
 document.getElementById('btnClearConfig').addEventListener('click', () => {
     if (!confirm('Xóa toàn bộ config và token?')) return;
     ['txCfgRepo','txCfgBranch','txCfgToken'].forEach(k => localStorage.removeItem(k));
+    sessionStorage.removeItem('txCfgToken');
     loadConfigUI();
     toast('bi-trash3-fill','Đã xóa config');
 });
@@ -1956,6 +1983,20 @@ async function saveGHFile() {
 loadConfigUI();
 updateBadge();
 refreshCategorySelects();
+
+/* ── PWA — Service Worker (để trang này cũng chạy offline được) ── */
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+            const nw = reg.installing;
+            nw?.addEventListener('statechange', () => {
+                if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                    toast('bi-arrow-repeat', '🔄 Có bản cập nhật mới — tải lại trang để dùng bản mới', 6000);
+                }
+            });
+        });
+    }).catch(() => {});
+}
 </script>
 </body>
 </html>

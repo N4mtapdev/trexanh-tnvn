@@ -71,6 +71,10 @@ self.addEventListener('fetch', e => {
     /* Các API khác (og, online...) — network only, không cache */
     if (url.pathname.startsWith('/api/')) return;
 
+    /* add-data.html có passphrase gate ở middleware — không cache qua SW,
+       để lúc offline không bị lộ nội dung đã auth mà bỏ qua gate */
+    if (url.pathname === '/add-data.html') return;
+
     /* Ảnh — Cache First */
     if (/\.(webp|png|jpg|jpeg|gif|svg|ico)$/i.test(url.pathname)) {
         e.respondWith(cacheFirstImages(e.request));

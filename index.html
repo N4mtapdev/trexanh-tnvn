@@ -1540,6 +1540,19 @@
             { name:'Yenlynh',   role:'Co-Founder · Content · Supporter', icon:'assets/images/yl.jpg',        col:'#f472b6', contrib:'Nội dung & hỗ trợ cho Dev'   },
         ];
 
+        /* Map từ khoá trong "role" → icon Bootstrap Icons, dùng để hiện badge có icon */
+        const ROLE_ICONS = [
+            [/founder/i,   'bi-award-fill'],
+            [/dev/i,       'bi-code-slash'],
+            [/content/i,   'bi-pencil-fill'],
+            [/supporter/i, 'bi-heart-fill'],
+            [/design/i,    'bi-palette-fill'],
+        ];
+        function roleIcon(part) {
+            const hit = ROLE_ICONS.find(([re]) => re.test(part));
+            return hit ? hit[1] : 'bi-star-fill';
+        }
+
         function showContributors() {
             const old = document.getElementById('txContribModal');
             if (old) { old.remove(); return; }
@@ -1562,13 +1575,21 @@
                 border-radius:24px 24px 0 0;padding:0 0 24px;
                 border-top:1.5px solid ${border};
                 box-shadow:0 -12px 48px ${dk?'rgba(0,0,0,.5)':'rgba(139,92,246,.15)'};
-                animation:txSlideUp .22s cubic-bezier(.34,1.56,.64,1)`;
+                animation:txSlideUp .22s cubic-bezier(.34,1.56,.64,1);
+                display:flex;flex-direction:column;max-height:82vh;
+                touch-action:none`;
 
-            /* Handle bar */
+            /* Vùng kéo để đóng — handle bar + header, tách riêng khỏi list
+               (list cuộn riêng bằng touch, không lẫn với thao tác kéo-đóng) */
+            const dragZone = document.createElement('div');
+            dragZone.style.cssText = 'flex-shrink:0;cursor:grab';
+
+            /* Handle bar — giờ là tay cầm kéo thật, không còn chỉ để trang trí */
             const handle = document.createElement('div');
             handle.style.cssText = `width:36px;height:4px;border-radius:2px;margin:12px auto 16px;
-                background:${dk?'rgba(255,255,255,.12)':'rgba(0,0,0,.1)'}`;
-            box.appendChild(handle);
+                background:${dk?'rgba(255,255,255,.12)':'rgba(0,0,0,.1)'};
+                transition:background .15s,width .15s`;
+            dragZone.appendChild(handle);
 
             /* Header */
             const header = document.createElement('div');
@@ -1580,24 +1601,30 @@
                 <p style="font-size:9px;color:${colMut};margin:3px 0 0;font-weight:600">
                     Những người đằng sau TreXanh · ${CONTRIBUTORS.length} người
                 </p>`;
-            box.appendChild(header);
+            dragZone.appendChild(header);
+            box.appendChild(dragZone);
 
-            /* List */
+            /* List — giới hạn chiều cao + cuộn riêng bên trong, không kéo-đóng được ở đây */
             const list = document.createElement('div');
-            list.style.cssText = 'padding:8px 12px 0';
+            list.style.cssText = `padding:8px 12px 0;overflow-y:auto;overscroll-behavior:contain;
+                -webkit-overflow-scrolling:touch;touch-action:pan-y;flex:1;min-height:0`;
 
             CONTRIBUTORS.forEach((c, i) => {
                 const row = document.createElement('div');
                 row.style.cssText = `display:flex;align-items:center;gap:12px;padding:10px 8px;
-                    border-radius:14px;transition:background .15s;
+                    border-radius:14px;transition:background .15s,transform .1s;
+                    -webkit-tap-highlight-color:transparent;
                     ${i < CONTRIBUTORS.length - 1 ? `border-bottom:1px solid ${divider}` : ''}`;
                 row.addEventListener('mouseenter', () => row.style.background = dk?'rgba(255,255,255,.04)':'rgba(0,0,0,.02)');
                 row.addEventListener('mouseleave', () => row.style.background = 'transparent');
+                row.addEventListener('touchstart', () => { row.style.background = dk?'rgba(255,255,255,.06)':'rgba(0,0,0,.03)'; row.style.transform = 'scale(.99)'; }, { passive:true });
+                row.addEventListener('touchend',   () => { row.style.background = 'transparent'; row.style.transform = 'scale(1)'; }, { passive:true });
 
-                /* Avatar — ảnh hoặc icon */
+                /* Avatar — ảnh hoặc icon, thêm viền + shadow màu theo người */
                 const avatar = document.createElement('div');
-                avatar.style.cssText = `width:44px;height:44px;border-radius:14px;flex-shrink:0;
-                    background:${c.col}18;border:1.5px solid ${c.col}30;
+                avatar.style.cssText = `width:46px;height:46px;border-radius:14px;flex-shrink:0;
+                    background:${c.col}18;border:1.5px solid ${c.col}40;
+                    box-shadow:0 3px 10px ${c.col}25;
                     display:flex;align-items:center;justify-content:center;overflow:hidden`;
 
                 const isImg = c.icon && (c.icon.includes('/') || c.icon.includes('.'));
@@ -1617,14 +1644,22 @@
                 info.style.cssText = 'flex:1;min-width:0';
 
                 const nm = document.createElement('p');
-                nm.style.cssText = `font-size:13px;font-weight:900;color:${colTxt};margin:0 0 2px;
+                nm.style.cssText = `font-size:13px;font-weight:900;color:${colTxt};margin:0 0 5px;
                     white-space:nowrap;overflow:hidden;text-overflow:ellipsis`;
                 nm.textContent = c.name;
 
-                const rl = document.createElement('p');
-                rl.style.cssText = `font-size:10px;font-weight:700;color:${c.col};margin:0 0 3px;
-                    white-space:nowrap;overflow:hidden;text-overflow:ellipsis`;
-                rl.textContent = c.role;
+                /* Role — badge dạng pill có icon riêng cho từng vai trò, thay vì chữ trơn */
+                const rl = document.createElement('div');
+                rl.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;margin:0 0 4px';
+                c.role.split('·').map(s => s.trim()).filter(Boolean).forEach(part => {
+                    const badge = document.createElement('span');
+                    badge.style.cssText = `display:inline-flex;align-items:center;gap:3px;
+                        font-size:9px;font-weight:800;color:${c.col};background:${c.col}15;
+                        border:1px solid ${c.col}30;border-radius:999px;padding:2px 7px 2px 6px;
+                        white-space:nowrap`;
+                    badge.innerHTML = `<i class="bi ${roleIcon(part)}" style="font-size:8px"></i> ${part}`;
+                    rl.appendChild(badge);
+                });
 
                 const ct = document.createElement('p');
                 ct.style.cssText = `font-size:9px;color:${colMut};margin:0;font-weight:500`;
@@ -1641,11 +1676,62 @@
             box.appendChild(list);
             overlay.appendChild(box);
             document.body.appendChild(overlay);
+
+            /* Khoá scroll nền trong lúc mở sheet */
+            const prevOverflow = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+
+            function closeSheet() {
+                overlay.style.animation = 'txFadeOut .15s ease forwards';
+                box.style.transition = 'transform .18s ease';
+                box.style.transform = 'translateY(100%)';
+                document.body.style.overflow = prevOverflow;
+                setTimeout(() => overlay.remove(), 180);
+            }
+
             overlay.addEventListener('click', e => {
                 if (e.target !== overlay) return;
-                overlay.style.animation = 'txFadeOut .15s ease forwards';
-                setTimeout(() => overlay.remove(), 150);
+                closeSheet();
             });
+
+            /* ── Kéo-để-đóng (drag-to-dismiss) — chỉ trên handle+header, dùng Pointer
+               Events để chạy được cả chuột lẫn cảm ứng bằng cùng 1 bộ code ── */
+            let dragging = false, startY = 0, currentY = 0;
+
+            function onPointerDown(e) {
+                dragging = true;
+                startY = e.clientY;
+                currentY = 0;
+                box.style.transition = 'none';
+                dragZone.style.cursor = 'grabbing';
+                dragZone.setPointerCapture?.(e.pointerId);
+            }
+            function onPointerMove(e) {
+                if (!dragging) return;
+                const dy = e.clientY - startY;
+                currentY = Math.max(0, dy); /* chỉ cho kéo xuống, không cho kéo ngược lên quá vị trí gốc */
+                box.style.transform = `translateY(${currentY}px)`;
+                overlay.style.background = `rgba(0,0,0,${Math.max(0, .48 - currentY / 600)})`;
+            }
+            function onPointerUp() {
+                if (!dragging) return;
+                dragging = false;
+                dragZone.style.cursor = 'grab';
+                box.style.transition = 'transform .2s cubic-bezier(.34,1.56,.64,1)';
+
+                const THRESHOLD = 90; /* px — kéo quá ngưỡng này thì đóng luôn */
+                if (currentY > THRESHOLD) {
+                    closeSheet();
+                } else {
+                    box.style.transform = 'translateY(0)';
+                    overlay.style.background = 'rgba(0,0,0,.48)';
+                }
+            }
+
+            dragZone.addEventListener('pointerdown', onPointerDown);
+            dragZone.addEventListener('pointermove', onPointerMove);
+            dragZone.addEventListener('pointerup', onPointerUp);
+            dragZone.addEventListener('pointercancel', onPointerUp);
         }
 
     </script>
