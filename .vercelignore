@@ -1,4 +1,0 @@
-# Nguồn dữ liệu gốc — vẫn nằm trong git repo để add-data.html đọc/ghi qua
-# GitHub API, nhưng KHÔNG được deploy làm static asset trên site live nữa.
-# Dữ liệu phục vụ ra ngoài qua /api/data (xem scripts/build-data.js).
-assets/json/
