@@ -7,14 +7,15 @@
  *   - Ảnh: Cache First với expiry
  */
 
-const CACHE_SHELL   = 'tx-shell-v2.4.2';
-const CACHE_DATA    = 'tx-data-v2.4.2';
-const CACHE_IMAGES  = 'tx-img-v2.4.2';
+const CACHE_SHELL   = 'tx-shell-v2.4.3';
+const CACHE_DATA    = 'tx-data-v2.4.3';
+const CACHE_IMAGES  = 'tx-img-v2.4.3';
 
 const SHELL_URLS = [
     '/',
     '/index.html',
     '/assets/js/load.min.js',
+    '/assets/js/img-guard.min.js',
     '/assets/js/base.js',
     '/assets/favicon/favicon-32x32.png',
     '/assets/favicon/favicon.ico',

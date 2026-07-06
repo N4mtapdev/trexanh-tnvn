@@ -21,3 +21,11 @@ esbuild.buildSync({
     target: 'es2019',
     logLevel: 'info',
 });
+
+esbuild.buildSync({
+    entryPoints: [path.join(ROOT, 'assets', 'js', 'img-guard.js')],
+    outfile: path.join(ROOT, 'assets', 'js', 'img-guard.min.js'),
+    minify: true,
+    target: 'es2019',
+    logLevel: 'info',
+});
