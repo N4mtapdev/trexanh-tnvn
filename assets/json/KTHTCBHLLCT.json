@@ -1,167 +1,187 @@
 [
-  {
+{
     "id": 1,
-    "question": "TÆ° tÆ°á»ng Há» ChÃ­ Minh lÃ  âkáº¿t quáº£ cá»§a sá»± váº­n dá»¥ng vÃ  phÃ¡t triá»n sÃ¡ng táº¡o â¦ vÃ o Äiá»u kiá»n cá»¥ thá» cá»§a nÆ°á»c taâ. HÃ£y Äiá»n vÃ o chá» trá»ng.",
-    "answer": "Chá»§ nghÄ©a MÃ¡c â LÃªnin."
-  },
-  {
+    "question": "Tư tưởng Hồ Chí Minh là “kết quả của sự vận dụng và phát triển sáng tạo … vào điều kiện cụ thể của nước ta”. Hãy điền vào chỗ trống.",
+    "answer": "Chủ nghĩa Mác – Lênin."
+},
+{
     "id": 2,
-    "question": "Phong trÃ o âBa sáºµn sÃ ngâ vÃ  âNÄm xung phongâ ÄÆ°á»£c phÃ¡t Äá»ng, triá»n khai trong nhiá»m ká»³ Äáº¡i há»i ÄoÃ n toÃ n quá»c láº§n thá»© máº¥y?",
-    "answer": "Äáº¡i há»i III."
-  },
-  {
+    "question": "Phong trào “Ba sẵn sàng” và “Năm xung phong” được phát động, triển khai trong nhiệm kỳ Đại hội Đoàn toàn quốc lần thứ mấy?",
+    "answer": "Đại hội III."
+},
+{
     "id": 3,
-    "question": "Theo Há» ChÃ­ Minh, NhÃ  nÆ°á»c mÃ  chÃºng ta xÃ¢y dá»±ng lÃ  NhÃ  nÆ°á»c nÃ o?",
-    "answer": "NhÃ  nÆ°á»c phÃ¡p quyá»n cá»§a dÃ¢n, do dÃ¢n vÃ  vÃ¬ dÃ¢n."
-  },
-  {
+    "question": "Theo Hồ Chí Minh, Nhà nước mà chúng ta xây dựng là Nhà nước nào?",
+    "answer": "Nhà nước pháp quyền của dân, do dân và vì dân."
+},
+{
     "id": 4,
-    "question": "Äiá»n vÃ o chá» trá»ng Äá» tháº¥y ÄÆ°á»£c má»i quan há» cá»§a ÄoÃ n Äá»i vá»i Äáº£ng: ÄoÃ n lÃ  â¦ cá»§a Äáº£ng, Äá»i quÃ¢n xung kÃ­ch cÃ¡ch máº¡ng pháº¥n Äáº¥u vÃ¬ má»¥c tiÃªu lÃ½ tÆ°á»ng cá»§a Äáº£ng.",
-    "answer": "Äá»i dá»± bá» tin cáº­y."
-  },
-  {
+    "question": "Điền vào chỗ trống để thấy được mối quan hệ của Đoàn đối với Đảng: Đoàn là … của Đảng, đội quân xung kích cách mạng phấn đấu vì mục tiêu lý tưởng của Đảng.",
+    "answer": "Đội dự bị tin cậy."
+},
+{
     "id": 5,
-    "question": "ÄoÃ n TNCS Há» ChÃ­ Minh ÄÆ°á»£c thÃ nh láº­p vÃ o ngÃ y thÃ¡ng nÄm nÃ o?",
+    "question": "Đoàn TNCS Hồ Chí Minh được thành lập vào ngày tháng năm nào?",
     "answer": "26/3/1931."
-  },
-  {
+},
+{
     "id": 6,
-    "question": "Thá»±c dÃ¢n PhÃ¡p ná» sÃºng xÃ¢m lÆ°á»£c nÆ°á»c ta vÃ o thá»i gian nÃ o?",
-    "answer": "NgÃ y 1 â 9 â 1858."
-  },
-  {
+    "question": "Thực dân Pháp nổ súng xâm lược nước ta vào thời gian nào?",
+    "answer": "Ngày 1 – 9 – 1858."
+},
+{
     "id": 7,
-    "question": "Há»i Viá»t Nam cÃ¡ch máº¡ng Thanh niÃªn ÄÆ°á»£c thÃ nh láº­p vÃ o thá»i gian nÃ o?",
-    "answer": "ThÃ¡ng 6/1925."
-  },
-  {
+    "question": "Hội Việt Nam cách mạng Thanh niên được thành lập vào thời gian nào?",
+    "answer": "Tháng 6/1925."
+},
+{
     "id": 8,
-    "question": "Trong há» thá»ng chÃ­nh trá» Viá»t Nam, ÄoÃ n TNCS Há» ChÃ­ Minh giá»¯ vá» trÃ­ nhÆ° tháº¿ nÃ o?",
-    "answer": "LÃ  thÃ nh viÃªn cá»§a há» thá»ng chÃ­nh trá»."
-  },
-  {
+    "question": "Trong hệ thống chính trị Việt Nam, Đoàn TNCS Hồ Chí Minh giữ vị trí như thế nào?",
+    "answer": "Là thành viên của hệ thống chính trị."
+},
+{
     "id": 9,
-    "question": "BÃ­ thÆ° thá»© nháº¥t Äáº§u tiÃªn cá»§a ÄoÃ n TNCS Há» ChÃ­ Minh lÃ  Äá»ng chÃ­ nÃ o?",
-    "answer": "Äá»ng chÃ­ Nguyá»n Lam."
-  },
-  {
+    "question": "Bí thư thứ nhất đầu tiên của Đoàn TNCS Hồ Chí Minh là đồng chí nào?",
+    "answer": "Đồng chí Nguyễn Lam."
+},
+{
     "id": 10,
-    "question": "Äiá»n vÃ o chá» trá»ng tá»« cÃ²n thiáº¿u: âÄoÃ n bao gá»m nhá»¯ng thanh niÃªn â¦, pháº¥n Äáº¥u vÃ¬ má»¥c ÄÃ­ch, lÃ½ tÆ°á»ng cá»§a Äáº£ng lÃ  Äá»c láº­p dÃ¢n tá»c gáº¯n liá»n vá»i chá»§ nghÄ©a xÃ£ há»i, dÃ¢n giÃ u, nÆ°á»c máº¡nh, dÃ¢n chá»§, cÃ´ng báº±ng, vÄn minhâ.",
-    "answer": "TiÃªn tiáº¿n."
-  },
-  {
+    "question": "Điền vào chỗ trống từ còn thiếu: “Đoàn bao gồm những thanh niên …, phấn đấu vì mục đích, lý tưởng của Đảng là độc lập dân tộc gắn liền với chủ nghĩa xã hội, dân giàu, nước mạnh, dân chủ, công bằng, văn minh”.",
+    "answer": "Tiên tiến."
+},
+{
     "id": 11,
-    "question": "Theo Há» ChÃ­ Minh, tá» chá»©c lá»±c lÆ°á»£ng vÅ© trang gá»m cÃ¡c thá»© quÃ¢n?",
-    "answer": "Cáº£ 3 ÄÃ¡p Ã¡n Äá»u ÄÃºng."
-  },
-  {
+    "question": "Theo Hồ Chí Minh, tổ chức lực lượng vũ trang gồm các thứ quân?",
+    "answer": "Cả 3 đáp án đều đúng."
+},
+{
     "id": 12,
-    "question": "Phong trÃ o Äáº¥u tranh giáº£i phÃ³ng dÃ¢n tá»c Viá»t Nam cá»§a Äá»i Cáº¥n Äáº¡i diá»n cho giai cáº¥p, táº§ng lá»p nÃ o trong xÃ£ há»i Viá»t Nam lÃºc báº¥y giá»?",
-    "answer": "Binh sá»¹."
-  },
-  {
+    "question": "Phong trào đấu tranh giải phóng dân tộc Việt Nam của Đội Cấn đại diện cho giai cấp, tầng lớp nào trong xã hội Việt Nam lúc bấy giờ?",
+    "answer": "Binh sỹ."
+},
+{
     "id": 13,
-    "question": "Má»t trong nhá»¯ng nguyÃªn táº¯c Äá»i má»i há» thá»ng chÃ­nh trá» Viá»t Nam trong giai Äoáº¡n hiá»n nay lÃ ?",
-    "answer": "Pháº£i báº£o Äáº£m á»n Äá»nh chÃ­nh trá», phÃ¡t triá»n kinh táº¿ - xÃ£ há»i bá»n vá»¯ng."
-  },
-  {
+    "question": "Một trong những nguyên tắc đổi mới hệ thống chính trị Việt Nam trong giai đoạn hiện nay là?",
+    "answer": "Phải bảo đảm ổn định chính trị, phát triển kinh tế - xã hội bền vững."
+},
+{
     "id": 14,
-    "question": "BÃ i ca chÃ­nh thá»©c cá»§a ÄoÃ n cÃ³ tÃªn lÃ  gÃ¬?",
-    "answer": "Thanh niÃªn lÃ m theo lá»i BÃ¡c."
-  },
-  {
+    "question": "Bài ca chính thức của Đoàn có tên là gì?",
+    "answer": "Thanh niên làm theo lời Bác."
+},
+{
     "id": 15,
-    "question": "Nguá»n gá»c quan trá»ng nháº¥t hÃ¬nh thÃ nh tÆ° tÆ°á»ng Há» ChÃ­ Minh lÃ ?",
-    "answer": "Chá»§ nghÄ©a MÃ¡c â LÃªnin."
-  },
-  {
+    "question": "Nguồn gốc quan trọng nhất hình thành tư tưởng Hồ Chí Minh là?",
+    "answer": "Chủ nghĩa Mác – Lênin."
+},
+{
     "id": 16,
-    "question": "Nguyá»n Ãi Quá»c tham gia Äáº£ng XÃ£ há»i PhÃ¡p, má»t chÃ­nh Äáº£ng tiáº¿n bá» á» PhÃ¡p lÃºc ÄÃ³ vÃ o thá»i gian nÃ o?",
-    "answer": "NÄm 1919."
-  },
-  {
+    "question": "Nguyễn Ái Quốc tham gia Đảng Xã hội Pháp, một chính đảng tiến bộ ở Pháp lúc đó vào thời gian nào?",
+    "answer": "Năm 1919."
+},
+{
     "id": 17,
-    "question": "Theo chá»§ nghÄ©a MÃ¡c - LÃªnin, sá»© má»nh lá»ch sá»­ toÃ n tháº¿ giá»i cá»§a giai cáº¥p cÃ´ng nhÃ¢n lÃ  gÃ¬?",
-    "answer": "Láº­t Äá» chá»§ nghÄ©a tÆ° báº£n xÃ¢y dá»±ng xÃ£ há»i má»i - xÃ£ há»i chá»§ nghÄ©a."
-  },
-  {
+    "question": "Theo chủ nghĩa Mác - Lênin, sứ mệnh lịch sử toàn thế giới của giai cấp công nhân là gì?",
+    "answer": "Lật đổ chủ nghĩa tư bản xây dựng xã hội mới - xã hội chủ nghĩa."
+},
+{
     "id": 18,
-    "question": "Äiá»u lá» váº¯n táº¯t cá»§a Äáº£ng Cá»ng sáº£n Viá»t Nam ÄÆ°á»£c thÃ´ng qua táº¡i há»i nghá» nÃ o cá»§a Äáº£ng?",
-    "answer": "Há»i nghá» há»£p nháº¥t ba tá» chá»©c cá»ng sáº£n nÄm 1930."
-  },
-  {
+    "question": "Điều lệ vắn tắt của Đảng Cộng sản Việt Nam được thông qua tại hội nghị nào của Đảng?",
+    "answer": "Hội nghị hợp nhất ba tổ chức cộng sản năm 1930."
+},
+{
     "id": 19,
-    "question": "Bá» pháº­n nÃ o cáº¥u thÃ nh cá»§a chá»§ nghÄ©a MÃ¡c - LÃªnin?",
-    "answer": "Cáº£ 3 ÄÃ¡p Ã¡n Äá»u ÄÃºng."
-  },
-  {
+    "question": "Bộ phận nào cấu thành của chủ nghĩa Mác - Lênin?",
+    "answer": "Cả 3 đáp án đều đúng."
+},
+{
     "id": 20,
-    "question": "ÄoÃ n TNCS Há» ChÃ­ Minh tá» chá»©c vÃ  hoáº¡t Äá»ng theo nguyÃªn táº¯c nÃ o?",
-    "answer": "Táº­p trung dÃ¢n chá»§."
-  },
-  {
+    "question": "Đoàn TNCS Hồ Chí Minh tổ chức và hoạt động theo nguyên tắc nào?",
+    "answer": "Tập trung dân chủ."
+},
+{
     "id": 21,
-    "question": "Sá»± kiá»n nÃ o ÄÃ¡nh dáº¥u nhÃ¢n dÃ¢n ta ÄÃ£ káº¿t thÃºc cuá»c khÃ¡ng chiáº¿n chá»ng Má»¹ cá»©u nÆ°á»c giáº£i phÃ³ng miá»n Nam, thá»ng nháº¥t Äáº¥t nÆ°á»c?",
-    "answer": "Cuá»c Tá»ng tiáº¿n cÃ´ng ná»i dáº­y mÃ¹a xuÃ¢n 1975 vá»i chiáº¿n dá»ch Há» ChÃ­ Minh lá»ch sá»­ nÄm 1975."
-  },
-  {
+    "question": "Sự kiện nào đánh dấu nhân dân ta đã kết thúc cuộc kháng chiến chống Mỹ cứu nước giải phóng miền Nam, thống nhất đất nước?",
+    "answer": "Cuộc Tổng tiến công nổi dậy mùa xuân 1975 với chiến dịch Hồ Chí Minh lịch sử năm 1975."
+},
+{
     "id": 22,
-    "question": "ÄoÃ n TNCS Há» ChÃ­ Minh giá»¯ vai trÃ² nhÆ° tháº¿ nÃ o trong tá» chá»©c vÃ  hoáº¡t Äá»ng cá»§a Há»i LHTN Viá»t Nam, Há»i Sinh viÃªn Viá»t Nam",
-    "answer": "NÃ²ng cá»t chÃ­nh trá»."
-  },
-  {
+    "question": "Đoàn TNCS Hồ Chí Minh giữ vai trò như thế nào trong tổ chức và hoạt động của Hội LHTN Việt Nam, Hội Sinh viên Việt Nam",
+    "answer": "Nòng cốt chính trị."
+},
+{
     "id": 23,
-    "question": "Phong trÃ o âTuá»i tráº» sÃ¡ng táº¡oâ ÄÆ°á»£c phÃ¡t Äá»ng táº¡i Äáº¡i há»i ÄoÃ n toÃ n quá»c láº§n thá»© máº¥y?",
-    "answer": "Láº§n thá»© XI."
-  },
-  {
+    "question": "Phong trào “Tuổi trẻ sáng tạo” được phát động tại Đại hội Đoàn toàn quốc lần thứ mấy?",
+    "answer": "Lần thứ XI."
+},
+{
     "id": 24,
-    "question": "ThÃ¡ng 3/1929, táº¡i Viá»t Nam ÄÃ£ diá»n ra sá»± kiá»n tiÃªu biá»u nÃ o?",
-    "answer": "Chi bá» Cá»ng sáº£n Äáº§u tiÃªn á» Viá»t Nam ra Äá»i."
-  },
-  {
+    "question": "Tháng 3/1929, tại Việt Nam đã diễn ra sự kiện tiêu biểu nào?",
+    "answer": "Chi bộ Cộng sản đầu tiên ở Việt Nam ra đời."
+},
+{
     "id": 25,
-    "question": "Äiá»n vÃ o chá» trá»ng Äá» hoÃ n thiá»n cÃ¢u thÆ¡ sau cá»§a Há» ChÃ­ Minh: âGá»c cÃ³ vá»¯ng cÃ¢y má»i bá»n/XÃ¢y láº§u tháº¯ng lá»£i trÃªn ná»n â¦â",
-    "answer": "NhÃ¢n dÃ¢n."
-  },
-  {
+    "question": "Điền vào chỗ trống để hoàn thiện câu thơ sau của Hồ Chí Minh: “Gốc có vững cây mới bền/Xây lầu thắng lợi trên nền …”",
+    "answer": "Nhân dân."
+},
+{
     "id": 26,
-    "question": "Sá»± kiá»n nÃ o ÄÃ¡nh dáº¥u má» ra ká»· nguyÃªn Äá»c láº­p, tá»± do, tiáº¿n lÃªn chá»§ nghÄ©a xÃ£ há»i cá»§a dÃ¢n tá»c ta?",
-    "answer": "CÃ¡ch máº¡ng thÃ¡ng TÃ¡m 1945 thÃ nh cÃ´ng, NhÃ  nÆ°á»c Viá»t Nam DÃ¢n chá»§ cá»ng hÃ²a ra Äá»i."
-  },
-  {
+    "question": "Sự kiện nào đánh dấu mở ra kỷ nguyên độc lập, tự do, tiến lên chủ nghĩa xã hội của dân tộc ta?",
+    "answer": "Cách mạng tháng Tám 1945 thành công, Nhà nước Việt Nam Dân chủ cộng hòa ra đời."
+},
+{
     "id": 27,
-    "question": "DÆ°á»i tÃ¡c Äá»ng cá»§a chÃ­nh sÃ¡ch khai thÃ¡c thuá»c Äá»a cá»§a thá»±c dÃ¢n PhÃ¡p, vá» tÃ­nh cháº¥t xÃ£ há»i, xÃ£ há»i Viá»t Nam ÄÃ£ cÃ³ biáº¿n chuyá»n sÃ¢u sáº¯c gÃ¬?",
-    "answer": "Tá»« xÃ£ há»i phong kiáº¿n thÃ nh xÃ£ há»i thuá»c Äá»a ná»­a phong kiáº¿n."
-  },
-  {
+    "question": "Dưới tác động của chính sách khai thác thuộc địa của thực dân Pháp, về tính chất xã hội, xã hội Việt Nam đã có biến chuyển sâu sắc gì?",
+    "answer": "Từ xã hội phong kiến thành xã hội thuộc địa nửa phong kiến."
+},
+{
     "id": 28,
-    "question": "ThÃ nh tá» nÃ o lÃ  háº¡t nhÃ¢n lÃ£nh Äáº¡o trong há» thá»ng chÃ­nh trá» Viá»t Nam?",
-    "answer": "Äáº£ng Cá»ng sáº£n Viá»t Nam."
-  },
-  {
+    "question": "Thành tố nào là hạt nhân lãnh đạo trong hệ thống chính trị Việt Nam?",
+    "answer": "Đảng Cộng sản Việt Nam."
+},
+{
     "id": 29,
-    "question": "Há»i nghá» há»£p nháº¥t ba tá» chá»©c cá»ng sáº£n (ÄÃ´ng DÆ°Æ¡ng Cá»ng sáº£n Äáº£ng, An Nam Cá»ng sáº£n Äáº£ng vÃ  ÄÃ´ng DÆ°Æ¡ng Cá»ng sáº£n LiÃªn ÄoÃ n) dÆ°á»i sá»± chá» trÃ¬ cá»§a LÃ£nh tá»¥ Nguyá»n Ãi Quá»c diá»n ra vÃ o thá»i gian nÃ o?",
-    "answer": "Tá»« ngÃ y 6/1/1930 Äáº¿n ngÃ y 7/2/1930."
-  },
-  {
+    "question": "Hội nghị hợp nhất ba tổ chức cộng sản (Đông Dương Cộng sản Đảng, An Nam Cộng sản Đảng và Đông Dương Cộng sản Liên đoàn) dưới sự chỉ trì của Lãnh tụ Nguyễn Ái Quốc diễn ra vào thời gian nào?",
+    "answer": "Từ ngày 6/1/1930 đến ngày 7/2/1930."
+},
+{
     "id": 30,
-    "question": "Sá»± ra Äá»i cá»§a Äáº£ng Cá»ng sáº£n Viá»t Nam gáº¯n liá»n vá»i tÃªn tuá»i cá»§a lÃ£nh tá»¥ nÃ o (ngÆ°á»i sÃ¡ng láº­p, lÃ£nh Äáº¡o vÃ  rÃ¨n luyá»n Äáº£ng ta)?",
-    "answer": "Nguyá»n Ãi Quá»c - Há» ChÃ­ Minh."
-  },
-  {
+    "question": "Sự ra đời của Đảng Cộng sản Việt Nam gắn liền với tên tuổi của lãnh tụ nào (người sáng lập, lãnh đạo và rèn luyện Đảng ta)?",
+    "answer": "Nguyễn Ái Quốc - Hồ Chí Minh."
+},
+{
     "id": 31,
-    "question": " Trong giai Äoáº¡n 1936-1939, ÄoÃ n mang tÃªn gá»i lÃ  gÃ¬?",
-    "answer": "ÄoÃ n Thanh niÃªn DÃ¢n chá»§ ÄÃ´ng DÆ°Æ¡ng."
-  },
-  {
+    "question": " Trong giai đoạn 1936-1939, Đoàn mang tên gọi là gì?",
+    "answer": "Đoàn Thanh niên Dân chủ Đông Dương."
+},
+{
     "id": 32,
-    "question": "NgÆ°á»i Äá»©ng Äáº§u ChÃ­nh phá»§ lÃ  ai?",
-    "answer": "Thá»§ tÆ°á»ng ChÃ­nh phá»§."
-  },
-  {
+    "question": "Người đứng đầu Chính phủ là ai?",
+    "answer": "Thủ tướng Chính phủ."
+},
+{
     "id": 33,
-    "question": "Phong trÃ o Äáº¥u tranh giáº£i phÃ³ng dÃ¢n tá»c Viá»t Nam cá»§a HoÃ ng Hoa ThÃ¡m Äáº¡i diá»n cho giai cáº¥p, táº§ng lá»p nÃ o trong xÃ£ há»i Viá»t Nam lÃºc báº¥y giá»?",
-    "answer": "NÃ´ng dÃ¢n."
-  }
+    "question": "Phong trào đấu tranh giải phóng dân tộc Việt Nam của Hoàng Hoa Thám đại diện cho giai cấp, tầng lớp nào trong xã hội Việt Nam lúc bấy giờ?",
+    "answer": "Nông dân."
+},
+{
+    "id": 34,
+    "question": "",
+    "answer": ""
+},
+{
+    "id": 35,
+    "question": "",
+    "answer": ""
+},
+{
+    "id": 36,
+    "question": "",
+    "answer": ""
+},
+{
+    "id": 37,
+    "question": "",
+    "answer": ""
+} 
 ]
