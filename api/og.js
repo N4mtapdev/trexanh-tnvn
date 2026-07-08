@@ -1,28 +1,47 @@
 /**
  * Vercel Edge Function — OG Image động theo từng card
  *
- * URL: /api/og?q=CÂU_HỎI&a=ĐÁP_ÁN&cat=DANH_MỤC
- *      /api/og?card=CARD_ID  (cần fetch data từ KV hoặc hardcode)
+ * URL: /api/og?card=PREFIX-ID   (vd: /api/og?card=HHT-12)
+ *      /api/og                  (không có card → ảnh mặc định chung)
  *
  * Dùng @vercel/og để render HTML → PNG
+ *
+ * Bảo mật: KHÔNG nhận q/a/cat dạng text tự do từ URL nữa — chỉ nhận "card"
+ * (id thật trong dữ liệu), tra cứu q/a THẬT từ lib/dataset.js. Trước đây
+ * endpoint này nhận thẳng q/a/cat qua query string, nghĩa là bất kỳ ai cũng
+ * tạo được ảnh mang thương hiệu TreXanh với nội dung tự chế (rủi ro giả
+ * mạo/tin giả). Endpoint này PHẢI mở public không cần referer (crawler
+ * Zalo/FB/Telegram cần fetch trực tiếp để render preview khi share link),
+ * nên cách bảo vệ đúng là giới hạn NGUỒN DỮ LIỆU chứ không phải chặn origin.
  *
  * Setup: package.json cần có "@vercel/og": "latest"
  */
 
 import { ImageResponse } from '@vercel/og';
+import { findCard } from '../lib/dataset.js';
 
 export const config = { runtime: 'edge' };
 
+const DEFAULT_Q   = 'TreXanh · Tra cứu đáp án TNVN';
+const DEFAULT_A   = 'Hệ thống tra cứu thông minh dành cho thanh niên Việt Nam';
+const DEFAULT_CAT = 'TreXanh TNVN';
+
 export default async function handler(req) {
-    const url = new URL(req.url);
-    const q   = url.searchParams.get('q')   || 'TreXanh · Tra cứu đáp án TNVN';
-    const a   = url.searchParams.get('a')   || 'Hệ thống tra cứu thông minh dành cho thanh niên Việt Nam';
-    const cat = url.searchParams.get('cat') || 'TreXanh TNVN';
+    const url    = new URL(req.url);
+    const cardId = url.searchParams.get('card') || '';
+
+    /* Chỉ dùng nội dung THẬT tra được từ dataset — không có thì dùng mặc định,
+       KHÔNG bao giờ dùng text do URL cung cấp trực tiếp */
+    const found = findCard(cardId);
+    const q   = found?.q   || DEFAULT_Q;
+    const a   = found?.a   || DEFAULT_A;
+    const cat = found?.cat || DEFAULT_CAT;
 
     /* Truncate nếu quá dài */
     const truncate = (s, n) => s.length > n ? s.slice(0, n) + '…' : s;
     const qShort = truncate(q, 120);
     const aShort = truncate(a, 100);
+    const catShort = truncate(cat, 40);
 
     return new ImageResponse(
         {
@@ -87,7 +106,7 @@ export default async function handler(req) {
                                             background:'rgba(16,185,129,.12)', color:'#059669',
                                             fontSize:'13px', fontWeight:800, border:'1px solid rgba(16,185,129,.3)',
                                         },
-                                        children: [cat]
+                                        children: [catShort]
                                     }
                                 }
                             ]
@@ -160,6 +179,15 @@ export default async function handler(req) {
                 ]
             }
         },
-        { width: 1200, height: 630 }
+        {
+            width: 1200,
+            height: 630,
+            /* Nội dung xác định hoàn toàn theo card id → cache được. max-age ngắn
+               cho browser, s-maxage dài hơn cho CDN, stale-while-revalidate để
+               vẫn phục vụ nhanh trong lúc âm thầm làm mới nếu admin sửa đáp án */
+            headers: {
+                'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800',
+            },
+        }
     );
 }

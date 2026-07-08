@@ -3,5 +3,8 @@ Allow: /
 Disallow: /add-data.html
 Disallow: /api/
 Disallow: /raw/
+Disallow: /assets/images/
+Allow: /assets/images/og-image.png
+Allow: /assets/images/posts/
 
 Sitemap: https://trexanh-tnvn.vercel.app/sitemap.xml

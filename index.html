@@ -484,37 +484,91 @@
         .stat-box:active { transform: scale(.97); }
 
         /* ============================================================
-           FILTER TABS
+           CATEGORY DROPDOWN — thay cho tab bar cuộn ngang, scale tốt hơn
+           khi danh mục nhiều lên (vd nhiều cuộc thi cùng lúc)
         ============================================================ */
-        .filter-tab {
-            padding: 7px 13px; border-radius: 10px; font-size: 11px;
-            font-weight: 700; white-space: nowrap; cursor: pointer;
-            border: 1.5px solid var(--border); background: var(--bg2);
-            color: var(--muted); display: flex; align-items: center;
-            gap: 6px; transition: all .18s; flex-shrink: 0;
-            scroll-snap-align: start;
+        .cat-dd { position: relative; margin-bottom: 20px; }
+
+        .cat-dd-trigger {
+            width: 100%; display: flex; align-items: center; gap: 10px;
+            padding: 11px 14px; border-radius: 14px;
+            background: var(--bg2); border: 1.5px solid var(--border);
+            cursor: pointer; transition: all .18s; text-align: left;
+            box-shadow: 0 2px 10px var(--shadow);
         }
-        .filter-tab:hover { border-color: var(--brand); color: var(--brand); }
-        .filter-tab.active {
+        .cat-dd-trigger:hover { border-color: var(--brand); }
+        .cat-dd-trigger[aria-expanded="true"] {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 4px var(--brand-glow), 0 2px 10px var(--shadow);
+        }
+        .cat-dd-icon {
+            width: 30px; height: 30px; border-radius: 10px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
             background: linear-gradient(135deg, #064e3b, #065f46);
-            color: white; border-color: transparent;
-            box-shadow: 0 3px 12px rgba(6,78,59,.35);
+            color: white; font-size: 13px;
         }
+        .cat-dd-label {
+            flex: 1; min-width: 0; font-size: 13px; font-weight: 800;
+            color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .cat-dd-badge {
+            font-size: 10px; font-weight: 800; min-width: 20px; height: 18px;
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0 6px; border-radius: 6px; flex-shrink: 0;
+            background: var(--brand-soft); color: var(--brand);
+        }
+        .cat-dd-chevron {
+            color: var(--muted); font-size: 12px; flex-shrink: 0;
+            transition: transform .2s;
+        }
+        .cat-dd-trigger[aria-expanded="true"] .cat-dd-chevron { transform: rotate(180deg); color: var(--brand); }
+
+        /* Backdrop — bắt click ra ngoài để đóng, không tối màn hình */
+        .cat-dd-backdrop {
+            position: fixed; inset: 0; z-index: 199; display: none;
+        }
+        .cat-dd.open .cat-dd-backdrop { display: block; }
+
+        .cat-dd-panel {
+            position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 200;
+            background: var(--bg2); border: 1.5px solid var(--border); border-radius: 16px;
+            box-shadow: 0 16px 40px var(--shadow), 0 4px 12px rgba(0,0,0,.06);
+            max-height: 0; overflow: hidden; opacity: 0;
+            transform: translateY(-6px);
+            transition: max-height .22s cubic-bezier(.16,1,.3,1), opacity .16s, transform .18s;
+            pointer-events: none;
+        }
+        .cat-dd.open .cat-dd-panel {
+            max-height: min(60vh, 400px); opacity: 1; transform: translateY(0);
+            overflow-y: auto; pointer-events: auto;
+        }
+
+        /* Mỗi dòng danh mục trong panel */
+        .filter-tab {
+            width: 100%; display: flex; align-items: center; gap: 10px;
+            padding: 11px 12px; border-radius: 12px;
+            font-size: 12px; font-weight: 700; text-align: left;
+            border: none; background: transparent; color: var(--text);
+            cursor: pointer; transition: background .15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .filter-tab:hover { background: var(--brand-soft); }
+        .filter-tab .cat-dd-row-icon {
+            width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--brand-soft); color: var(--brand); font-size: 12px;
+        }
+        .filter-tab .cat-dd-row-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .filter-tab .cat-dd-check { opacity: 0; color: var(--brand); font-size: 13px; flex-shrink: 0; }
+        .filter-tab.active { background: var(--brand-soft); }
+        .filter-tab.active .cat-dd-check { opacity: 1; }
+        .filter-tab.active .cat-dd-row-label { color: var(--brand); }
+
         .tab-badge {
             font-size: 9px; font-weight: 800; min-width: 17px; height: 15px;
             display: inline-flex; align-items: center; justify-content: center;
-            padding: 0 4px; border-radius: 5px;
+            padding: 0 4px; border-radius: 5px; flex-shrink: 0;
             background: rgba(16,185,129,.12); color: var(--brand);
-        }
-        .filter-tab.active .tab-badge { background: rgba(255,255,255,.2); color: white; }
-
-        /* Tab bar — scroll-snap mượt khi nhiều tab, fade gradient báo còn nội dung 2 đầu */
-        #categoryTabs {
-            scroll-snap-type: x proximity;
-            -webkit-overflow-scrolling: touch;
-            position: relative;
-            mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
-            -webkit-mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
         }
 
         /* ============================================================
@@ -761,6 +815,42 @@
 
         /* Divider content */
         main, header, footer, section { position: relative; z-index: 1; }
+
+        /* ============================================================
+           ACCESSIBILITY — focus bàn phím + tôn trọng reduced-motion
+        ============================================================ */
+
+        /* Focus rõ ràng khi điều hướng bằng bàn phím (Tab), im lặng khi bấm chuột/chạm
+           — dùng :focus-visible thay vì :focus để không hiện viền khi click bằng chuột */
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        [role="tab"]:focus-visible,
+        [role="option"]:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2.5px solid var(--brand);
+            outline-offset: 2px;
+            border-radius: 8px;
+        }
+        /* Bỏ outline mặc định của trình duyệt khi KHÔNG phải điều hướng bàn phím */
+        button:focus:not(:focus-visible),
+        a:focus:not(:focus-visible),
+        input:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /* Người dùng bật "giảm chuyển động" ở hệ điều hành — tắt hẳn animation
+           trang trí chạy vô hạn (blob, logo pulse) và rút ngắn mọi transition/
+           animation khác về gần như tức thời, thay vì mô phỏng chuyển động */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .blob { animation: none !important; opacity: .18 !important; }
+        }
     </style>
 </head>
 
@@ -992,12 +1082,26 @@
                 <i class="bi bi-sort-down-alt text-sm" aria-hidden="true"></i>
             </button>
         </div>
-        <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-sb pb-1 mb-5"
-             role="tablist" aria-label="Danh mục">
-            <button id="tabAll" class="filter-tab active"
-                    data-file="ALL" role="tab" aria-selected="true">
-                <i class="bi bi-grid-fill" aria-hidden="true"></i> Tất cả
+        <div class="cat-dd" id="catDd">
+            <button type="button" id="catDdTrigger" class="cat-dd-trigger"
+                    aria-haspopup="listbox" aria-expanded="false" aria-controls="categoryTabs">
+                <span class="cat-dd-icon"><i class="bi bi-grid-fill" id="catDdIcon" aria-hidden="true"></i></span>
+                <span class="cat-dd-label" id="catDdLabel">Tất cả</span>
+                <span class="cat-dd-badge" id="catDdBadge">0</span>
+                <i class="bi bi-chevron-down cat-dd-chevron" aria-hidden="true"></i>
             </button>
+
+            <div class="cat-dd-backdrop" id="catDdBackdrop"></div>
+
+            <div id="categoryTabs" class="cat-dd-panel" role="listbox" aria-label="Danh mục">
+                <button id="tabAll" class="filter-tab active"
+                        data-file="ALL" role="option" aria-selected="true">
+                    <span class="cat-dd-row-icon"><i class="bi bi-grid-fill" aria-hidden="true"></i></span>
+                    <span class="cat-dd-row-label">Tất cả</span>
+                    <span class="tab-badge" id="tabAllBadge">0</span>
+                    <i class="bi bi-check-lg cat-dd-check" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Sub-tab tuần — chỉ hiện khi category đang chọn có chia theo tuần -->
@@ -1525,6 +1629,8 @@
                 .addEventListener('click', downloadShareImg);
             document.getElementById('btnNativeShare')
                 .addEventListener('click', nativeShareImg);
+            document.getElementById('btnCloseShare')
+                .addEventListener('click', () => closeShareOverlay());
             document.getElementById('btnContributors')
                 .addEventListener('click', showContributors);
         });

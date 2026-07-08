@@ -85,6 +85,11 @@ export default async function handler(req) {
 
         const ok = await timingSafeEqual(pass, passphrase);
         if (!ok) {
+            /* Delay nhân tạo khi sai — làm chậm brute-force script. Không phải
+               giải pháp triệt để (edge function không giữ state giữa các lần
+               gọi để đếm số lần thử thật sự), nhưng tăng đáng kể thời gian cần
+               để dò passphrase bằng script tự động. */
+            await new Promise(r => setTimeout(r, 800));
             return new Response(renderForm({ next: nextPath, error: 'Passphrase sai. Thử lại.', configured }), {
                 status: 401, headers: { 'Content-Type': 'text/html; charset=utf-8' },
             });

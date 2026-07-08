@@ -7,9 +7,9 @@
  *   - Ảnh: Cache First với expiry
  */
 
-const CACHE_SHELL   = 'tx-shell-v2.4.3';
-const CACHE_DATA    = 'tx-data-v2.4.3';
-const CACHE_IMAGES  = 'tx-img-v2.4.3';
+const CACHE_SHELL   = 'tx-shell-v2.4.4';
+const CACHE_DATA    = 'tx-data-v2.4.4';
+const CACHE_IMAGES  = 'tx-img-v2.4.4';
 
 const SHELL_URLS = [
     '/',

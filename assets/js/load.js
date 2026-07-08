@@ -128,10 +128,22 @@ function debounce(fn, ms) {
     return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
 }
 
+/** Escape ký tự đặc biệt HTML — dùng mỗi khi chèn text (đặc biệt là input người
+ *  dùng gõ, vd ô tìm kiếm) vào innerHTML để tránh XSS. */
+function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+}
+
+/** Highlight từ khóa tìm kiếm trong text — escape từng đoạn text TRƯỚC khi
+ *  chèn thẻ <mark>, để: (1) không vỡ HTML nếu câu hỏi/đáp án có ký tự
+ *  <, >, & ; (2) không double-escape khi ghép lại. */
 function hl(text, query) {
-    if (!query || !text) return String(text || '');
-    const esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return String(text).replace(new RegExp(`(${esc})`, 'gi'), '<mark class="tx-hl">$1</mark>');
+    const safeText = escapeHtml(text);
+    if (!query || !text) return safeText;
+    const esc = escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return safeText.replace(new RegExp(`(${esc})`, 'gi'), '<mark class="tx-hl">$1</mark>');
 }
 
 function toast(icon, title, timer = 1500) {
@@ -150,14 +162,12 @@ function cardUrl(id) {
     return u.toString();
 }
 
-/** Tạo URL OG image động cho card — dùng /api/og Edge Function */
+/** Tạo URL OG image động cho card — dùng /api/og Edge Function.
+ *  Chỉ gửi ID, KHÔNG gửi text q/a trực tiếp — api/og.js tự tra cứu nội dung
+ *  thật từ dataset theo ID này (tránh giả mạo nội dung mang thương hiệu). */
 function ogImageUrl(item) {
     const base = location.origin;
-    const p    = new URLSearchParams({
-        q:   item.q.substring(0, 120),
-        a:   item.a.substring(0, 100),
-        cat: item.fileName,
-    });
+    const p = new URLSearchParams({ card: item.id });
     return `${base}/api/og?${p.toString()}`;
 }
 
@@ -500,13 +510,23 @@ async function init() {
         const btn   = document.createElement('button');
         btn.className = 'filter-tab';
         btn.dataset.file = file.name;
-        btn.setAttribute('role', 'tab');
+        btn.setAttribute('role', 'option');
         btn.setAttribute('aria-selected', 'false');
-        btn.innerHTML = `<i class="bi ${file.icon}" aria-hidden="true"></i>${file.name}<span class="tab-badge">${count}</span>`;
+        btn.innerHTML = `
+            <span class="cat-dd-row-icon"><i class="bi ${file.icon}" aria-hidden="true"></i></span>
+            <span class="cat-dd-row-label">${escapeHtml(file.name)}</span>
+            <span class="tab-badge">${count}</span>
+            <i class="bi bi-check-lg cat-dd-check" aria-hidden="true"></i>`;
         btn.addEventListener('click', () => filterByFile(file.name));
         tabFrag.appendChild(btn);
     });
     tabsEl.appendChild(tabFrag);
+
+    /* Đồng bộ badge "Tất cả" (trigger + row) với tổng số câu vừa tải xong */
+    const tabAllBadge = document.getElementById('tabAllBadge');
+    const catDdBadge  = document.getElementById('catDdBadge');
+    if (tabAllBadge) tabAllBadge.textContent = fullDb.length;
+    if (catDdBadge)  catDdBadge.textContent  = fullDb.length;
 
     filteredDb = [...fullDb];
     renderGrid();
@@ -628,13 +648,27 @@ window.filterByFile = function(fileName) {
     if (si) si.value = '';
     if (bc) bc.classList.add('hidden');
 
+    let matchedTab = null;
     document.querySelectorAll('.filter-tab').forEach(t => {
         const active = t.dataset.file === fileName;
         t.classList.toggle('active', active);
         t.setAttribute('aria-selected', active ? 'true' : 'false');
-        /* Tự cuộn tab active vào giữa khung nhìn — cần thiết khi nhiều tab tràn ngang */
-        if (active) t.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+        if (active) matchedTab = t;
     });
+
+    /* Đồng bộ trigger dropdown — icon/label/badge phản ánh đúng lựa chọn hiện tại */
+    const ddIcon  = document.getElementById('catDdIcon');
+    const ddLabel = document.getElementById('catDdLabel');
+    const ddBadge = document.getElementById('catDdBadge');
+    if (matchedTab && ddIcon && ddLabel && ddBadge) {
+        const rowIcon  = matchedTab.querySelector('.cat-dd-row-icon i');
+        const rowBadge = matchedTab.querySelector('.tab-badge');
+        const rowLabel = matchedTab.querySelector('.cat-dd-row-label');
+        if (rowIcon)  ddIcon.className  = rowIcon.className;
+        if (rowLabel) ddLabel.textContent = rowLabel.textContent;
+        if (rowBadge) ddBadge.textContent = rowBadge.textContent;
+    }
+    closeCatDropdown();
 
     /* Render sub-tab tuần nếu category này có chia tuần */
     renderWeekTabs(fileName);
@@ -649,6 +683,31 @@ window.filterByFile = function(fileName) {
     renderGrid();
     if (fileName !== 'ALL') toast('info', `📂 ${fileName} · ${filteredDb.length} câu`);
 };
+
+
+/* ============================================================
+   CATEGORY DROPDOWN — mở/đóng + đóng khi click ra ngoài / Esc
+============================================================ */
+function openCatDropdown() {
+    document.getElementById('catDd')?.classList.add('open');
+    document.getElementById('catDdTrigger')?.setAttribute('aria-expanded', 'true');
+}
+function closeCatDropdown() {
+    document.getElementById('catDd')?.classList.remove('open');
+    document.getElementById('catDdTrigger')?.setAttribute('aria-expanded', 'false');
+}
+function toggleCatDropdown() {
+    const dd = document.getElementById('catDd');
+    if (!dd) return;
+    dd.classList.contains('open') ? closeCatDropdown() : openCatDropdown();
+}
+(function initCatDropdown() {
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('catDdTrigger')?.addEventListener('click', toggleCatDropdown);
+        document.getElementById('catDdBackdrop')?.addEventListener('click', closeCatDropdown);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCatDropdown(); });
+    });
+})();
 
 
 /* ============================================================
@@ -684,7 +743,7 @@ function renderWeekTabs(fileName) {
         const btn = document.createElement('button');
         btn.className = 'week-tab';
         btn.dataset.week = w.week;
-        btn.innerHTML = `<i class="bi bi-calendar-week-fill" aria-hidden="true"></i> ${w.title} <span class="week-badge">${w.count}</span>`;
+        btn.innerHTML = `<i class="bi bi-calendar-week-fill" aria-hidden="true"></i> ${escapeHtml(w.title)} <span class="week-badge">${w.count}</span>`;
         btn.addEventListener('click', () => filterByWeek(w.week));
         frag.appendChild(btn);
     });
@@ -814,7 +873,7 @@ function buildCard(item, idx) {
                     ${item.fileName}
                 </span>
                 ${item.week != null ? `
-                <span class="cbadge cb-purple" title="${item.weekTitle || ''}">
+                <span class="cbadge cb-purple" title="${escapeHtml(item.weekTitle || '')}">
                     <i class="bi bi-calendar-week-fill" style="font-size:8px" aria-hidden="true"></i>
                     Tuần ${item.week}
                 </span>` : ''}
@@ -1067,7 +1126,7 @@ function showEmptyState() {
             </div>
             <p style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:4px">Không tìm thấy kết quả</p>
             <p style="font-size:11px;color:var(--muted);margin-bottom:4px;opacity:.65">
-                Không có câu hỏi nào khớp với "<b style="color:var(--text)">${currentQuery}</b>"
+                Không có câu hỏi nào khớp với "<b style="color:var(--text)">${escapeHtml(currentQuery)}</b>"
             </p>
             <p style="font-size:10px;color:var(--muted);margin-bottom:18px;opacity:.5">
                 Thử từ khóa ngắn hơn hoặc kiểm tra chính tả
