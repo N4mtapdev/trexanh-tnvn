@@ -587,11 +587,12 @@
                 <b style="color:var(--text)">1.</b> Điền thông tin → <b style="color:var(--text)">Tạo danh mục</b><br>
                 <b style="color:var(--text)">2.</b> Hệ thống tạo file JSON rỗng <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">[]</code> và push lên GitHub<br>
                 <b style="color:var(--text)">3.</b> Danh mục xuất hiện ngay trong dropdown ở tab <b style="color:var(--text)">Nhập</b><br>
-                <b style="color:var(--text)">4.</b> <span style="color:#f59e0b"><i class="bi bi-exclamation-triangle-fill"></i> Quan trọng:</span> copy đoạn code bên dưới dán vào <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">filesToLoad</code> trong <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">assets/js/load.js</code> để trang chính nhận diện danh mục mới
+                <b style="color:var(--text)">4.</b> <span style="color:#f59e0b"><i class="bi bi-exclamation-triangle-fill"></i> Bắt buộc:</span> copy đoạn code #1 bên dưới dán vào <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">filesToLoad</code> trong <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">assets/js/load.js</code><br>
+                <b style="color:var(--text)">5.</b> <span style="color:#f59e0b"><i class="bi bi-exclamation-triangle-fill"></i> Bắt buộc — hay bị bỏ sót:</span> copy đoạn code #2 dán vào biến <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">CATEGORIES</code> trong <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:10px">scripts/build-data.js</code>, rồi deploy lại. <b>Thiếu bước này → danh mục hiện 0 câu, không tải được gì</b> (data được "bake" lúc build, không đọc file JSON trực tiếp nữa)
             </p>
         </div>
 
-        <p class="sec-title"><i class="bi bi-code-slash" style="color:#6366f1"></i> Code cho load.js</p>
+        <p class="sec-title"><i class="bi bi-code-slash" style="color:#6366f1"></i> Code cần dán (2 chỗ)</p>
         <div class="push-log" id="catCodeOutput" style="display:none"></div>
         <button class="btn-secondary" id="btnCopyCatCode" style="width:100%;justify-content:center;margin-top:8px;display:none">
             <i class="bi bi-clipboard-fill"></i> Copy code filesToLoad
@@ -830,6 +831,14 @@
 </div>
 
 <script>
+/** Escape ký tự đặc biệt HTML — dùng khi chèn text vào innerHTML để tránh
+ *  vỡ HTML/XSS. File này độc lập với assets/js/load.js nên cần khai báo riêng. */
+function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+}
+
 /* ============================================================
    QUẢN LÝ DANH MỤC (Categories) — động, lưu localStorage
    Mỗi category: { key, name, icon, color, prefix, url, hasWeeks }
@@ -1219,7 +1228,16 @@ async function ghPut(path, body, token) {
 
 async function fetchJsonFile(repo, branch, path, token) {
     const d = await ghGet(`/repos/${repo}/contents/${path}?ref=${branch}`, token);
-    return { content: JSON.parse(atob(d.content.replace(/\n/g,''))), sha: d.sha };
+    /* GitHub trả content dạng base64 của bytes UTF-8. atob() thô chỉ ra được
+       "binary string" (mỗi ký tự = 1 byte, kiểu Latin-1) — nếu JSON.parse()
+       thẳng trên đó, mọi ký tự có dấu tiếng Việt (vốn là chuỗi nhiều byte
+       trong UTF-8) sẽ bị tách thành nhiều ký tự rời rạc → chữ bị vỡ kiểu
+       "TÆ° tÆ°á»Ÿng". Phải chuyển binary string đó thành mảng byte thật rồi
+       decode lại đúng UTF-8 bằng TextDecoder. */
+    const binary = atob(d.content.replace(/\n/g, ''));
+    const bytes  = Uint8Array.from(binary, c => c.charCodeAt(0));
+    const text   = new TextDecoder('utf-8').decode(bytes);
+    return { content: JSON.parse(text), sha: d.sha };
 }
 
 async function pushJsonFile(repo, branch, path, data, sha, msg, token) {
@@ -1439,6 +1457,7 @@ document.getElementById('btnCreateCat').addEventListener('click', async () => {
     if (!name)  { toast('bi-exclamation-circle-fill','Nhập tên hiển thị!'); return; }
     if (!key)   { toast('bi-exclamation-circle-fill','Nhập mã danh mục hợp lệ!'); return; }
     if (CATEGORIES.some(c => c.key === key)) { toast('bi-exclamation-circle-fill','Mã danh mục đã tồn tại!'); return; }
+    if (CATEGORIES.some(c => c.prefix === key)) { toast('bi-exclamation-circle-fill','Trùng prefix với danh mục đã có — đổi mã khác!', 3000); return; }
     if (!file)  file = key + '.json';
     if (!file.endsWith('.json')) file += '.json';
 
@@ -1496,21 +1515,61 @@ document.getElementById('btnCreateCat').addEventListener('click', async () => {
     }
 });
 
-/* Sinh đoạn code filesToLoad để copy dán vào load.js */
+/* Sinh đoạn code cần dán vào load.js VÀ scripts/build-data.js để copy dán */
 function showCatCode() {
-    const out = document.getElementById('catCodeOutput');
-    const btn = document.getElementById('btnCopyCatCode');
-    const code = 'const filesToLoad = [\n' +
+    const out    = document.getElementById('catCodeOutput');
+    const btn    = document.getElementById('btnCopyCatCode');
+
+    /* Code cho assets/js/load.js — dùng /api/data?cat=PREFIX (Edge Function),
+       KHÔNG dùng đường dẫn JSON tĩnh nữa vì /assets/json/* đã bị vercel.json
+       chặn (rewrite sang /api/blocked, trả 403) — dán đường dẫn cũ vào đây
+       sẽ khiến danh mục hiện 0 câu, không tải được gì.
+       Lưu ý: dùng c.prefix (khớp field "prefix" trong load.js) chứ KHÔNG
+       dùng c.key — với category cũ 2 giá trị này khác nhau
+       (vd Lý Luận Chính Trị: key='KTHTCBHLLCT' nhưng prefix='LLCT') */
+    const loadJsCode = 'const filesToLoad = [\n' +
         CATEGORIES.map(c =>
-            `    { name:'${c.name}', icon:'${c.icon}', url:'./${c.url}', color:'${c.color}', prefix:'${c.prefix}' }`
+            `    { name:'${c.name}', icon:'${c.icon}', url:'/api/data?cat=${c.prefix}', color:'${c.color}', prefix:'${c.prefix}' }`
         ).join(',\n') +
         '\n];';
-    out.textContent = code;
+
+    /* Code cho scripts/build-data.js — BƯỚC BẮT BUỘC, hay bị bỏ sót:
+       /api/data?cat=PREFIX chỉ có data khi PREFIX đó được "bake" vào lúc
+       build. Thiếu bước này thì dù load.js đã đúng, /api/data vẫn trả
+       404 → 0 câu. Key trong CATEGORIES của build-data.js PHẢI là c.prefix
+       (khớp đúng giá trị cat=... thật sự được dùng), không phải c.key. */
+    const buildDataCode = 'const CATEGORIES = {\n' +
+        CATEGORIES.map(c => {
+            const file = c.url.replace(/^assets\/json\//, '');
+            return `    ${c.prefix}: { file: '${file}', name: '${c.name}' }`;
+        }).join(',\n') +
+        '\n};';
+
+    out.innerHTML = `
+        <p style="font-size:10px;font-weight:800;color:var(--muted);margin:0 0 6px;text-transform:uppercase">
+            1️⃣ Dán vào <code style="background:var(--bg);padding:1px 5px;border-radius:4px">assets/js/load.js</code>
+        </p>
+        <pre style="white-space:pre-wrap;margin:0 0 14px;font-size:10px">${escapeHtml(loadJsCode)}</pre>
+        <p style="font-size:10px;font-weight:800;color:#f59e0b;margin:0 0 6px;text-transform:uppercase">
+            2️⃣ Bắt buộc — dán vào <code style="background:var(--bg);padding:1px 5px;border-radius:4px">scripts/build-data.js</code> (thay đúng biến <code style="background:var(--bg);padding:1px 5px;border-radius:4px">CATEGORIES</code> ở đầu file)
+        </p>
+        <pre style="white-space:pre-wrap;margin:0;font-size:10px">${escapeHtml(buildDataCode)}</pre>
+        <p style="font-size:9px;color:var(--muted);margin:10px 0 0;line-height:1.6">
+            <i class="bi bi-exclamation-triangle-fill" style="color:#f59e0b"></i>
+            Thiếu bước 2 → <code style="background:var(--bg);padding:1px 4px;border-radius:3px">/api/data?cat=${CATEGORIES[CATEGORIES.length-1]?.prefix}</code>
+            sẽ trả 404, danh mục hiện <b>0 câu</b> dù bước 1 đã đúng.
+        </p>`;
     out.style.display = 'block';
     btn.style.display = 'flex';
     btn.onclick = async () => {
-        try { await navigator.clipboard.writeText(code); toast('bi-clipboard-check-fill','Đã copy! Dán vào assets/js/load.js'); }
-        catch { toast('bi-x-circle-fill','Copy thất bại'); }
+        try {
+            await navigator.clipboard.writeText(
+                loadJsCode + '\n\n// ===== scripts/build-data.js — thay đúng biến CATEGORIES ở đầu file =====\n' + buildDataCode
+            );
+            toast('bi-clipboard-check-fill', 'Đã copy cả 2 đoạn! Dán đúng chỗ ở load.js và build-data.js', 3000);
+        } catch {
+            toast('bi-x-circle-fill', 'Copy thất bại');
+        }
     };
 }
 
