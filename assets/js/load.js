@@ -179,6 +179,10 @@ function openCardPopup(id) {
     const item = _cardData.get(id);
     if (!item) return;
 
+    /* Ghi nhận XP cho pet nếu user đã đăng nhập Google qua pet.html — im
+       lặng bỏ qua nếu chưa đăng nhập, không ảnh hưởng gì tới việc tra cứu */
+    window.trackStudyXP?.(id, item.fileName);
+
     /* Xóa popup cũ nếu còn */
     const old = document.getElementById('txCardModal');
     if (old) old.remove();
