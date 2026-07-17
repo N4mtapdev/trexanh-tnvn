@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tài khoản | TreXanh</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/favicon/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="assets/js/img-guard.min.js"></script>
+<script>
+    (function applyTheme() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        }
+    })();
+</script>
+<style>
+    :root {
+        --brand: #10b981; --brand-dk: #059669; --brand-deeper: #064e3b;
+        --brand-glow: rgba(16,185,129,.22); --brand-soft: rgba(16,185,129,.08);
+        --bg: #f0fdf4; --bg2: #ffffff; --text: #0f172a; --muted: #64748b; --border: #d1fae5;
+        --shadow: rgba(16,185,129,.07);
+    }
+    .dark {
+        --bg: #060d18; --bg2: #0c1a2e; --text: #ecfdf5; --muted: #6b7280;
+        --border: rgba(16,185,129,.13); --shadow: rgba(0,0,0,.3);
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg); color: var(--text); min-height: 100vh; transition: background .2s, color .2s;
+    }
+    .wrap { max-width: 460px; margin: 0 auto; padding: 20px 16px 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .topbar a { color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .topbar h1 { font-size: 16px; font-weight: 900; margin: 0; display: flex; align-items: center; gap: 6px; }
+
+    .card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 18px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 10px var(--shadow); }
+
+    .profile-hero { text-align: center; padding: 8px 0 16px; }
+    .avatar {
+        width: 84px; height: 84px; border-radius: 50%; object-fit: cover;
+        border: 3px solid var(--brand); box-shadow: 0 4px 16px var(--brand-glow); margin-bottom: 10px;
+    }
+    .avatar-fallback {
+        width: 84px; height: 84px; border-radius: 50%; margin: 0 auto 10px;
+        background: var(--brand-soft); color: var(--brand); display: flex; align-items: center;
+        justify-content: center; font-size: 32px; font-weight: 900; border: 3px solid var(--brand);
+    }
+
+    .field-group { margin-bottom: 16px; }
+    .field-label { font-size: 10.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; display: block; }
+    .field-readonly {
+        padding: 11px 14px; border-radius: 12px; background: var(--bg); border: 1.5px solid var(--border);
+        font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px;
+    }
+    input[type=text] {
+        width: 100%; padding: 11px 14px; border-radius: 12px; border: 1.5px solid var(--border);
+        background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit;
+    }
+    input[type=text]:focus { outline: 2px solid var(--brand); border-color: transparent; }
+
+    .btn-main {
+        width: 100%; padding: 12px; border-radius: 12px; border: none;
+        background: var(--brand); color: white; font-size: 13px; font-weight: 800; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-main:hover { background: var(--brand-dk); }
+    .btn-main:disabled { opacity: .5; cursor: not-allowed; }
+
+    .btn-danger {
+        width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid rgba(239,68,68,.3);
+        background: rgba(239,68,68,.08); color: #ef4444; font-size: 13px; font-weight: 800; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-danger:hover { background: rgba(239,68,68,.14); }
+
+    .sec-title { font-size: 12px; font-weight: 900; margin: 0 0 10px; display: flex; align-items: center; gap: 6px; }
+
+    .danger-zone { border-color: rgba(239,68,68,.25) !important; }
+
+    .toast {
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        background: var(--text); color: var(--bg2); padding: 10px 18px; border-radius: 12px;
+        font-size: 12.5px; font-weight: 700; z-index: 999; opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .toast.show { opacity: 1; }
+
+    .modal-backdrop {
+        position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 998;
+        display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal-box {
+        background: var(--bg2); border-radius: 18px; padding: 22px; max-width: 380px; width: 100%;
+        box-shadow: 0 20px 50px rgba(0,0,0,.3);
+    }
+    .modal-box h3 { font-size: 15px; font-weight: 900; margin: 0 0 8px; color: #ef4444; }
+    .modal-box p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin: 0 0 14px; }
+    .modal-box input { margin-bottom: 14px; }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { transition-duration: .001ms !important; }
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="topbar">
+        <h1><i class="bi bi-person-circle" style="color:var(--brand)" aria-hidden="true"></i> Tài khoản</h1>
+        <a href="/pet.html"><i class="bi bi-arrow-left" aria-hidden="true"></i> Pet Game</a>
+    </div>
+
+    <div id="appRoot">
+        <div class="card"><p style="text-align:center;color:var(--muted);font-size:12px">Đang tải...</p></div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-backdrop" id="deleteModal">
+    <div class="modal-box">
+        <h3><i class="bi bi-exclamation-triangle-fill"></i> Xóa tài khoản?</h3>
+        <p>
+            Hành động này <b>không thể hoàn tác</b>. Toàn bộ pet, vật phẩm, lịch sử học tập
+            và dữ liệu liên quan sẽ bị xóa vĩnh viễn.
+        </p>
+        <p>Gõ <b>XÓA</b> để xác nhận:</p>
+        <input type="text" id="deleteConfirmInput" placeholder="Gõ XÓA để xác nhận" autocomplete="off">
+        <div style="display:flex;gap:8px">
+            <button class="btn-main" id="btnCancelDelete" style="background:transparent;color:var(--muted);border:1.5px solid var(--border)">Hủy</button>
+            <button class="btn-danger" id="btnConfirmDelete" disabled>Xóa vĩnh viễn</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const appRoot = document.getElementById('appRoot');
+const toastEl = document.getElementById('toast');
+
+function toast(msg, ms = 2500) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), ms);
+}
+
+function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+}
+
+let supabase;
+async function initSupabase() {
+    const res = await fetch('/api/config');
+    if (!res.ok) {
+        appRoot.innerHTML = '<div class="card"><p style="color:#ef4444;font-size:12px">Server chưa cấu hình Supabase.</p></div>';
+        throw new Error('config not ready');
+    }
+    const { supabaseUrl, supabaseAnonKey } = await res.json();
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+}
+
+function renderLogin() {
+    appRoot.innerHTML = `
+        <div class="card" style="text-align:center;padding:50px 20px">
+            <i class="bi bi-person-x" style="font-size:40px;color:var(--muted)"></i>
+            <p style="font-size:13px;color:var(--muted);margin:12px 0 0">
+                Bạn chưa đăng nhập. Vào <a href="/pet.html" style="color:var(--brand);font-weight:700">Pet Game</a> để đăng nhập trước.
+            </p>
+        </div>`;
+}
+
+let currentUser = null;
+
+async function renderAccount() {
+    const { data: profile } = await supabase.from('profiles').select('*').eq('user_id', currentUser.id).maybeSingle();
+    const displayName = profile?.display_name || currentUser.user_metadata?.full_name || 'Chưa đặt tên';
+    const avatarUrl = currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture;
+    const initial = (displayName || currentUser.email || '?').trim().charAt(0).toUpperCase();
+
+    appRoot.innerHTML = `
+        <div class="card">
+            <div class="profile-hero">
+                ${avatarUrl
+                    ? `<img class="avatar" src="${avatarUrl}" alt="Avatar" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar-fallback',textContent:'${initial}'}))">`
+                    : `<div class="avatar-fallback">${initial}</div>`
+                }
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">Tên hiển thị</label>
+                <input type="text" id="displayNameInput" value="${escapeHtml(displayName)}" maxlength="40">
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">Email <span style="text-transform:none">(từ Google, không đổi được)</span></label>
+                <div class="field-readonly"><i class="bi bi-envelope-fill"></i> ${escapeHtml(currentUser.email || '')}</div>
+            </div>
+
+            <button class="btn-main" id="btnSaveProfile"><i class="bi bi-check-lg"></i> Lưu thay đổi</button>
+        </div>
+
+        <div class="card danger-zone">
+            <p class="sec-title" style="color:#ef4444"><i class="bi bi-exclamation-triangle-fill"></i> Khu vực nguy hiểm</p>
+            <p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin:0 0 12px">
+                Xóa tài khoản sẽ xóa vĩnh viễn pet, vật phẩm, lịch sử học tập — không khôi phục được.
+            </p>
+            <button class="btn-danger" id="btnOpenDeleteModal"><i class="bi bi-trash3-fill"></i> Xóa tài khoản</button>
+        </div>
+
+        <button class="btn-main" id="btnLogout" style="background:transparent;color:var(--muted);border:1.5px solid var(--border);margin-top:4px">
+            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+        </button>
+    `;
+
+    document.getElementById('btnSaveProfile').addEventListener('click', saveProfile);
+    document.getElementById('btnOpenDeleteModal').addEventListener('click', () => {
+        document.getElementById('deleteModal').classList.add('show');
+    });
+    document.getElementById('btnLogout').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        location.href = '/index.html';
+    });
+}
+
+async function saveProfile() {
+    const name = document.getElementById('displayNameInput').value.trim();
+    if (!name) { toast('Tên không được để trống'); return; }
+    const btn = document.getElementById('btnSaveProfile');
+    btn.disabled = true;
+
+    const { error } = await supabase.from('profiles').upsert(
+        { user_id: currentUser.id, display_name: name, updated_at: new Date().toISOString() },
+        { onConflict: 'user_id' }
+    );
+    btn.disabled = false;
+    if (error) { toast('Lỗi lưu: ' + error.message, 3000); return; }
+    toast('✅ Đã lưu tên hiển thị!');
+}
+
+const deleteModal = document.getElementById('deleteModal');
+const deleteInput = document.getElementById('deleteConfirmInput');
+const btnConfirmDelete = document.getElementById('btnConfirmDelete');
+
+deleteInput.addEventListener('input', () => {
+    btnConfirmDelete.disabled = deleteInput.value.trim().toUpperCase() !== 'XÓA';
+});
+document.getElementById('btnCancelDelete').addEventListener('click', () => {
+    deleteModal.classList.remove('show');
+    deleteInput.value = '';
+    btnConfirmDelete.disabled = true;
+});
+btnConfirmDelete.addEventListener('click', async () => {
+    btnConfirmDelete.disabled = true;
+    btnConfirmDelete.textContent = 'Đang xóa...';
+
+    const { data: { session } } = await supabase.auth.getSession();
+    const res = await fetch('/api/account/delete', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${session.access_token}` },
+    });
+    const result = await res.json();
+
+    if (!res.ok || !result.deleted) {
+        toast('Xóa thất bại: ' + (result.error || 'lỗi không xác định'), 4000);
+        btnConfirmDelete.disabled = false;
+        btnConfirmDelete.textContent = 'Xóa vĩnh viễn';
+        return;
+    }
+
+    await supabase.auth.signOut();
+    appRoot.innerHTML = `
+        <div class="card" style="text-align:center;padding:40px 20px">
+            <i class="bi bi-check-circle-fill" style="font-size:36px;color:var(--brand)"></i>
+            <p style="font-size:13px;margin:12px 0 0">Đã xóa tài khoản. Cảm ơn bạn đã dùng TreXanh Pet Game 🌱</p>
+        </div>`;
+    setTimeout(() => { location.href = '/index.html'; }, 2500);
+});
+
+(async () => {
+    await initSupabase();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { renderLogin(); return; }
+    currentUser = user;
+    await renderAccount();
+})();
+</script>
+</body>
+</html>

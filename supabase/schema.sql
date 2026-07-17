@@ -26,6 +26,7 @@ create table if not exists pets (
     hunger      int  not null default 100 check (hunger between 0 and 100),
     happiness   int  not null default 100 check (happiness between 0 and 100),
     energy      int  not null default 100 check (energy between 0 and 100),
+    last_decay_at timestamptz not null default now(), -- Phase 2: mốc tính suy giảm gần nhất, tách khỏi updated_at
     created_at  timestamptz not null default now(),
     updated_at  timestamptz not null default now()
 );
@@ -229,6 +230,48 @@ begin
 end;
 $$ language plpgsql security definer set search_path = public;
 
+-- ============================================================
+-- RPC — Phase 2: tính suy giảm hunger/happiness/energy theo thời gian
+-- THẬT đã trôi qua kể từ lần tính gần nhất (last_decay_at). Gọi mỗi khi
+-- client load pet (pet.html, widget trang chủ) để số liệu luôn phản ánh
+-- đúng thời gian thực — không cần cron chạy nền liên tục.
+--
+-- Mỗi giờ trôi qua: hunger -3, happiness -2, energy -1 (tối thiểu 0).
+-- Dùng last_decay_at + interval (không phải now()) để giữ lại phần giờ lẻ
+-- chưa đủ 1 giờ, cộng dồn đúng cho lần tính sau thay vì làm tròn mất.
+-- ============================================================
+create or replace function rpc_sync_pet_decay(p_pet_id uuid)
+returns pets as $$
+declare
+    v_pet pets;
+    v_hours_elapsed numeric;
+    v_whole_hours int;
+begin
+    if auth.uid() is null then raise exception 'not authenticated'; end if;
+
+    select * into v_pet from pets where id = p_pet_id and user_id = auth.uid();
+    if v_pet is null then raise exception 'pet_not_found'; end if;
+
+    v_hours_elapsed := extract(epoch from (now() - v_pet.last_decay_at)) / 3600.0;
+    v_whole_hours   := floor(v_hours_elapsed)::int;
+
+    if v_whole_hours < 1 then
+        return v_pet; /* chưa đủ 1 giờ — chưa cần tính, trả nguyên trạng */
+    end if;
+
+    update pets set
+        hunger        = greatest(0, hunger    - v_whole_hours * 3),
+        happiness     = greatest(0, happiness - v_whole_hours * 2),
+        energy        = greatest(0, energy    - v_whole_hours * 1),
+        last_decay_at = last_decay_at + (v_whole_hours || ' hours')::interval,
+        updated_at    = now()
+        where id = p_pet_id
+        returning * into v_pet;
+
+    return v_pet;
+end;
+$$ language plpgsql security definer set search_path = public;
+
 -- study_activity: chỉ chèn/đọc của chính mình. KHÔNG cho update/delete — vì
 -- đây là log chống cày, sửa được thì mất tác dụng chống gian lận
 create policy "study_select_own" on study_activity for select using (auth.uid() = user_id);
@@ -271,6 +314,23 @@ $$ language plpgsql security definer set search_path = public;
 -- Hàm này CHỈ được gọi bởi service role (từ Edge Function, sau khi đã tự
 -- kiểm tra cap) — service role không bị ảnh hưởng bởi revoke này.
 revoke execute on function rpc_increment_inventory(uuid, text, int) from public, anon, authenticated;
+
+
+-- ============================================================
+-- HỆ THỐNG TÀI KHOẢN — hồ sơ tùy chỉnh (display_name do user tự đặt,
+-- tách khỏi auth.users vì Google có thể ghi đè user_metadata mỗi lần login)
+-- ============================================================
+create table if not exists profiles (
+    user_id      uuid primary key references auth.users(id) on delete cascade,
+    display_name text,
+    updated_at   timestamptz not null default now()
+);
+
+alter table profiles enable row level security;
+
+create policy "profiles_select_own" on profiles for select using (auth.uid() = user_id);
+create policy "profiles_insert_own" on profiles for insert with check (auth.uid() = user_id);
+create policy "profiles_update_own" on profiles for update using (auth.uid() = user_id);
 
 
 -- ============================================================

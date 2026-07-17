@@ -944,6 +944,12 @@
 
             <!-- Controls -->
             <div class="flex items-center gap-1.5">
+                <a id="userAvatarLink" href="/account.html" class="hidden"
+                   style="width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;
+                          border:1.5px solid rgba(16,185,129,.4);display:flex;align-items:center;justify-content:center"
+                   title="Tài khoản" aria-label="Tài khoản">
+                    <img id="userAvatarImg" src="" alt="Avatar" style="width:100%;height:100%;object-fit:cover">
+                </a>
                 <button id="btnFsDown" class="fs-btn" title="Giảm cỡ chữ" aria-label="Giảm cỡ chữ">A−</button>
                 <button id="btnFsUp"   class="fs-btn" title="Tăng cỡ chữ" aria-label="Tăng cỡ chữ">A+</button>
                 <button id="btnSettings" class="hdr-btn" title="Cài đặt" aria-label="Mở cài đặt">
@@ -1210,7 +1216,7 @@
                 </a>
             </div>
             <div class="flex items-center gap-2">
-                <a href="/pet.html"
+                <a href="/pet.html" id="petGameLink"
                     style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:800;
                            letter-spacing:.4px;padding:4px 10px;border-radius:8px;text-transform:uppercase;
                            background:rgba(16,185,129,.1);color:#059669;border:1px solid rgba(16,185,129,.25);

@@ -6,19 +6,51 @@
 <title>Pet Game | TreXanh</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" href="assets/favicon/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script>
+    /* Đồng bộ dark mode với trang chủ — đọc CHUNG 1 key localStorage['theme']
+       (cùng domain nên chia sẻ được), áp dụng NGAY trước khi render để không
+       bị nháy sáng/tối. Nếu người dùng đã tự chọn light/dark thủ công ở
+       trang chủ, pet.html phải tôn trọng ĐÚNG lựa chọn đó, không chỉ theo
+       prefers-color-scheme của hệ điều hành. */
+    (function applyTheme() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        }
+    })();
+</script>
 <style>
     :root {
-        --brand: #10b981; --brand-dk: #059669; --brand-deeper: #064e3b;
-        --brand-glow: rgba(16,185,129,.22); --brand-soft: rgba(16,185,129,.08);
-        --bg: #f0fdf4; --bg2: #ffffff; --text: #0f172a; --muted: #64748b; --border: #d1fae5;
+        --brand:        #10b981;
+        --brand-dk:     #059669;
+        --brand-deeper: #064e3b;
+        --brand-glow:   rgba(16,185,129,.22);
+        --brand-soft:   rgba(16,185,129,.08);
+        --bg:           #f0fdf4;
+        --bg2:          #ffffff;
+        --text:         #0f172a;
+        --muted:        #64748b;
+        --border:       #d1fae5;
+        --shadow:       rgba(16,185,129,.07);
     }
-    @media (prefers-color-scheme: dark) {
-        :root { --bg:#060d18; --bg2:#0c1a2e; --text:#ecfdf5; --muted:#6b7280; --border:rgba(16,185,129,.13); }
+    .dark {
+        --bg:     #060d18;
+        --bg2:    #0c1a2e;
+        --text:   #ecfdf5;
+        --muted:  #6b7280;
+        --border: rgba(16,185,129,.13);
+        --shadow: rgba(0,0,0,.3);
     }
     * { box-sizing: border-box; }
     body {
-        margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: var(--bg); color: var(--text); min-height: 100vh;
+        transition: background .2s, color .2s;
     }
     .wrap { max-width: 460px; margin: 0 auto; padding: 20px 16px 60px; }
 
@@ -26,7 +58,7 @@
     .topbar a { color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
     .topbar h1 { font-size: 16px; font-weight: 900; margin: 0; display: flex; align-items: center; gap: 6px; }
 
-    .card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 18px; padding: 20px; margin-bottom: 16px; }
+    .card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 18px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 10px var(--shadow); }
 
     /* Login screen */
     .login-screen { text-align: center; padding: 60px 20px; }
@@ -42,7 +74,69 @@
     .btn-google:hover { border-color: var(--brand); }
 
     /* Pet display */
-    .pet-hero { text-align: center; padding: 8px 0 4px; }
+    .pet-hero { text-align: center; padding: 8px 0 4px; position: relative; }
+
+    /* ── Sprite pet — ảnh thật + animation CSS để "thổi hồn" vào ảnh tĩnh ── */
+    .pet-sprite-wrap {
+        position: relative; width: 180px; height: 180px; margin: 0 auto 6px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none;
+    }
+    .pet-sprite-img {
+        max-width: 100%; max-height: 100%; object-fit: contain;
+        filter: drop-shadow(0 8px 16px rgba(16,185,129,.25));
+        transform-origin: bottom center;
+        animation: petBreathe 2.6s ease-in-out infinite;
+    }
+    .pet-sprite-emoji { font-size: 72px; line-height: 1; animation: petBreathe 2.6s ease-in-out infinite; }
+
+    /* Thở phồng-xẹp nhẹ nhàng — animation mặc định lúc bình thường */
+    @keyframes petBreathe {
+        0%, 100% { transform: scale(1) translateY(0); }
+        50%      { transform: scale(1.035) translateY(-3px); }
+    }
+    /* Vui — nhún nhảy rõ hơn, nhanh hơn */
+    @keyframes petBounceHappy {
+        0%, 100% { transform: scale(1) translateY(0) rotate(0deg); }
+        30%      { transform: scale(1.06) translateY(-10px) rotate(-2deg); }
+        60%      { transform: scale(1.02) translateY(-4px) rotate(2deg); }
+    }
+    /* Buồn/đói/mệt — xìu xuống, chuyển động chậm rề rề */
+    @keyframes petDroopy {
+        0%, 100% { transform: scale(1) translateY(0) rotate(0deg); }
+        50%      { transform: scale(.98) translateY(2px) rotate(-1.5deg); }
+    }
+    .pet-sprite-wrap.mood-happy .pet-sprite-img,
+    .pet-sprite-wrap.mood-happy .pet-sprite-emoji { animation: petBounceHappy 1.4s ease-in-out infinite; }
+    .pet-sprite-wrap.mood-sad .pet-sprite-img,
+    .pet-sprite-wrap.mood-sad .pet-sprite-emoji { animation: petDroopy 3.6s ease-in-out infinite; filter: saturate(.75) brightness(.93); }
+
+    /* Chạm vào — bóp nhẹ rồi bật lại, phản hồi tức thì cho cảm giác "sống" */
+    @keyframes petTapReact {
+        0%   { transform: scale(1); }
+        35%  { transform: scale(.88, 1.1); }
+        60%  { transform: scale(1.08, .92); }
+        100% { transform: scale(1); }
+    }
+    .pet-sprite-wrap.tapped .pet-sprite-img,
+    .pet-sprite-wrap.tapped .pet-sprite-emoji { animation: petTapReact .45s cubic-bezier(.36,.07,.19,.97) !important; }
+
+    /* Particle bay lên khi cho ăn/chơi/chạm — dùng chung 1 class, đổi nội dung emoji qua JS */
+    .pet-particle {
+        position: absolute; left: 50%; top: 40%; font-size: 22px;
+        pointer-events: none; animation: petParticleFloat 1s ease-out forwards;
+    }
+    @keyframes petParticleFloat {
+        0%   { transform: translate(-50%, 0) scale(.6); opacity: 0; }
+        20%  { opacity: 1; }
+        100% { transform: translate(-50%, -70px) scale(1.15); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pet-sprite-img, .pet-sprite-emoji { animation: none !important; }
+        .pet-particle { animation-duration: .01ms !important; }
+    }
+
     .pet-icon { font-size: 72px; line-height: 1; margin-bottom: 6px; }
     .pet-name { font-size: 17px; font-weight: 900; margin: 0 0 2px; }
     .pet-level { font-size: 11px; font-weight: 700; color: var(--brand); }
@@ -107,8 +201,11 @@
 <body>
 <div class="wrap">
     <div class="topbar">
-        <h1>🐾 Pet Game</h1>
-        <a href="/index.html">← TreXanh</a>
+        <h1><i class="bi bi-egg-fill" aria-hidden="true" style="color:var(--brand)"></i> Pet Game</h1>
+        <div style="display:flex;gap:14px;align-items:center">
+            <a href="/account.html"><i class="bi bi-person-circle" aria-hidden="true"></i> Tài khoản</a>
+            <a href="/index.html"><i class="bi bi-arrow-left" aria-hidden="true"></i> TreXanh</a>
+        </div>
     </div>
 
     <div id="appRoot">
@@ -118,6 +215,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="assets/js/img-guard.min.js"></script>
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -193,6 +291,13 @@ function renderCreatePet() {
 }
 
 /* 4. Màn hình chính: hiện pet + kho đồ + thi + quảng cáo */
+/* Map species_id → đường dẫn ảnh thật. Loài chưa có trong list này sẽ tự
+   fallback về emoji (pet_species.icon) — thêm ảnh mới chỉ cần thêm 1 dòng. */
+const SPECIES_IMAGES = {
+    bamboo_sprite: 'assets/images/pets/bamboo_sprite.png',
+    /* bamboo_guard: 'assets/images/pets/bamboo_guard.png',  ← thêm khi có ảnh */
+};
+
 let currentPet = null;
 let currentInventory = { food: 0, toy: 0 };
 let currentSession = null;
@@ -202,12 +307,40 @@ async function renderMain() {
     const icon = species.data?.icon || '🌱';
     const xpInLevel = currentPet.xp % 100;
 
+    const lowStats = [];
+    if (currentPet.hunger    < 30) lowStats.push('đói bụng');
+    if (currentPet.happiness < 30) lowStats.push('buồn');
+    if (currentPet.energy    < 30) lowStats.push('mệt');
+    const warningHtml = lowStats.length
+        ? `<p style="font-size:11px;font-weight:800;color:#f59e0b;text-align:center;margin:6px 0 0">
+               ⚠️ Pet đang ${lowStats.join(', ')} — cho ăn/chơi ngay nhé!
+           </p>` : '';
+
+    /* Mood tổng hợp từ 3 chỉ số — quyết định animation nào chạy.
+       "happy" ưu tiên hiện khi mọi thứ đều ổn, "sad" khi có ít nhất 1 chỉ
+       số thấp — người chơi cần thấy ngay pet đang cần chăm sóc. */
+    const avgStat = (currentPet.hunger + currentPet.happiness + currentPet.energy) / 3;
+    const mood = lowStats.length > 0 ? 'sad' : (avgStat >= 80 ? 'happy' : 'neutral');
+
+    /* Map loài → ảnh thật. Loài chưa có ảnh (vd chưa vẽ xong tiến hóa) tự
+       fallback về emoji trong pet_species.icon, không cần sửa code khi
+       thêm ảnh mới — chỉ cần thêm 1 dòng vào SPECIES_IMAGES này. */
+    const spriteImg = SPECIES_IMAGES[currentPet.species_id];
+    const petVisualHtml = spriteImg
+        ? `<img class="pet-sprite-img" src="${spriteImg}" alt="${escapeHtml(species.data?.name || 'Pet')}"
+                onerror="this.replaceWith(Object.assign(document.createElement('div'),
+                    {className:'pet-sprite-emoji', textContent:'${icon}'}))">`
+        : `<div class="pet-sprite-emoji">${icon}</div>`;
+
     appRoot.innerHTML = `
         <div class="card">
             <div class="pet-hero">
-                <div class="pet-icon">${icon}</div>
+                <div class="pet-sprite-wrap mood-${mood}" id="petSpriteWrap">
+                    ${petVisualHtml}
+                </div>
                 <p class="pet-name">${escapeHtml(currentPet.name)}</p>
                 <p class="pet-level">Level ${currentPet.level} · ${escapeHtml(species.data?.name || '')}</p>
+                ${warningHtml}
             </div>
 
             <div class="bar-row">
@@ -235,7 +368,7 @@ async function renderMain() {
         </div>
 
         <div class="card">
-            <p class="sec-title">📝 Thi lấy thức ăn <span class="inv-badge">tối đa 3/ngày</span></p>
+            <p class="sec-title"><i class="bi bi-pencil-fill" style="color:#6366f1" aria-hidden="true"></i> Thi lấy thức ăn <span class="inv-badge">tối đa 3/ngày</span></p>
             <select id="quizCategorySelect">
                 <option value="HHT">TBT Hà Huy Tập</option>
                 <option value="LLCT">Lý Luận Chính Trị</option>
@@ -245,7 +378,7 @@ async function renderMain() {
         </div>
 
         <div class="card">
-            <p class="sec-title">📺 Xem quảng cáo lấy vật phẩm <span class="inv-badge">tối đa 3/loại/ngày</span></p>
+            <p class="sec-title"><i class="bi bi-play-btn-fill" style="color:#ec4899" aria-hidden="true"></i> Xem quảng cáo lấy vật phẩm <span class="inv-badge">tối đa 3/loại/ngày</span></p>
             <div class="actions-row">
                 <button id="btnAdFood">🍚 Xem QC → Đồ ăn</button>
                 <button id="btnAdToy">🎾 Xem QC → Đồ chơi</button>
@@ -255,25 +388,47 @@ async function renderMain() {
         <button class="btn-main" id="btnLogout" style="background:transparent;color:var(--muted);border:1.5px solid var(--border)">Đăng xuất</button>
     `;
 
-    document.getElementById('btnFeed').addEventListener('click', () => doAction('rpc_feed_pet', 'Đã cho ăn! 🍚'));
-    document.getElementById('btnPlay').addEventListener('click', () => doAction('rpc_play_pet', 'Chơi vui ghê! 🎾'));
+    document.getElementById('btnFeed').addEventListener('click', () => doAction('rpc_feed_pet', 'Đã cho ăn! 🍚', '🍚'));
+    document.getElementById('btnPlay').addEventListener('click', () => doAction('rpc_play_pet', 'Chơi vui ghê! 🎾', '💖'));
     document.getElementById('btnStartQuiz').addEventListener('click', startQuiz);
     document.getElementById('btnAdFood').addEventListener('click', () => claimAd('food'));
     document.getElementById('btnAdToy').addEventListener('click', () => claimAd('toy'));
     document.getElementById('btnLogout').addEventListener('click', async () => { await supabase.auth.signOut(); location.reload(); });
+
+    /* Chạm/bấm vào pet — phản ứng ngay (bóp-bật lại) + bắn tim bay lên,
+       thuần hiệu ứng vui mắt, không ảnh hưởng chỉ số thật của pet */
+    document.getElementById('petSpriteWrap')?.addEventListener('click', (e) => {
+        const wrap = e.currentTarget;
+        wrap.classList.remove('tapped');
+        void wrap.offsetWidth; /* ép reflow để restart animation nếu bấm liên tục */
+        wrap.classList.add('tapped');
+        spawnPetParticle(wrap, ['💖', '✨', '😊'][Math.floor(Math.random() * 3)]);
+    });
 }
 
-async function doAction(rpcName, successMsg) {
+/** Bắn 1 icon bay lên rồi tự biến mất — dùng cho phản hồi chạm/cho ăn/chơi */
+function spawnPetParticle(wrapEl, emoji) {
+    if (!wrapEl) return;
+    const p = document.createElement('span');
+    p.className = 'pet-particle';
+    p.textContent = emoji;
+    p.style.left = `${45 + Math.random() * 10}%`;
+    wrapEl.appendChild(p);
+    setTimeout(() => p.remove(), 1000);
+}
+
+async function doAction(rpcName, successMsg, particleEmoji) {
     const { data, error } = await supabase.rpc(rpcName, { p_pet_id: currentPet.id });
     if (error) {
         const msg = error.message.includes('not_enough') ? 'Không đủ vật phẩm!' : 'Có lỗi xảy ra, thử lại nhé';
         toast(msg);
         return;
     }
+    if (particleEmoji) spawnPetParticle(document.getElementById('petSpriteWrap'), particleEmoji);
     currentPet = data;
     await refreshInventory();
     toast(successMsg);
-    await renderMain();
+    setTimeout(renderMain, 550); /* trễ chút để kịp thấy particle bay trước khi re-render */
 }
 
 async function refreshInventory() {
@@ -369,7 +524,10 @@ async function loadApp() {
     const { data: pet } = await supabase.from('pets').select('*').eq('user_id', user.id).maybeSingle();
     if (!pet) { renderCreatePet(); return; }
 
-    currentPet = pet;
+    /* Phase 2: tính lại hunger/happiness/energy theo thời gian thực đã
+       trôi qua kể từ lần cuối vào trước khi hiển thị */
+    const { data: syncedPet } = await supabase.rpc('rpc_sync_pet_decay', { p_pet_id: pet.id });
+    currentPet = syncedPet || pet;
     await refreshInventory();
     await renderMain();
 }
