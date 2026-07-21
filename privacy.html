@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chính sách bảo mật | TreXanh</title>
+<link rel="icon" type="image/png" href="assets/favicon/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script>
+    (function applyTheme() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) document.documentElement.classList.add('dark');
+    })();
+</script>
+<style>
+    :root {
+        --brand: #10b981; --brand-dk: #059669; --bg: #f0fdf4; --bg2: #ffffff;
+        --text: #0f172a; --muted: #64748b; --border: #d1fae5; --shadow: rgba(16,185,129,.07);
+    }
+    .dark { --bg: #060d18; --bg2: #0c1a2e; --text: #ecfdf5; --muted: #6b7280; --border: rgba(16,185,129,.13); --shadow: rgba(0,0,0,.3); }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg); color: var(--text); min-height: 100vh; transition: background .2s, color .2s;
+    }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .topbar a { color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .topbar h1 { font-size: 17px; font-weight: 900; margin: 0; }
+    .card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 18px; padding: 24px; box-shadow: 0 2px 10px var(--shadow); }
+    h2 { font-size: 14.5px; font-weight: 900; margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; }
+    h2:first-child { margin-top: 0; }
+    h2 i { color: var(--brand); }
+    p, li { font-size: 13px; color: var(--muted); line-height: 1.75; }
+    ul { padding-left: 20px; margin: 8px 0; }
+    b { color: var(--text); }
+    .updated { font-size: 11px; color: var(--muted); margin-bottom: 20px; }
+    a.inline { color: var(--brand); font-weight: 700; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="topbar">
+        <h1>Chính sách bảo mật</h1>
+        <a href="/index.html"><i class="bi bi-arrow-left"></i> TreXanh</a>
+    </div>
+
+    <div class="card">
+        <p class="updated">Cập nhật lần cuối: Tháng 7, 2026</p>
+
+        <h2><i class="bi bi-info-circle-fill"></i> Chúng tôi thu thập gì</h2>
+        <p>Khi bạn đăng nhập bằng Google cho <b>Pet Game</b>, chúng tôi nhận từ Google:</p>
+        <ul>
+            <li>Địa chỉ email</li>
+            <li>Tên hiển thị và ảnh đại diện (avatar)</li>
+        </ul>
+        <p>Trong quá trình sử dụng, hệ thống lưu thêm:</p>
+        <ul>
+            <li>Thông tin pet của bạn (tên, cấp độ, chỉ số)</li>
+            <li>Lịch sử câu hỏi bạn đã xem (để tính XP, chống nhận thưởng trùng lặp)</li>
+            <li>Kết quả các lượt thi trong Pet Game</li>
+            <li>Vật phẩm trong kho (đồ ăn, đồ chơi)</li>
+        </ul>
+        <p>Việc <b>tra cứu câu hỏi/đáp án ở trang chính TreXanh không yêu cầu đăng nhập</b> và không thu thập bất kỳ dữ liệu cá nhân nào.</p>
+
+        <h2><i class="bi bi-gear-fill"></i> Dùng dữ liệu để làm gì</h2>
+        <ul>
+            <li>Hiển thị và đồng bộ pet của bạn giữa các thiết bị</li>
+            <li>Tính XP, cấp độ, giới hạn nhận thưởng hàng ngày</li>
+            <li>Không dùng cho quảng cáo, không bán/chia sẻ cho bên thứ ba ngoài các nhà cung cấp hạ tầng bên dưới</li>
+        </ul>
+
+        <h2><i class="bi bi-hdd-network-fill"></i> Nơi lưu trữ dữ liệu</h2>
+        <p>Dữ liệu được lưu trên hạ tầng của:</p>
+        <ul>
+            <li><b>Supabase</b> (Postgres) — tài khoản, pet, lịch sử hoạt động</li>
+            <li><b>Vercel</b> — hạ tầng triển khai website</li>
+            <li><b>Google</b> — xác thực đăng nhập (chúng tôi không lưu mật khẩu Google của bạn)</li>
+        </ul>
+
+        <h2><i class="bi bi-shield-lock-fill"></i> Bảo mật</h2>
+        <p>Dữ liệu được bảo vệ bằng Row Level Security (RLS) ở tầng database — mỗi tài khoản chỉ có thể đọc/ghi dữ liệu của chính mình, không thể truy cập dữ liệu người dùng khác kể cả khi có lỗi ở tầng ứng dụng.</p>
+
+        <h2><i class="bi bi-person-check-fill"></i> Quyền của bạn</h2>
+        <ul>
+            <li><b>Xem/sửa</b> tên hiển thị tại trang <a class="inline" href="/account.html">Tài khoản</a></li>
+            <li><b>Xóa toàn bộ dữ liệu</b> bất kỳ lúc nào — vào Tài khoản → Xóa tài khoản. Thao tác này xóa vĩnh viễn pet, vật phẩm, lịch sử học tập và không thể khôi phục.</li>
+        </ul>
+
+        <h2><i class="bi bi-envelope-fill"></i> Liên hệ</h2>
+        <p>Có thắc mắc về dữ liệu cá nhân, liên hệ qua thông tin ở mục <a class="inline" href="/index.html">Contributors</a> trên trang chính.</p>
+    </div>
+</div>
+<script src="assets/js/dev-notice.js"></script>
+</body>
+</html>

@@ -211,13 +211,21 @@
     <div id="appRoot">
         <div class="card"><p style="text-align:center;color:var(--muted);font-size:12px">Đang tải...</p></div>
     </div>
+
+    <p style="text-align:center;font-size:9.5px;font-weight:600;color:var(--muted);margin-top:20px">
+        <a href="/privacy.html" style="color:var(--muted);text-decoration:underline">Chính sách bảo mật</a>
+        ·
+        <a href="/terms.html" style="color:var(--muted);text-decoration:underline">Điều khoản sử dụng</a>
+    </p>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script src="assets/js/img-guard.min.js"></script>
+<script src="assets/js/dev-notice.js"></script>
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { setupSessionGuard, isAuthError, SESSION_EXPIRED_MSG } from './assets/js/session-guard.js';
 
 const appRoot = document.getElementById('appRoot');
 const toastEl = document.getElementById('toast');
@@ -267,6 +275,48 @@ function renderLogin() {
 
 /* 3. Màn hình tạo pet (user mới, chưa có pet) */
 function renderCreatePet() {
+    renderWelcomeStep();
+}
+
+/** Bước 1 — chào mừng, giải thích ngắn gọn cách chơi trước khi tạo pet */
+function renderWelcomeStep() {
+    appRoot.innerHTML = `
+        <div class="card login-screen">
+            <div class="emoji">🎉</div>
+            <h2>Chào mừng đến với Pet Game!</h2>
+            <p style="margin-bottom:20px">Vài điều cần biết trước khi bắt đầu:</p>
+
+            <div style="text-align:left;display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                    <span style="font-size:22px;flex-shrink:0">📖</span>
+                    <div>
+                        <p style="font-weight:800;font-size:13px;margin:0 0 2px">Nuôi pet bằng việc học</p>
+                        <p style="font-size:11.5px;color:var(--muted);margin:0;line-height:1.5">Xem câu hỏi trên TreXanh mỗi ngày để nhận XP — pet tự lên cấp và tiến hóa.</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                    <span style="font-size:22px;flex-shrink:0">🍚</span>
+                    <div>
+                        <p style="font-weight:800;font-size:13px;margin:0 0 2px">Chăm sóc mỗi ngày</p>
+                        <p style="font-size:11.5px;color:var(--muted);margin:0;line-height:1.5">No bụng/vui vẻ/năng lượng giảm dần theo thời gian — nhớ cho ăn, chơi cùng thường xuyên.</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                    <span style="font-size:22px;flex-shrink:0">📝</span>
+                    <div>
+                        <p style="font-weight:800;font-size:13px;margin:0 0 2px">Thi lấy đồ ăn</p>
+                        <p style="font-size:11.5px;color:var(--muted);margin:0;line-height:1.5">Làm bài thi nhanh (5 câu) để nhận đồ ăn — tối đa 3 lần/ngày.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-main" id="btnWelcomeNext">Tiếp tục <i class="bi bi-arrow-right"></i></button>
+        </div>`;
+    document.getElementById('btnWelcomeNext').addEventListener('click', renderCreatePetForm);
+}
+
+/** Bước 2 — đặt tên và tạo pet */
+function renderCreatePetForm() {
     appRoot.innerHTML = `
         <div class="card login-screen">
             <div class="emoji">🌱</div>
@@ -282,6 +332,7 @@ function renderCreatePet() {
         btn.disabled = true; btn.textContent = 'Đang tạo...';
         const { error } = await supabase.rpc('rpc_create_starter_pet', { p_species_id: 'bamboo_sprite', p_name: name });
         if (error) {
+            if (isAuthError(error)) { toast(SESSION_EXPIRED_MSG, 3000); setTimeout(() => location.reload(), 2200); return; }
             toast('Lỗi tạo pet: ' + error.message, 3500);
             btn.disabled = false; btn.textContent = '🌱 Tạo pet';
             return;
@@ -420,6 +471,7 @@ function spawnPetParticle(wrapEl, emoji) {
 async function doAction(rpcName, successMsg, particleEmoji) {
     const { data, error } = await supabase.rpc(rpcName, { p_pet_id: currentPet.id });
     if (error) {
+        if (isAuthError(error)) { toast(SESSION_EXPIRED_MSG, 3000); setTimeout(() => location.reload(), 2200); return; }
         const msg = error.message.includes('not_enough') ? 'Không đủ vật phẩm!' : 'Có lỗi xảy ra, thử lại nhé';
         toast(msg);
         return;
@@ -450,6 +502,7 @@ async function startQuiz() {
         body: JSON.stringify({ category }),
     });
     const data = await res.json();
+    if (res.status === 401) { quizArea.innerHTML = ''; toast(SESSION_EXPIRED_MSG, 3000); setTimeout(() => location.reload(), 2200); return; }
     if (!res.ok) { quizArea.innerHTML = `<p style="color:#ef4444;font-size:12px">${escapeHtml(data.error || 'Lỗi tải đề')}</p>`; return; }
 
     currentSession = { quizToken: data.quizToken, total: data.questions.length };
@@ -484,6 +537,7 @@ async function submitQuiz(total) {
     const result = await res.json();
     const quizArea = document.getElementById('quizArea');
 
+    if (res.status === 401) { toast(SESSION_EXPIRED_MSG, 3000); setTimeout(() => location.reload(), 2200); return; }
     if (!res.ok) { quizArea.innerHTML = `<p style="color:#ef4444;font-size:12px">${escapeHtml(result.error || 'Lỗi')}</p>`; return; }
 
     quizArea.innerHTML = `<p style="font-size:13px;font-weight:700">
@@ -507,6 +561,7 @@ async function claimAd(rewardType) {
         body: JSON.stringify({ rewardType }),
     });
     const result = await res.json();
+    if (res.status === 401) { toast(SESSION_EXPIRED_MSG, 3000); setTimeout(() => location.reload(), 2200); return; }
     if (result.awarded) {
         toast(`+1 ${rewardType === 'toy' ? '🎾 đồ chơi' : '🍚 đồ ăn'}!`);
         await refreshInventory();
@@ -534,6 +589,12 @@ async function loadApp() {
 
 (async () => {
     await initSupabase();
+    setupSessionGuard(supabase, {
+        onExpired: () => {
+            toast(SESSION_EXPIRED_MSG, 3000);
+            setTimeout(() => location.reload(), 2200);
+        },
+    });
     supabase.auth.onAuthStateChange((_event) => { loadApp(); });
     await loadApp();
 })();

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Điều khoản sử dụng | TreXanh</title>
+<link rel="icon" type="image/png" href="assets/favicon/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script>
+    (function applyTheme() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) document.documentElement.classList.add('dark');
+    })();
+</script>
+<style>
+    :root {
+        --brand: #10b981; --brand-dk: #059669; --bg: #f0fdf4; --bg2: #ffffff;
+        --text: #0f172a; --muted: #64748b; --border: #d1fae5; --shadow: rgba(16,185,129,.07);
+    }
+    .dark { --bg: #060d18; --bg2: #0c1a2e; --text: #ecfdf5; --muted: #6b7280; --border: rgba(16,185,129,.13); --shadow: rgba(0,0,0,.3); }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg); color: var(--text); min-height: 100vh; transition: background .2s, color .2s;
+    }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .topbar a { color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .topbar h1 { font-size: 17px; font-weight: 900; margin: 0; }
+    .card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 18px; padding: 24px; box-shadow: 0 2px 10px var(--shadow); }
+    h2 { font-size: 14.5px; font-weight: 900; margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; }
+    h2:first-child { margin-top: 0; }
+    h2 i { color: var(--brand); }
+    p, li { font-size: 13px; color: var(--muted); line-height: 1.75; }
+    ul { padding-left: 20px; margin: 8px 0; }
+    b { color: var(--text); }
+    .updated { font-size: 11px; color: var(--muted); margin-bottom: 20px; }
+    a.inline { color: var(--brand); font-weight: 700; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="topbar">
+        <h1>Điều khoản sử dụng</h1>
+        <a href="/index.html"><i class="bi bi-arrow-left"></i> TreXanh</a>
+    </div>
+
+    <div class="card">
+        <p class="updated">Cập nhật lần cuối: Tháng 7, 2026</p>
+
+        <h2><i class="bi bi-file-earmark-text-fill"></i> Giới thiệu</h2>
+        <p>TreXanh là hệ thống tra cứu câu hỏi/đáp án dành cho thanh niên TNVN, đi kèm tính năng <b>Pet Game</b> mang tính giải trí/gamify việc học. Bằng việc sử dụng site, bạn đồng ý với các điều khoản dưới đây.</p>
+
+        <h2><i class="bi bi-search"></i> Sử dụng miễn phí, không cần tài khoản</h2>
+        <p>Toàn bộ chức năng tra cứu câu hỏi/đáp án ở trang chính <b>miễn phí, không yêu cầu đăng nhập</b>. Chỉ riêng Pet Game (tính năng phụ) mới cần đăng nhập Google.</p>
+
+        <h2><i class="bi bi-egg-fill"></i> Pet Game</h2>
+        <ul>
+            <li>Pet Game mang tính chất <b>giải trí/động lực học tập</b>, không phải sản phẩm thương mại, không quy đổi ra giá trị thật.</li>
+            <li>Dữ liệu XP/vật phẩm/cấp độ có thể được điều chỉnh (cân bằng game) hoặc reset nếu cần thiết để sửa lỗi hệ thống.</li>
+            <li>Nghiêm cấm hành vi khai thác lỗi hệ thống (bug abuse) để nhận thưởng bất thường — tài khoản vi phạm có thể bị khóa/xóa dữ liệu liên quan.</li>
+        </ul>
+
+        <h2><i class="bi bi-pencil-fill"></i> Nội dung câu hỏi/đáp án</h2>
+        <p>Nội dung do quản trị viên nhập và quản lý thủ công. Chúng tôi cố gắng đảm bảo tính chính xác nhưng <b>không cam kết tuyệt đối không có sai sót</b> — nếu phát hiện đáp án sai, vui lòng liên hệ qua thông tin Contributors ở trang chính.</p>
+
+        <h2><i class="bi bi-x-octagon-fill"></i> Hành vi không được phép</h2>
+        <ul>
+            <li>Cố ý phá hoại, tấn công hệ thống (DDoS, khai thác lỗ hổng bảo mật...)</li>
+            <li>Sử dụng bot/script tự động để giả mạo hoạt động (xem câu hỏi giả, gian lận thi cử trong Pet Game)</li>
+            <li>Tải/sao chép trái phép nội dung, hình ảnh của hệ thống cho mục đích thương mại</li>
+        </ul>
+
+        <h2><i class="bi bi-arrow-repeat"></i> Thay đổi điều khoản</h2>
+        <p>Điều khoản có thể được cập nhật theo thời gian. Việc tiếp tục sử dụng site sau khi có thay đổi đồng nghĩa bạn chấp nhận điều khoản mới.</p>
+
+        <h2><i class="bi bi-shield-fill-check"></i> Xem thêm</h2>
+        <p>Về dữ liệu cá nhân, xem <a class="inline" href="/privacy.html">Chính sách bảo mật</a>.</p>
+    </div>
+</div>
+<script src="assets/js/dev-notice.js"></script>
+</body>
+</html>
