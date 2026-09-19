@@ -568,3 +568,55 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:
 @media (min-width: 0px) {
   .py-8 { padding-top: 32px; padding-bottom: 32px; }
 }
+
+/* ============================================================
+   Utility classes bổ sung — bị thiếu khi bỏ Tailwind CDN,
+   khiến header/footer/stat-box mất đúng cỡ chữ, độ đậm, khoảng cách.
+   Đây là fix chính cho lỗi UI lệch so với bản gốc (chữ tràn dòng,
+   header "TreXanh v1.0" quá to, không có font-weight đúng).
+============================================================ */
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-black { font-weight: 900; }
+.uppercase { text-transform: uppercase; }
+.italic { font-style: italic; }
+.tracking-tight { letter-spacing: -0.025em; }
+.tracking-wide { letter-spacing: 0.025em; }
+.tracking-wider { letter-spacing: 0.05em; }
+.tracking-\[3px\] { letter-spacing: 3px; }
+.inline-flex { display: inline-flex; }
+.border { border-width: 1px; border-style: solid; border-color: var(--border); }
+.border-2 { border-width: 2px; border-style: solid; }
+.rounded-full { border-radius: 9999px; }
+.rounded-lg { border-radius: 8px; }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -4px rgba(0,0,0,.1); }
+.mx-4 { margin-left: 16px; margin-right: 16px; }
+.ml-1 { margin-left: 4px; }
+.pb-1 { padding-bottom: 4px; }
+.py-1 { padding-top: 4px; padding-bottom: 4px; }
+.py-2\.5 { padding-top: 10px; padding-bottom: 10px; }
+.px-2\.5 { padding-left: 10px; padding-right: 10px; }
+
+.text-\[8px\] { font-size: 8px; }
+.text-\[9px\] { font-size: 9px; }
+.text-\[10px\] { font-size: 10px; }
+.text-\[11px\] { font-size: 11px; }
+.text-\[12px\] { font-size: 12px; }
+.text-\[13px\] { font-size: 13px; }
+.text-sm { font-size: 14px; }
+.text-base { font-size: 16px; }
+
+.text-emerald-400 { color: #34d399; }
+.text-emerald-500 { color: #10b981; }
+.text-blue-500 { color: #3b82f6; }
+.text-purple-500 { color: #8b5cf6; }
+.text-amber-500 { color: #f59e0b; }
+
+/* animate.css tối thiểu — chỉ các animation thực sự dùng trong page.js */
+.animate__animated { animation-duration: 1s; animation-fill-mode: both; }
+.animate__fadeIn { animation-name: txFadeIn; animation-duration: .5s; }
+.animate__fadeInUp { animation-name: txFadeInUp; animation-duration: .5s; }
+@keyframes txFadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
