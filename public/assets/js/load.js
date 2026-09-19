@@ -604,11 +604,19 @@ function toggleCatDropdown() {
     dd.classList.contains('open') ? closeCatDropdown() : openCatDropdown();
 }
 (function initCatDropdown() {
-    document.addEventListener('DOMContentLoaded', () => {
+    function bind() {
         document.getElementById('catDdTrigger')?.addEventListener('click', toggleCatDropdown);
         document.getElementById('catDdBackdrop')?.addEventListener('click', closeCatDropdown);
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCatDropdown(); });
-    });
+    }
+    /* Nếu DOM đã sẵn sàng lúc script này chạy (Next.js Script afterInteractive
+       load sau khi DOMContentLoaded đã fire), gắn listener ngay; nếu chưa,
+       đợi DOMContentLoaded như bản gốc. */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bind);
+    } else {
+        bind();
+    }
 })();
 
 function renderWeekTabs(fileName) {
@@ -1061,4 +1069,13 @@ function syncFooter() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', init);
+/* Next.js Script strategy="afterInteractive" thường load SAU KHI
+   DOMContentLoaded đã fire (React đã hydrate xong), nên chỉ nghe
+   sự kiện DOMContentLoaded như bản gốc sẽ khiến init() không bao giờ
+   chạy. Kiểm tra document.readyState để tự gọi init() ngay nếu DOM
+   đã sẵn sàng, chỉ đăng ký listener khi thực sự còn đang 'loading'. */
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
