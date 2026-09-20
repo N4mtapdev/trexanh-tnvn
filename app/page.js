@@ -772,7 +772,7 @@ export default function HomePage() {
               </picture>
             </div>
             <div className="leading-tight">
-              <h1 className="text-[13px] font-black tracking-tight uppercase italic" style={{ color: 'var(--text)' }}>
+              <h1 className="text-[13px] font-black tracking-tight italic" style={{ color: 'var(--text)' }}>
                 TreXanh <span className="text-emerald-500">v1.0</span>
               </h1>
               <div className="flex items-center gap-1.5">
