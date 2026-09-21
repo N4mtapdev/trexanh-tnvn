@@ -771,11 +771,11 @@ export default function HomePage() {
                 <img src="/assets/images/logo.png" alt="TreXanh" className="w-5 h-5 object-contain" />
               </picture>
             </div>
-            <div className="leading-tight">
+            <div style={{ lineHeight: 1.5 }}>
               <h1 className="text-[13px] font-black tracking-tight italic" style={{ color: 'var(--text)' }}>
                 TreXanh <span className="text-emerald-500">v1.0</span>
               </h1>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5" style={{ marginTop: 3 }}>
                 <span className="pdot" aria-hidden="true" />
                 <p className="text-[9px] font-bold" style={{ color: 'var(--muted)' }}>Hệ thống hoạt động</p>
               </div>
@@ -979,19 +979,19 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-3 gap-2 mb-4">
-          <div className="text-center py-2.5 rounded-xl" style={{ background: 'var(--bg)' }}>
+          <div className="text-center rounded-xl" style={{ background: 'var(--bg)', padding: '8px 4px' }}>
             <p className="text-[11px] font-black" style={{ color: 'var(--text)' }}>
               <i className="bi bi-database text-emerald-500 text-[10px]" aria-hidden="true" /> <span id="footer-total">—</span>
             </p>
             <p className="text-[8px] font-bold" style={{ color: 'var(--muted)' }}>Câu hỏi</p>
           </div>
-          <div className="text-center py-2.5 rounded-xl" style={{ background: 'var(--bg)' }}>
+          <div className="text-center rounded-xl" style={{ background: 'var(--bg)', padding: '8px 4px' }}>
             <p className="text-[11px] font-black" style={{ color: 'var(--text)' }}>
               <i className="bi bi-collection text-blue-500 text-[10px]" aria-hidden="true" /> <span id="footer-files">—</span>
             </p>
             <p className="text-[8px] font-bold" style={{ color: 'var(--muted)' }}>Danh mục</p>
           </div>
-          <div className="text-center py-2.5 rounded-xl" style={{ background: 'var(--bg)' }}>
+          <div className="text-center rounded-xl" style={{ background: 'var(--bg)', padding: '8px 4px' }}>
             <p className="text-[11px] font-black text-emerald-500">
               <i className="bi bi-activity text-[10px]" aria-hidden="true" /> Live
             </p>
