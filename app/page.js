@@ -771,11 +771,11 @@ export default function HomePage() {
                 <img src="/assets/images/logo.png" alt="TreXanh" className="w-5 h-5 object-contain" />
               </picture>
             </div>
-            <div style={{ lineHeight: 1.5 }}>
+            <div style={{ lineHeight: 1.25 }}>
               <h1 className="text-[13px] font-black tracking-tight italic" style={{ color: 'var(--text)' }}>
                 TreXanh <span className="text-emerald-500">v1.0</span>
               </h1>
-              <div className="flex items-center gap-1.5" style={{ marginTop: 3 }}>
+              <div className="flex items-center gap-1.5" style={{ marginTop: 2 }}>
                 <span className="pdot" aria-hidden="true" />
                 <p className="text-[9px] font-bold" style={{ color: 'var(--muted)' }}>Hệ thống hoạt động</p>
               </div>
