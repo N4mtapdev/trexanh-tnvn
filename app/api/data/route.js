@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
-import { supabasePublic } from '@/lib/supabase';
+import { getLocalQuestions } from '@/lib/local-data';
 
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic'; // luôn đọc mới nhất từ DB, không cache build-time
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/data?cat=LLCT
  * Trả về mảng câu hỏi của 1 danh mục, format khớp với những gì
  * assets/js/load.js đang mong đợi: { id, question, answer, week?, weekTitle? }
+ *
+ * Dữ liệu đọc từ assets/json/*.json trong repo (Supabase cũ đã mất).
  */
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -17,24 +18,17 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Thiếu tham số cat' }, { status: 400 });
   }
 
-  const supabase = supabasePublic();
-  const { data, error } = await supabase
-    .from('questions')
-    .select('id, question, answer, week, week_title')
-    .eq('category_id', cat)
-    .eq('status', 'published')
-    .order('id', { ascending: true });
+  const questions = getLocalQuestions(cat);
 
-  if (error) {
-    console.error('[api/data] Supabase error:', error.message);
-    return NextResponse.json({ error: 'Không tải được dữ liệu' }, { status: 500 });
+  if (!questions) {
+    return NextResponse.json({ error: 'Không có danh mục này' }, { status: 404 });
   }
 
-  const formatted = (data || []).map((row) => ({
+  const formatted = questions.map((row) => ({
     id: row.id,
     question: row.question,
     answer: row.answer,
-    ...(row.week != null ? { week: row.week, weekTitle: row.week_title } : {}),
+    ...(row.week != null ? { week: row.week, weekTitle: row.week_title || row.weekTitle } : {}),
   }));
 
   return NextResponse.json(formatted, {

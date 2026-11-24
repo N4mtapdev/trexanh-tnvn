@@ -43,14 +43,23 @@ export async function GET(req) {
   const url = new URL(req.url);
   const action = url.searchParams.get('action') || 'count';
   const sid = url.searchParams.get('sid') || '';
+  /* url.host là host nội bộ khi app chạy sau proxy/dev server bind 0.0.0.0,
+     nên phải so với header host thật của request (giống middleware.js). */
+  const host =
+    req.headers.get('x-forwarded-host') || req.headers.get('host') || url.host;
 
   const headers = {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-store',
   };
 
-  if (!isSameOrigin(req, url.host)) {
+  if (!isSameOrigin(req, host)) {
     return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers });
+  }
+
+  /* Chưa cấu hình Vercel KV → không đếm được, trả 0 thay vì lỗi. */
+  if (!KV_URL || !KV_TOKEN) {
+    return new Response(JSON.stringify({ count: 0, sid }), { headers });
   }
 
   try {
@@ -63,6 +72,7 @@ export async function GET(req) {
 
     return new Response(JSON.stringify({ count, sid }), { headers });
   } catch (e) {
-    return new Response(JSON.stringify({ count: 0, sid, error: e.message }), { headers });
+    console.error('[api/online] lỗi KV:', e.message);
+    return new Response(JSON.stringify({ count: 0, sid }), { headers });
   }
 }

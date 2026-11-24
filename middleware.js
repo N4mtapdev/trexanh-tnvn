@@ -6,7 +6,10 @@ export const config = {
 };
 
 /** So referer/origin của request với host của chính request đó — tự thích
- *  ứng theo domain thật (không hardcode), kể cả khi đổi sang domain riêng. */
+ *  ứng theo domain thật (không hardcode), kể cả khi đổi sang domain riêng.
+ *  Lấy host từ header (x-forwarded-host/host) thay vì url.host: khi app chạy
+ *  sau proxy hoặc dev server bind 0.0.0.0, url.host là địa chỉ nội bộ nên
+ *  sẽ không bao giờ khớp referer của trình duyệt. */
 function isSameOrigin(request, host) {
   const referer = request.headers.get('referer') || '';
   const origin = request.headers.get('origin') || '';
@@ -43,6 +46,8 @@ async function isAdminEmailEdge(email) {
 
 export default async function middleware(request) {
   const url = new URL(request.url);
+  const host =
+    request.headers.get('x-forwarded-host') || request.headers.get('host') || url.host;
 
   if (url.pathname.startsWith('/assets/images/')) {
     /* og-image.png: crawler Zalo/FB/Telegram cần fetch trực tiếp, không
@@ -55,7 +60,7 @@ export default async function middleware(request) {
       return NextResponse.next();
     }
 
-    if (isSameOrigin(request, url.host)) return NextResponse.next();
+    if (isSameOrigin(request, host)) return NextResponse.next();
 
     return new NextResponse('Not Found', {
       status: 404,

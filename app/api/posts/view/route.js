@@ -1,15 +1,14 @@
 import { NextResponse } from 'next/server';
-import { supabasePublic } from '@/lib/supabase';
 
-export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
 /**
  * POST /api/posts/view
  * Body: { slug: string }
- * Tăng view_count cho 1 bài viết qua RPC increment_post_view (atomic, chạy
- * với quyền định nghĩa sẵn nên không cần mở policy UPDATE công khai cho
- * bảng posts). Gọi từ client component sau khi trang bài viết load xong —
- * không gọi từ Server Component để tránh tính trùng lúc Next.js prerender.
+ *
+ * Trước đây tăng view_count trong Supabase. Project Supabase đã mất và
+ * bài viết giờ là dữ liệu tĩnh trong data/posts.json nên không có nơi
+ * lưu lượt xem — route giữ lại để client không nhận lỗi 500.
  */
 export async function POST(request) {
   let body;
@@ -19,17 +18,9 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Body không hợp lệ' }, { status: 400 });
   }
 
-  const slug = body?.slug?.trim();
-  if (!slug) {
+  if (!body?.slug?.trim()) {
     return NextResponse.json({ error: 'Thiếu slug' }, { status: 400 });
   }
 
-  const supabase = supabasePublic();
-  const { error } = await supabase.rpc('increment_post_view', { post_slug: slug });
-
-  if (error) {
-    console.error('[api/posts/view] lỗi tăng view:', error.message);
-  }
-
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, counted: false });
 }
